@@ -9,6 +9,7 @@ packages:
 
 esphome:
   libraries:
+    - ESP8266WiFi
     - https://github.com/akaJes/AsyncPing#95ac7e4
 
 external_components:
