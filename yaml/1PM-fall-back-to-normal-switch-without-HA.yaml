@@ -1,5 +1,5 @@
 substitutions:
-  home-assistant-ip: "192.168.1.1"
+  home_assistant_IP: "192.168.1.1"
   
 packages:
   device-base: 
@@ -20,7 +20,7 @@ sensor:
   - platform: ping
 
     # IP address of Home Assistant
-    ip_address: ${home-assistant-ip}
+    ip_address: ${home_assistant_IP}
 
     # number of packets to send
     num_attempts: 5
