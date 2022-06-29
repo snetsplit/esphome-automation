@@ -130,5 +130,5 @@ binary_sensor:
     on_release:
       then:
         - switch.toggle: shelly_relay
-    internal: true
+    internal: false
     id: switchid
