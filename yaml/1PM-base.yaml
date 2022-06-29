@@ -76,7 +76,7 @@ sensor:
     update_interval: 10s
 
   - platform: total_daily_energy
-    name: "${devicename} daily energy"
+    name: "${device_name} daily energy"
     power_id: "shelly1pm_power"
     device_class: energy
     state_class: measurement
