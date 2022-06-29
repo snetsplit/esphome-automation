@@ -117,15 +117,3 @@ output:
       number: GPIO00
       inverted: true
 
-binary_sensor:
-  - platform: gpio
-    pin:
-      number: GPIO4
-    filters:
-      - delayed_on_off: 50ms # small delay to prevent debouncing
-    name: "${friendly_name} External Switch"
-    on_state:
-      then:
-        - switch.toggle: shelly_relay
-    internal: false
-    id: switchid
