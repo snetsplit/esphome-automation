@@ -76,7 +76,7 @@ sensor:
     update_interval: 10s
 
   - platform: total_daily_energy
-    name: "${device_name} Daily Energy"
+    name: "${friendly_name} Daily Energy"
     power_id: "shelly1pm_power"
     device_class: energy
     state_class: measurement
@@ -86,7 +86,7 @@ sensor:
 
   - platform: ntc
     sensor: temp_resistance_reading
-    name: "${device_name} Temperature"
+    name: "${friendly_name} Temperature"
     unit_of_measurement: "°C"
     accuracy_decimals: 1
     device_class: temperature
@@ -100,7 +100,7 @@ sensor:
           - homeassistant.event:
               event: esphome.overheat
               data:
-                title: "${device_name} has overheated."
+                title: "${friendly_name} has overheated."
   - platform: resistance
     id: temp_resistance_reading
     sensor: temp_analog_reading
@@ -123,7 +123,7 @@ binary_sensor:
       number: GPIO4
     filters:
       - delayed_on_off: 50ms # small delay to prevent debouncing
-    name: "${device_name} External Switch"
+    name: "${friendly_name} External Switch"
     on_state:
       then:
         - switch.toggle: shelly_relay
