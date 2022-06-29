@@ -9,9 +9,6 @@ esphome:
   platform: ESP8266
   board: esp01_1m
   comment: ${friendly_name}
-  project:
-    name: "Shelly-ESPHome-1PM"
-    version: "1.0.0"
     
 logger:
 
