@@ -5,6 +5,10 @@ substitutions:
   friendly_name: Shelly 1PM
   address: ${devicename}.local
 
+  project_name: Shelly-ESPHome-1PM
+  project_ver_num: "1"
+  project_ver_let: y
+  
 esphome:
   name: ${devicename}
   platform: ESP8266
