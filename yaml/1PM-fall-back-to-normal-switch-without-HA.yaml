@@ -1,5 +1,6 @@
 substitutions:
   home_assistant_IP: "192.168.1.1"
+  light_group: "light.any_lights"
   
 packages:
   device-base: 
@@ -32,3 +33,30 @@ sensor:
       accuracy_decimals: 3
 
     update_interval: 10s
+
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO4
+    filters:
+      - delayed_on_off: 50ms # small delay to prevent debouncing
+    name: "${friendly_name} External Switch"
+    on_state:
+      then:
+      - if:
+          condition:
+            and:
+              - wifi.connected:
+              - api.connected:
+              - switch.is_on: shelly_relay
+              - lambda: return id(packet_loss).state < 100;
+          then:
+            - homeassistant.service:
+                service: light.toggle
+                data:
+                  entity_id: ${light_group}
+          else:
+            - switch.toggle: shelly_relay
+    internal: false
+    id: switchid
