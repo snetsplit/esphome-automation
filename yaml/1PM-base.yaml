@@ -123,11 +123,8 @@ binary_sensor:
       number: GPIO4
     filters:
       - delayed_on_off: 50ms # small delay to prevent debouncing
-    name: "Switch ${devicename}"
-    on_press:
-      then:
-        - switch.toggle: shelly_relay
-    on_release:
+    name: "${devicename} External Switch"
+    on_state:
       then:
         - switch.toggle: shelly_relay
     internal: false
