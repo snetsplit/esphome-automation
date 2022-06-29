@@ -3,7 +3,6 @@ substitutions:
   devicename: "shelly-1pm"
   max_temp: "70.0"
   friendly_name: Shelly 1PM
-  address: ${devicename}.local
 
   project_name: Shelly-ESPHome-1PM
   project_ver_num: "1"
@@ -25,7 +24,6 @@ ota:
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
-  use_address: ${address}
   power_save_mode: HIGH # for ESP8266 LOW/HIGH are mixed up, esphome/issues/issues/1532
   ap:
     ssid: "${friendly_name} Fallback"
