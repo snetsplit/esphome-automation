@@ -1,12 +1,12 @@
 #source for orginal: https://www.esphome-devices.com/devices/Shelly-1PM
 substitutions:
-  devicename: "shelly-1pm"
+  device_name: "shelly-1pm"
   max_temp: "70.0"
   friendly_name: Shelly 1PM
   
 
 esphome:
-  name: ${devicename}
+  name: ${device_name}
   platform: ESP8266
   board: esp01_1m
   comment: ${friendly_name}
@@ -39,14 +39,14 @@ captive_portal:
 
 switch:
   - platform: gpio
-    name: ${devicename}
+    name: ${device_name}
     pin: GPIO15
     id: shelly_relay
     restore_mode: RESTORE_DEFAULT_OFF
 
 sensor:
   - platform: wifi_signal
-    name: "${devicename} WiFi Signal"
+    name: "${device_name} WiFi Signal"
     device_class: signal_strength
     update_interval: 60s
   - platform: hlw8012
@@ -54,7 +54,7 @@ sensor:
     cf1_pin: GPIO13 # not used because it is not available on the 1PM but it is needed to compile
     sel_pin: GPIO14 # not used because it is not available on the 1PM but it is needed to compile
     power:
-      name: "${devicename} power"
+      name: "${device_name} power"
       unit_of_measurement: W
       id: "shelly1pm_power"
       device_class: power
