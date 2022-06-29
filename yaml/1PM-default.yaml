@@ -21,7 +21,7 @@ api:
 ota:
 
 wifi:
-  ssid: !"example"
+  ssid: "example"
   password: "examplepass"
   power_save_mode: HIGH # for ESP8266 LOW/HIGH are mixed up, esphome/issues/issues/1532
   ap:
