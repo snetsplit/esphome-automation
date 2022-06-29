@@ -2,7 +2,7 @@
 substitutions:
   device_name: "shelly-1pm"
   max_temp: "70.0"
-  friendly_name: Shelly 1PM
+  friendly_name: "Shelly 1PM"
   
 
 esphome:
