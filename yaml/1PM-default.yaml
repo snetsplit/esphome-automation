@@ -1,9 +1,9 @@
 #source for orginal: https://www.esphome-devices.com/devices/Shelly-1PM
 substitutions:
-  devicename: "recirculating-pump"
+  devicename: "shelly-1pm"
   max_temp: "70.0"
-  friendly_name: Recirculating Pump
-  address: ${devicename}-switch.lan
+  friendly_name: Shelly 1PM
+  address: ${devicename}.local
 
 esphome:
   name: ${devicename}
