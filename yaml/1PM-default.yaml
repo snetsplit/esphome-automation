@@ -19,15 +19,14 @@ logger:
 api:
 
 ota:
-  password: !secret ota_password
 
 wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_password
+  ssid: !"example"
+  password: "examplepass"
   power_save_mode: HIGH # for ESP8266 LOW/HIGH are mixed up, esphome/issues/issues/1532
   ap:
     ssid: "${friendly_name} Fallback"
-    password: !secret fallback_password
+    password: "examplepass"
 
 web_server:
   port: 80
