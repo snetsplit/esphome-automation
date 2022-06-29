@@ -1,0 +1,20 @@
+packages:
+  device-base: 
+    url: https://github.com/snetsplit/shelly-esphome
+    file: yaml/1PM-base.yaml
+    refresh: 0s
+    
+    
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO4
+    filters:
+      - delayed_on_off: 50ms # small delay to prevent debouncing
+    name: "${friendly_name} External Switch"
+    on_state:
+      then:
+        - switch.toggle: shelly_relay
+    internal: false
+    id: switchid
