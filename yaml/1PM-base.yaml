@@ -76,7 +76,7 @@ sensor:
     update_interval: 10s
 
   - platform: total_daily_energy
-    name: "${device_name} daily energy"
+    name: "${device_name} Daily Energy"
     power_id: "shelly1pm_power"
     device_class: energy
     state_class: measurement
@@ -86,7 +86,7 @@ sensor:
 
   - platform: ntc
     sensor: temp_resistance_reading
-    name: "${device_name} temperature"
+    name: "${device_name} Temperature"
     unit_of_measurement: "°C"
     accuracy_decimals: 1
     device_class: temperature
