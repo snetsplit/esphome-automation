@@ -124,7 +124,7 @@ binary_sensor:
     filters:
       - delayed_on_off: 50ms # small delay to prevent debouncing
     name: "Switch ${devicename}"
-    on_press:
+    on_state:
       then:
         - switch.toggle: shelly_relay
     internal: true
