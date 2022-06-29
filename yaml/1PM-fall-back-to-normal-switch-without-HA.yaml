@@ -7,14 +7,9 @@ packages:
     file: yaml/1PM-base.yaml
     refresh: 0s
 
-# Basic Config
-esphome:
-  name: ${device_name}
-  platform: ESP8266
-  board: esp01_1m
-  libraries:
-    - ESP8266WiFi
-    - https://github.com/akaJes/AsyncPing#95ac7e4
+external_components:
+  - source: github://trombik/esphome-component-ping
+    components: [ ping ]
     
 sensor:
   - platform: ping
