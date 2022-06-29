@@ -1,1 +1,5 @@
-
+packages:
+  device-base: 
+    url: https://github.com/snetsplit/shelly-esphome
+    file: yaml/1PM-base.yaml
+    refresh: 0s
