@@ -43,7 +43,7 @@ switch:
     name: ${friendly_name}
     pin: GPIO15
     id: shelly_relay
-    restore_mode: ${restore_mode] 
+    restore_mode: ${restore_mode}
 
 sensor:
   - platform: wifi_signal
