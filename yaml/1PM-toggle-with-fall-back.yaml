@@ -18,8 +18,12 @@ binary_sensor:
       then:
       - if:
           condition:
-            lambda: return id(packet_loss).state < 100;
+            and:
+              - wifi.connected:
+              - api.connected:
+              - lambda: return id(packet_loss).state < 100;
           then:
+            - switch.turn_on: shelly_relay
             - homeassistant.service:
                 service: input_number.set_value    
                 data_template:  
