@@ -1,0 +1,36 @@
+substitutions:
+  home_assistant_IP: "192.168.1.1"
+  light_group: "light.any_lights"
+  
+packages:
+  device-base: 
+    url: https://github.com/snetsplit/shelly-esphome
+    file: yaml/1PM-base.yaml
+    refresh: 0s
+
+esphome:
+  libraries:
+    - ESP8266WiFi
+    - https://github.com/akaJes/AsyncPing#95ac7e4
+
+external_components:
+  - source: github://trombik/esphome-component-ping
+    components: [ ping ]
+    
+sensor:
+  - platform: ping
+    ip_address: ${home_assistant_IP}
+    num_attempts: 5
+    timeout: 1sec
+
+    loss:
+      id: packet_loss
+      name: "Home Assistant Packet Loss"
+
+    latency:
+      id: latency
+      name: "Home Assistant Latency"
+      accuracy_decimals: 3
+
+    update_interval: 10s
+
