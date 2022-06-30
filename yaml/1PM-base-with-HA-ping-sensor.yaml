@@ -1,6 +1,6 @@
 substitutions:
   home_assistant_IP: "192.168.1.1"
-  light_group: "light.any_lights"
+  ping_rate: 10sec
   
 packages:
   device-base: 
@@ -21,7 +21,7 @@ sensor:
   - platform: ping
     ip_address: ${home_assistant_IP}
     num_attempts: 5
-    timeout: 1sec
+    timeout: ${ping_rate}
 
     loss:
       id: packet_loss
