@@ -3,7 +3,7 @@ substitutions:
   device_name: "shelly-1pm"
   max_temp: "70.0"
   friendly_name: "Shelly 1PM"
-  restore_mode: "ALWAYS_ON"
+  restore_mode: ALWAYS_ON
   
 
 esphome:
