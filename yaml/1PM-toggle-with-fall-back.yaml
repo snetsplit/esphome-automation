@@ -23,7 +23,6 @@ binary_sensor:
               - api.connected:
               - lambda: return id(packet_loss).state < 100;
           then:
-            - switch.turn_on: shelly_relay
             - homeassistant.service:
                 service: input_number.set_value    
                 data_template:  
