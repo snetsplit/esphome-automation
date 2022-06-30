@@ -4,7 +4,7 @@ substitutions:
 packages:
   device-base: 
     url: https://github.com/snetsplit/shelly-esphome
-    file: yaml/1PM-base.yaml
+    file: yaml/1PM-base-with-HA-ping-sensor.yaml
     refresh: 0s
 
 binary_sensor:
