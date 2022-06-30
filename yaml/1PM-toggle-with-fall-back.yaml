@@ -24,22 +24,16 @@ binary_sensor:
               - switch.is_on: shelly_relay
               - lambda: return id(packet_loss).state < 100;
           then:
-          - if:
-              condition:
-                lambda: return states(${light_automation_input_number}) >= state_attr('${light_automation_input_number}','max');
-              then:
-                - homeassistant.service:
-                    service: input_number.set_value                    
-                       data_template:
-                         entity_id: ${light_automation_input_number}
-                         value: "{{ state_attr('${light_automation_input_number}','min'); }}"
-              else:
-                - homeassistant.service:
-                    service: input_number.increment
-                      data:
-                        step: 1
-                      target:
-                        entity_id: ${light_automation_input_number}
+            - homeassistant.service:
+                service: input_number.set_value    
+                data_template:  
+                   value: >
+                          {% if states('${light_automation_input_number}') | int >= state_attr('${light_automation_input_number}','max') | int -%}
+                            {{ state_attr('${light_automation_input_number}','min') | int}}
+                          {%- else -%}
+                            {{ states('${light_automation_input_number}') | int + 1}}
+                          {%- endif %}                   
+                   entity_id: input_number.vanity_scene
           else:
             - switch.toggle: shelly_relay
     internal: false
