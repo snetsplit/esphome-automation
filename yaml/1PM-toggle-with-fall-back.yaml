@@ -32,7 +32,7 @@ binary_sensor:
                           {%- else -%}
                             {{ states('${light_automation_input_number}') | int + 1}}
                           {%- endif %}                   
-                   entity_id: input_number.vanity_scene
+                   entity_id: ${light_automation_input_number}
           else:
             - switch.toggle: shelly_relay
     internal: false
