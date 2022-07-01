@@ -1,15 +1,5 @@
-substitutions:
-  light_automation_input_number: "input_number.foo"
-  light_automation_input_number_min: '1'
-  light_automation_input_number_max: '4'
-  
-packages:
-  device-base: 
-    url: https://github.com/snetsplit/shelly-esphome
-    file: yaml/1PM-base-with-HA-ping-sensor.yaml
-    refresh: 0s
     
- globals:
+globals:
    - id: input_number_min
      type: int
      restore_value: no
@@ -22,6 +12,18 @@ packages:
      type: int
      restore_value: yes
      initial_value: ${light_automation_input_number_max}
+
+substitutions:
+  light_automation_input_number: "input_number.foo"
+  light_automation_input_number_min: '1'
+  light_automation_input_number_max: '4'
+  
+packages:
+  device-base: 
+    url: https://github.com/snetsplit/shelly-esphome
+    file: yaml/1PM-base-with-HA-ping-sensor.yaml
+    refresh: 0s
+
      
 binary_sensor:
   - platform: gpio
