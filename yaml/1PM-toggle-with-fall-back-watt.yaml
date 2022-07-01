@@ -1,0 +1,56 @@
+substitutions:
+  light_automation_input_number: "input_number.foo"
+  light_automation_input_number_min: '1'
+  light_automation_input_number_max: '4'
+  
+packages:
+  device-base: 
+    url: https://github.com/snetsplit/shelly-esphome
+    file: yaml/1PM-base-with-HA-ping-sensor.yaml
+    refresh: 0s
+    
+ globals:
+   - id: input_number_min
+     type: int
+     restore_value: no
+     initial_value: ${light_automation_input_number_min}
+   - id: input_number_max
+     type: int
+     restore_value: no
+     initial_value: ${light_automation_input_number_min}
+   - id: input_number
+     type: int
+     restore_value: yes
+     initial_value: ${light_automation_input_number_max}
+     
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO4
+    filters:
+      - delayed_on_off: 50ms # small delay to prevent debouncing
+    name: "${friendly_name} External Switch"
+    on_state:
+      then:
+      - lambda: |-
+          id(input_number) += 1;
+          if (id(input_number) > id(input_number_max) ) {
+             id(input_number) = id(input_number_min);
+          }
+      - if:
+          condition:
+            and:
+              - wifi.connected:
+              - api.connected:
+              - lambda: return id(packet_loss).state < 100;
+          then:
+            - homeassistant.service:
+                service: input_number.set_value    
+                data_template:  
+                   value: |-
+                      id(input_number)                
+                   entity_id: ${light_automation_input_number}
+          else:
+            - switch.toggle: shelly_relay
+    internal: false
+    id: switchid
