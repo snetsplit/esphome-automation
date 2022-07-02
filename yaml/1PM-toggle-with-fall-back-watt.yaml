@@ -73,9 +73,10 @@ binary_sensor:
               - api.connected:
               - lambda: return id(packet_loss).state < 100;
           then:
-            - number.set:
+            - number.increment:
                 id: "${device_name}_toggle"
-                value: 1          
+                cycle: true
+                
           else:
             - switch.toggle: shelly_relay
     internal: false
