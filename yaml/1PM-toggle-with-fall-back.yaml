@@ -17,7 +17,6 @@ globals:
      initial_value: 'false'
     
 substitutions:
-  light_automation_input_number: "input_number.foo"
   light_automation_input_number_min: '1'
   light_automation_input_number_max: '4'
   home_assistant_IP: "192.168.1.1"
