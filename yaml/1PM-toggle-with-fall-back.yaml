@@ -11,7 +11,11 @@ globals:
      type: int
      restore_value: yes
      initial_value: ${light_automation_input_number_max}
-
+  - id: basic_edge_switch_toggle_boolean
+    type: bool
+    restore_value: true
+    initial_value: 'false'
+    
 substitutions:
   light_automation_input_number: "input_number.foo"
   light_automation_input_number_min: '1'
@@ -108,6 +112,16 @@ number:
 switch:
   - platform: template
     name: "${friendly_name} Edge Switch Toggle"
+    id: "basic_edge_switch_toggle_switch"
     optimistic: true
-    restore_state: true
-    id: "basic_edge_switch_toggle"
+    restore_state: false
+    turn_on_action:
+      - globals.set:
+          id: basic_edge_switch_toggle_boolean
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: basic_edge_switch_toggle_boolean
+          value: 'false'
+    lambda: |-
+      return id(basic_edge_switch_toggle_boolean);
