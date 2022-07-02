@@ -119,7 +119,7 @@ switch:
   - platform: template
     name: "${friendly_name} Edge Switch Toggle"
     id: "basic_edge_switch_toggle_switch"
-    optimistic: true
+    optimistic: false
     restore_state: false
     turn_on_action:
       - globals.set:
