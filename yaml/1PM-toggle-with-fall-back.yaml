@@ -106,7 +106,7 @@ number:
                 std::snprintf(sceneNameCharBuffer, sceneNameLength, "scene.${device_name}%.0f", x); 
                 std::string sceneName = sceneNameCharBuffer;
                 ESP_LOGI("scene", "Setting scene: %s", sceneName.c_str()); 
-                ESP_LOGI("setting", "Setting edge switch: %b", id("basic_edge_switch_toggle_boolean")); 
+                ESP_LOGI("setting", "Setting edge switch: %i", id("basic_edge_switch_toggle_boolean")); 
                 return sceneName.c_str();
 
 
