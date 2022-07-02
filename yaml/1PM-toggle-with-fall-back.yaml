@@ -75,7 +75,7 @@ binary_sensor:
             and:
               - wifi.connected:
               - api.connected:
-              - lambda: return ((id(packet_loss).state < 100) && id(basic_edge_switch_toggle_boolean).state);
+              - lambda: return ((id(packet_loss).state < 100) && id(basic_edge_switch_toggle_boolean));
           then:
             - number.increment:
                 id: "${device_name}_toggle"
@@ -106,7 +106,7 @@ number:
                 std::snprintf(sceneNameCharBuffer, sceneNameLength, "scene.${device_name}%.0f", x); 
                 std::string sceneName = sceneNameCharBuffer;
                 ESP_LOGI("scene", "Setting scene: %s", sceneName.c_str()); 
-                if(id(basic_edge_switch_toggle_boolean).state) {
+                if(id(basic_edge_switch_toggle_boolean)) {
                   ESP_LOGI("setting", "Setting edge switch: true", 1); 
                 } else {
                   ESP_LOGI("setting", "Setting edge switch: false", 1); 
@@ -124,10 +124,10 @@ switch:
     turn_on_action:
       - globals.set:
           id: basic_edge_switch_toggle_boolean
-          value: 'true'
+          value: 'false'
     turn_off_action:
       - globals.set:
           id: basic_edge_switch_toggle_boolean
-          value: 'false'
+          value: 'true'
     lambda: |-
       return id(basic_edge_switch_toggle_boolean);
