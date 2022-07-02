@@ -11,10 +11,10 @@ globals:
      type: int
      restore_value: yes
      initial_value: ${light_automation_input_number_max}
-  - id: basic_edge_switch_toggle_boolean
-    type: bool
-    restore_value: true
-    initial_value: 'false'
+   - id: basic_edge_switch_toggle_boolean
+     type: bool
+     restore_value: true
+     initial_value: 'false'
     
 substitutions:
   light_automation_input_number: "input_number.foo"
@@ -75,7 +75,7 @@ binary_sensor:
             and:
               - wifi.connected:
               - api.connected:
-              - lambda: return ((id(packet_loss).state < 100) && (!id(basic_edge_switch_toggle_boolean)));
+              - lambda: return ((id(packet_loss).state < 100) && (!id("basic_edge_switch_toggle_boolean")));
           then:
             - number.increment:
                 id: "${device_name}_toggle"
@@ -115,3 +115,13 @@ switch:
     id: "basic_edge_switch_toggle_switch"
     optimistic: true
     restore_state: false
+    turn_on_action:
+      - globals.set:
+          id: basic_edge_switch_toggle_boolean
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: basic_edge_switch_toggle_boolean
+          value: 'false'
+    lambda: |-
+      return id(basic_edge_switch_toggle_boolean);
