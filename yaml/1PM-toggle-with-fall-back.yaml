@@ -38,7 +38,7 @@ sensor:
   - platform: ping
     ip_address: ${home_assistant_IP}
     num_attempts: 1
-    timeout: ${ping_rate}
+    timeout: 1
 
     loss:
       id: packet_loss
@@ -49,7 +49,7 @@ sensor:
       name: "Home Assistant Latency"
       accuracy_decimals: 3
 
-    update_interval: 16s
+    update_interval: ${ping_rate}
 
      
 binary_sensor:
