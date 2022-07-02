@@ -38,7 +38,7 @@ sensor:
   - platform: ping
     ip_address: ${home_assistant_IP}
     num_attempts: 1
-    timeout: 1
+    timeout: 1sec
 
     loss:
       id: packet_loss
