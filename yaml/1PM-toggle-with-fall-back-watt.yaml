@@ -73,12 +73,9 @@ binary_sensor:
               - api.connected:
               - lambda: return id(packet_loss).state < 100;
           then:
-            - homeassistant.service:
-                service: input_number.set_value    
-                data_template:  
-                   value: |-
-                      id(input_number)                
-                   entity_id: ${light_automation_input_number}
+            - number.set:
+                id: "${device_name}_toggle"
+                value: 1          
           else:
             - switch.toggle: shelly_relay
     internal: false
