@@ -91,8 +91,8 @@ number:
     name: "${friendly_name} Toggle"
     id: "${device_name}_toggle"
     optimistic: true
-    min_value: 1
-    max_value: 3
+    min_value: ${light_automation_input_number_min}
+    max_value: ${light_automation_input_number_max}
     restore_value: true
     step: 1
     on_value:
