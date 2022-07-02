@@ -75,7 +75,7 @@ binary_sensor:
             and:
               - wifi.connected:
               - api.connected:
-              - lambda: return id(packet_loss).state < 100;
+              - lambda: return ((id(packet_loss).state < 100) && (!id(basic_edge_switch_toggle_boolean)));
           then:
             - number.increment:
                 id: "${device_name}_toggle"
