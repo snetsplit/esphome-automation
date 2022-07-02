@@ -115,13 +115,3 @@ switch:
     id: "basic_edge_switch_toggle_switch"
     optimistic: true
     restore_state: false
-    turn_on_action:
-      - globals.set:
-          id: basic_edge_switch_toggle_boolean
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: basic_edge_switch_toggle_boolean
-          value: 'false'
-    lambda: |-
-      return id(basic_edge_switch_toggle_boolean);
