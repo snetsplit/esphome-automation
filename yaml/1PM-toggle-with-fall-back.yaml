@@ -110,4 +110,4 @@ switch:
     name: "${friendly_name} Edge Switch Toggle"
     optimistic: true
     restore_state: true
-    id: "basic-edge-switch-toggle"
+    id: "basic_edge_switch_toggle"
