@@ -103,3 +103,11 @@ number:
                 std::string sceneName = sceneNameCharBuffer;
                 ESP_LOGI("scene", "Setting scene: %s", sceneName.c_str()); 
                 return sceneName.c_str();
+
+
+switch:
+  - platform: template
+    name: "${friendly_name} Edge Switch Toggle"
+    optomistic: true
+    restore_state: true
+    id: "basic-edge-switch-toggle"
