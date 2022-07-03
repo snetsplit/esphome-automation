@@ -34,6 +34,12 @@ api:
 
 ota:
 
+esphome:
+  name: ${device_name}
+  platform: ESP8266
+  board: esp01_1m
+  comment: ${friendly_name}
+
 wifi:
   ssid: "example"
   password: "examplepass"
