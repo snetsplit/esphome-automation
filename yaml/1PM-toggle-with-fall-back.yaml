@@ -27,12 +27,6 @@ substitutions:
   home_assistant_IP: "192.168.1.1"
   ping_rate: 10sec
   
-
-esphome:
-  name: ${device_name}
-  platform: ESP8266
-  board: esp01_1m
-  comment: ${friendly_name}
     
 logger:
 
@@ -66,6 +60,22 @@ switch:
     pin: GPIO15
     id: shelly_relay
     restore_mode: ${restore_mode}
+    
+  - platform: template
+    name: "${friendly_name} Edge Switch Mode"
+    id: "basic_edge_switch_toggle_switch"
+    optimistic: false
+    restore_state: false
+    turn_on_action:
+      - globals.set:
+          id: basic_edge_switch_toggle_boolean
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: basic_edge_switch_toggle_boolean
+          value: 'false'
+    lambda: |-
+      return id(basic_edge_switch_toggle_boolean);
 
 sensor:
   - platform: wifi_signal
@@ -132,6 +142,23 @@ sensor:
   - platform: adc
     id: temp_analog_reading
     pin: A0
+    
+  - platform: ping
+    ip_address: ${home_assistant_IP}
+    num_attempts: 1
+    timeout: 1sec
+
+    loss:
+      id: packet_loss
+      name: "Home Assistant Packet Loss"
+
+    latency:
+      id: latency
+      name: "Home Assistant Latency"
+      accuracy_decimals: 3
+
+    update_interval: ${ping_rate}
+
 
 output:
   - platform: esp8266_pwm
@@ -156,23 +183,6 @@ external_components:
   - source: github://trombik/esphome-component-ping
     components: [ ping ]
     
-sensor:
-  - platform: ping
-    ip_address: ${home_assistant_IP}
-    num_attempts: 1
-    timeout: 1sec
-
-    loss:
-      id: packet_loss
-      name: "Home Assistant Packet Loss"
-
-    latency:
-      id: latency
-      name: "Home Assistant Latency"
-      accuracy_decimals: 3
-
-    update_interval: ${ping_rate}
-
      
 binary_sensor:
   - platform: gpio
@@ -225,21 +235,3 @@ number:
                 std::string sceneName = sceneNameCharBuffer;
                 ESP_LOGI("scene", "Setting scene: %s", sceneName.c_str()); 
                 return sceneName.c_str();
-
-
-switch:
-  - platform: template
-    name: "${friendly_name} Edge Switch Mode"
-    id: "basic_edge_switch_toggle_switch"
-    optimistic: false
-    restore_state: false
-    turn_on_action:
-      - globals.set:
-          id: basic_edge_switch_toggle_boolean
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: basic_edge_switch_toggle_boolean
-          value: 'false'
-    lambda: |-
-      return id(basic_edge_switch_toggle_boolean);
