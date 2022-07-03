@@ -26,7 +26,7 @@ substitutions:
   
   
   address: "${device_name}-switch.lan"
-  home_assistant_IP: !secret home_assistant_IP
+  home_assistant_IP: "192.168.1.1"
   ping_rate: 10sec
   
   light_automation_1_input_number_min: "1"
@@ -42,12 +42,11 @@ substitutions:
   restore_mode: RESTORE_DEFAULT_ON
 
 wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_password
+  ssid: "IP freely"
+  password: "ewwwwwwwww"
   use_address: ${address}
   ap:
     ssid: "${friendly_name} Fallback"
-    password: !secret wifi_password
 
 
 esphome:
@@ -61,7 +60,6 @@ esphome:
     - https://github.com/akaJes/AsyncPing#95ac7e4
 
 ota:
-  password: !secret ota_password
 
 captive_portal:
 
