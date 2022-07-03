@@ -32,7 +32,7 @@ substitutions:
   light_automation_1_input_number_min: "1"
   light_automation_1_input_number_max: "4"
   light_automation_2_input_number_min: "1"
-  light_automation_2_input_number_max: "4" 
+  light_automation_2_input_number_max: "4"
 
   channel_1: Relay 1
   channel_2: Relay 2
