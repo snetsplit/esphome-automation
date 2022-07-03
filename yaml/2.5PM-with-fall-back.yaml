@@ -1,0 +1,329 @@
+#code used from: 
+#https://www.esphome-devices.com/devices/Shelly-1PM
+#https://www.esphome-devices.com/devices/Shelly-25
+#https://community.home-assistant.io/t/fall-back-to-relay-if-not-connected-to-ha/396459/11
+globals:
+   - id: basic_edge_switch_1_toggle_boolean
+     type: bool
+     restore_value: true
+     initial_value: 'false'
+   - id: basic_edge_switch_2_toggle_boolean
+     type: bool
+     restore_value: true
+     initial_value: 'false'
+
+substitutions:
+  device_name: "shelly-25"
+  friendly_name: "Shelly 2.5"
+  switch_1_name: "switch_1"
+  switch_1_friendly_name: "Switch 1"
+  switch_2_name: "switch_2"
+  switch_2_friendly_name: "Switch 2"
+  slider_1_name: "slider_1"
+  slider_1_friendly_name: "Slider 1"
+  slider_2_name: "slider_2"
+  slider_2_friendly_name: "Slider 2"
+  
+  
+  address: "${device_name}-switch.lan"
+  home_assistant_IP: !secret home_assistant_IP
+  ping_rate: 10sec
+  
+  light_automation_1_input_number_min: "1"
+  light_automation_1_input_number_max: "4"
+  light_automation_2_input_number_min: "1"
+  light_automation_2_input_number_max: "4"
+
+  channel_1: Relay 1
+  channel_2: Relay 2
+
+  max_power: "2000.0"
+  max_temp: "70.0"
+  restore_mode: RESTORE_DEFAULT_ON
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  use_address: ${address}
+  ap:
+    ssid: "${friendly_name} Fallback"
+    password: !secret wifi_password
+
+
+esphome:
+  name: ${device_name}
+  platform: ESP8266
+  board: esp01_1m
+  name_add_mac_suffix: false
+  comment: ${friendly_name}
+  libraries:
+    - ESP8266WiFi
+    - https://github.com/akaJes/AsyncPing#95ac7e4
+
+ota:
+  password: !secret ota_password
+
+captive_portal:
+
+# Enable logging
+logger:
+  level: DEBUG
+
+api:
+
+web_server:
+  port: 80
+
+time:
+  - platform: homeassistant
+    id: homeassistant_time
+
+i2c:
+  sda: GPIO12
+  scl: GPIO14
+
+sensor:
+  - platform: ade7953
+    irq_pin: GPIO16 # Prevent overheating by setting this
+    voltage:
+      name: ${device_name} voltage
+    # On the Shelly 2.5 channels are mixed ch1=B ch2=A
+    current_a:
+      name: ${channel_2} current
+      internal: true
+    current_b:
+      name: ${channel_1} current
+      internal: true
+    active_power_a:
+      name: ${channel_2} power
+      id: power_channel_2
+      # active_power_a is normal, so don't multiply by -1
+      on_value_range:
+        - above: ${max_power}
+          then:
+            - switch.turn_off: shelly_relay_2
+            - homeassistant.service:
+                service: persistent_notification.create
+                data:
+                  title: Message from ${device_name}
+                data_template:
+                  message: Switch turned off because power exceeded ${max_power}W
+    active_power_b:
+      name: ${channel_1} power
+      id: power_channel_1
+      # active_power_b is inverted, so multiply by -1
+      filters:
+        - multiply: -1
+      on_value_range:
+        - above: ${max_power}
+          then:
+            - switch.turn_off: shelly_relay_1
+            - homeassistant.service:
+                service: persistent_notification.create
+                data:
+                  title: Message from ${device_name}
+                data_template:
+                  message: Switch turned off because power exceeded ${max_power}W
+    update_interval: 30s
+
+  - platform: total_daily_energy
+    name: ${channel_1} energy
+    power_id: power_channel_1
+    filters:
+      # Multiplication factor from W to kWh is 0.001
+      - multiply: 0.001
+    unit_of_measurement: kWh
+
+  - platform: total_daily_energy
+    name: ${channel_2} energy
+    power_id: power_channel_2
+    filters:
+      # Multiplication factor from W to kWh is 0.001
+      - multiply: 0.001
+    unit_of_measurement: kWh
+
+  # NTC Temperature
+  - platform: ntc
+    sensor: temp_resistance_reading
+    name: ${device_name} temperature
+    unit_of_measurement: "°C"
+    accuracy_decimals: 1
+    icon: "mdi:thermometer"
+    calibration:
+      b_constant: 3350
+      reference_resistance: 10kOhm
+      reference_temperature: 298.15K
+    on_value_range:
+      - above: ${max_temp}
+        then:
+          - switch.turn_off: shelly_relay_1
+          - switch.turn_off: shelly_relay_2
+          - homeassistant.service:
+              service: persistent_notification.create
+              data:
+                title: Message from ${device_name}
+              data_template:
+                message: Switch turned off because temperature exceeded ${max_temp}°C
+  - platform: resistance
+    id: temp_resistance_reading
+    sensor: temp_analog_reading
+    configuration: DOWNSTREAM
+    resistor: 32kOhm
+  - platform: adc
+    id: temp_analog_reading
+    pin: A0
+       
+  - platform: ping
+    ip_address: ${home_assistant_IP}
+    num_attempts: 1
+    timeout: 1sec
+
+    loss:
+      id: packet_loss
+      name: "Home Assistant Packet Loss"
+
+    latency:
+      id: latency
+      name: "Home Assistant Latency"
+      accuracy_decimals: 3
+
+    update_interval: ${ping_rate}
+
+status_led:
+  pin:
+    number: GPIO0
+    inverted: yes
+
+external_components:
+  - source: github://trombik/esphome-component-ping
+    components: [ ping ]
+    
+
+switch:
+  - platform: gpio
+    id: shelly_relay_1
+    name: ${channel_1} relay
+    pin: GPIO4
+    icon: "mdi:electric-switch"
+    restore_mode: RESTORE_DEFAULT_OFF
+  - platform: gpio
+    id: shelly_relay_2
+    name: ${channel_2} relay
+    pin: GPIO15
+    icon: "mdi:electric-switch"
+    restore_mode: RESTORE_DEFAULT_OFF
+
+  - platform: template
+    name: "${switch_1_friendly_name} Edge Switch Mode"
+    id: "basic_edge_switch_toggle_switch_1"
+    optimistic: false
+    restore_state: false
+    turn_on_action:
+      - globals.set:
+          id: basic_edge_switch_1_toggle_boolean
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: basic_edge_switch_1_toggle_boolean
+          value: 'false'
+    lambda: |-
+      return id(basic_edge_switch_1_toggle_boolean);
+
+  - platform: template
+    name: "${switch_2_friendly_name} Edge Switch Mode"
+    id: "basic_edge_switch_toggle_switch_2"
+    optimistic: false
+    restore_state: false
+    turn_on_action:
+      - globals.set:
+          id: basic_edge_switch_2_toggle_boolean
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: basic_edge_switch_2_toggle_boolean
+          value: 'false'
+    lambda: |-
+      return id(basic_edge_switch_2_toggle_boolean);
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO13
+    name: "${channel_1} input"
+    on_state:
+      then:
+      - if:
+          condition:
+            and:
+              - wifi.connected:
+              - api.connected:
+              - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_1_toggle_boolean));
+          then:
+            - number.increment:
+                id: "${slider_1_name}"
+                cycle: true
+          else:
+            - switch.toggle: shelly_relay_1
+            
+  - platform: gpio
+    pin:
+      number: GPIO5
+    name: "${channel_2} input"
+    on_state:
+      then:
+      - if:
+          condition:
+            and:
+              - wifi.connected:
+              - api.connected:
+              - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_2_toggle_boolean));
+          then:
+            - number.increment:
+                id: "${slider_2_name}"
+                cycle: true
+          else:
+            - switch.toggle: shelly_relay_2
+        
+        
+number:
+  - platform: template
+    name: "${slider_1_friendly_name}"
+    id: "${slider_1_name}"
+    optimistic: true
+    min_value: ${light_automation_1_input_number_min}
+    max_value: ${light_automation_1_input_number_max}
+    restore_value: true
+    step: 1
+    on_value:
+      then:
+        - homeassistant.service:
+            service: scene.turn_on
+            data_template: 
+              entity_id: !lambda  |- 
+                int sceneNameLength = 64;
+                char sceneNameCharBuffer[sceneNameLength]; 
+                std::snprintf(sceneNameCharBuffer, sceneNameLength, "scene.${switch_1_name}%.0f", x); 
+                std::string sceneName = sceneNameCharBuffer;
+                ESP_LOGI("scene", "Setting scene: %s", sceneName.c_str()); 
+                return sceneName.c_str();
+
+  - platform: template
+    name: "${slider_2_friendly_name}"
+    id: "${slider_2_name}"
+    optimistic: true
+    min_value: ${light_automation_2_input_number_min}
+    max_value: ${light_automation_2_input_number_max}
+    restore_value: true
+    step: 1
+    on_value:
+      then:
+        - homeassistant.service:
+            service: scene.turn_on
+            data_template: 
+              entity_id: !lambda  |- 
+                int sceneNameLength = 64;
+                char sceneNameCharBuffer[sceneNameLength]; 
+                std::snprintf(sceneNameCharBuffer, sceneNameLength, "scene.${switch_2_name}%.0f", x); 
+                std::string sceneName = sceneNameCharBuffer;
+                ESP_LOGI("scene", "Setting scene: %s", sceneName.c_str()); 
+                return sceneName.c_str();
