@@ -166,6 +166,7 @@ sensor:
               event: esphome.overheat
               data:
                 title: "${friendly_name} has overheated."
+    update_interval: "15sec"
   - platform: resistance
     id: temp_resistance_reading
     sensor: temp_analog_reading
