@@ -18,7 +18,8 @@ globals:
      initial_value: 'false'
     
 substitutions:
-  device_name: "shelly-1pm"
+  nice_name: "1PM Shelly"
+  device_name: "shelly1pm"
   max_temp: "70.0"
   max_power: "2000.0"
   friendly_name: "${nice_name} Shelly"
@@ -92,12 +93,6 @@ switch:
       return id(basic_edge_switch_toggle_boolean);
 
 sensor:
-binary_sensor:
-  - platform: gpio
-    pin: GPIO16
-    name: "ade7953 IRQ pin"
-    internal: true
-    
   - platform: wifi_signal
     name: "${friendly_name} WiFi Signal"
     device_class: signal_strength
@@ -129,7 +124,7 @@ binary_sensor:
       on_value_range:
         - above: ${max_power}
           then:
-            - switch.turn_off: shelly_relay_2
+            - switch.turn_off: shelly_relay
             - homeassistant.service:
                 service: persistent_notification.create
                 data:
@@ -204,6 +199,10 @@ external_components:
     
      
 binary_sensor:
+  - platform: gpio
+    pin: GPIO16
+    name: "ade7953 IRQ pin"
+    internal: true
   - platform: gpio
     pin:
       number: GPIO4
