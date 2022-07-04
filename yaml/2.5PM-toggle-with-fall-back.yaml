@@ -30,7 +30,7 @@ substitutions:
   slider_1_friendly_name: "${switch_1_friendly_name} Setting Scene"
   light_automation_1_input_number_min: "1"
   light_automation_1_input_number_max: "4"
-  channel_1: "${switch_1_friendly_name} Power Stat: "
+  channel_1: "${switch_1_friendly_name} Channel"
   max_power_1: "2000.0"
   restore_mode_1: ALWAYS_OFF
   
@@ -204,19 +204,19 @@ external_components:
 switch:
   - platform: gpio
     id: shelly_relay_1
-    name: "${switch_1_friendly_name} Setting Relay"
+    name: "${switch_1_friendly_name} Relay"
     pin: GPIO4
     icon: "mdi:electric-switch"
     restore_mode: ${restore_mode_1}
   - platform: gpio
     id: shelly_relay_2
-    name: "${switch_2_friendly_name} Setting Relay"
+    name: "${switch_2_friendly_name} Relay"
     pin: GPIO15
     icon: "mdi:electric-switch"
     restore_mode: ${restore_mode_2}
 
   - platform: template
-    name: "${switch_1_friendly_name} Setting Edge Switch Mode"
+    name: "${switch_1_friendly_name} Switch Edge Mode"
     id: "basic_edge_switch_toggle_switch_1"
     optimistic: false
     restore_state: false
@@ -232,7 +232,7 @@ switch:
       return id(basic_edge_switch_1_toggle_boolean);
 
   - platform: template
-    name: "${switch_2_friendly_name} Setting Switch Mode"
+    name: "${switch_2_friendly_name} Switch Edge Mode"
     id: "basic_edge_switch_toggle_switch_2"
     optimistic: false
     restore_state: false
@@ -251,7 +251,7 @@ binary_sensor:
   - platform: gpio
     pin:
       number: GPIO13
-    name: "${channel_1} Switch"
+    name: "${switch_1_friendly_name} Switch"
     on_state:
       then:
       - if:
@@ -270,7 +270,7 @@ binary_sensor:
   - platform: gpio
     pin:
       number: GPIO5
-    name: "${channel_2} Switch"
+    name: "${switch_2_friendly_name} Switch"
     on_state:
       then:
       - if:
@@ -289,8 +289,8 @@ binary_sensor:
         
 number:
   - platform: template
-    name: "${slider_1_friendly_name}"
-    id: "${slider_1_name}"
+    id: "${switch_1_name}_scene"
+    name: "${switch_1_friendly_name} Scene"
     optimistic: true
     min_value: ${light_automation_1_input_number_min}
     max_value: ${light_automation_1_input_number_max}
@@ -310,8 +310,8 @@ number:
                 return sceneName.c_str();
 
   - platform: template
-    name: "${slider_2_friendly_name}"
-    id: "${slider_2_name}"
+    id: "${switch_2_name}_scene"
+    name: "${switch_2_friendly_name} Scene"
     optimistic: true
     min_value: ${light_automation_2_input_number_min}
     max_value: ${light_automation_2_input_number_max}
