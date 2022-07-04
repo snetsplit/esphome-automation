@@ -70,7 +70,7 @@ captive_portal:
 
 switch:
   - platform: gpio
-    name: "${nice_name} Switch Now"
+    name: "${nice_name} Switch Relay"
     pin: GPIO15
     id: shelly_relay
     restore_mode: ${restore_mode}
