@@ -262,7 +262,7 @@ binary_sensor:
               - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_1_toggle_boolean));
           then:
             - number.increment:
-                id: "${slider_1_name}"
+                id: "${switch_1_name}_scene"
                 cycle: true
           else:
             - switch.toggle: shelly_relay_1
@@ -281,7 +281,7 @@ binary_sensor:
               - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_2_toggle_boolean));
           then:
             - number.increment:
-                id: "${slider_2_name}"
+                id: "${switch_2_name}_scene"
                 cycle: true
           else:
             - switch.toggle: shelly_relay_2
