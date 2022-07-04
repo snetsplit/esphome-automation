@@ -40,7 +40,8 @@ substitutions:
   max_power_1: "2000.0"
   max_power_2: "2000.0"
   max_temp: "70.0"
-  restore_mode: RESTORE_DEFAULT_ON
+  restore_mode_1: RESTORE_DEFAULT_OFF
+  restore_mode_2: RESTORE_DEFAULT_OFF
 
 wifi:
   ssid: "IP freely"
