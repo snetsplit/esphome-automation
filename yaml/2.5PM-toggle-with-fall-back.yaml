@@ -37,7 +37,8 @@ substitutions:
   channel_1: ${switch_1_friendly_name} Channel
   channel_2: ${switch_2_friendly_name} Channel
 
-  max_power: "2000.0"
+  max_power_1: "2000.0"
+  max_power_2: "2000.0"
   max_temp: "70.0"
   restore_mode: RESTORE_DEFAULT_ON
 
