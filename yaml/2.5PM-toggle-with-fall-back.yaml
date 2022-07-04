@@ -204,13 +204,13 @@ external_components:
 switch:
   - platform: gpio
     id: shelly_relay_1
-    name: "${switch_1_friendly_name} Relay"
+    name: "${switch_1_friendly_name} Switch Relay"
     pin: GPIO4
     icon: "mdi:electric-switch"
     restore_mode: ${restore_mode_1}
   - platform: gpio
     id: shelly_relay_2
-    name: "${switch_2_friendly_name} Relay"
+    name: "${switch_2_friendly_name} Switch Relay"
     pin: GPIO15
     icon: "mdi:electric-switch"
     restore_mode: ${restore_mode_2}
