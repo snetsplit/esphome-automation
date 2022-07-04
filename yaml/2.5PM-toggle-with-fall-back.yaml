@@ -109,7 +109,7 @@ sensor:
                 data:
                   title: Message from ${friendly_name}
                 data_template:
-                  message: Switch turned off because power exceeded ${max_power}W
+                  message: Switch turned off because power exceeded ${max_power_2}W
     active_power_b:
       name: ${channel_1} power
       id: power_channel_1
@@ -125,7 +125,7 @@ sensor:
                 data:
                   title: Message from ${friendly_name}
                 data_template:
-                  message: Switch turned off because power exceeded ${max_power}W
+                  message: Switch turned off because power exceeded ${max_power_1}W
     update_interval: 30s
 
   - platform: total_daily_energy
