@@ -34,8 +34,8 @@ substitutions:
   light_automation_2_input_number_min: "1"
   light_automation_2_input_number_max: "4"
 
-  channel_1: Relay 1
-  channel_2: Relay 2
+  channel_1: ${switch_1_friendly_name} Channel
+  channel_2: ${switch_2_friendly_name} Channel
 
   max_power: "2000.0"
   max_temp: "70.0"
