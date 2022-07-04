@@ -84,7 +84,7 @@ sensor:
   - platform: ade7953
     irq_pin: GPIO16 # Prevent overheating by setting this
     voltage:
-      name: ${device_name} voltage
+      name: ${friendly_name} Voltage
     # On the Shelly 2.5 channels are mixed ch1=B ch2=A
     current_a:
       name: ${channel_2} current
@@ -103,7 +103,7 @@ sensor:
             - homeassistant.service:
                 service: persistent_notification.create
                 data:
-                  title: Message from ${device_name}
+                  title: Message from ${friendly_name}
                 data_template:
                   message: Switch turned off because power exceeded ${max_power}W
     active_power_b:
@@ -119,7 +119,7 @@ sensor:
             - homeassistant.service:
                 service: persistent_notification.create
                 data:
-                  title: Message from ${device_name}
+                  title: Message from ${friendly_name}
                 data_template:
                   message: Switch turned off because power exceeded ${max_power}W
     update_interval: 30s
@@ -143,7 +143,7 @@ sensor:
   # NTC Temperature
   - platform: ntc
     sensor: temp_resistance_reading
-    name: ${device_name} temperature
+    name: ${friendly_name} temperature
     unit_of_measurement: "°C"
     accuracy_decimals: 1
     icon: "mdi:thermometer"
@@ -159,7 +159,7 @@ sensor:
           - homeassistant.service:
               service: persistent_notification.create
               data:
-                title: Message from ${device_name}
+                title: Message from ${friendly_name}
               data_template:
                 message: Switch turned off because temperature exceeded ${max_temp}°C
   - platform: resistance
