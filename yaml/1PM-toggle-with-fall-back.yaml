@@ -155,6 +155,13 @@ sensor:
     on_value_range:
       - above: ${max_temp}
         then:
+          - switch.turn_off: shelly_relay
+          - homeassistant.service:
+              service: persistent_notification.create
+              data:
+                title: Message from ${friendly_name}
+              data_template:
+                message: Switch turned off because temperature exceeded ${max_temp}°C
           - homeassistant.event:
               event: esphome.overheat
               data:
