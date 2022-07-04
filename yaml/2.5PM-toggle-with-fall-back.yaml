@@ -138,8 +138,8 @@ sensor:
           - 9612.66309 -> 1720.0
           - 14891.35352 -> 2679.0
       # Make everything below 2W appear as just 0W.
-      - lambda: if (x < 2) return 0; else return x;      
-        - multiply: -1
+      - lambda: if (x < 2) return 0; else return x;
+      - multiply: -1
       on_value_range:
         - above: ${max_power_1}
           then:
