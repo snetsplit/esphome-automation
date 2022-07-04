@@ -91,6 +91,12 @@ switch:
       return id(basic_edge_switch_toggle_boolean);
 
 sensor:
+binary_sensor:
+  - platform: gpio
+    pin: GPIO16
+    name: "ade7953 IRQ pin"
+    internal: true
+    
   - platform: wifi_signal
     name: "${friendly_name} WiFi Signal"
     device_class: signal_strength
@@ -100,7 +106,7 @@ sensor:
     cf1_pin: GPIO13 # not used because it is not available on the 1PM but it is needed to compile
     sel_pin: GPIO14 # not used because it is not available on the 1PM but it is needed to compile
     power:
-      name: "${nice_name} watts"
+      name: "${nice_name} Watts"
       unit_of_measurement: W
       id: "shelly1pm_power"
       device_class: power
@@ -119,6 +125,16 @@ sensor:
           - 14891.35352 -> 2679.0
       # Make everything below 2W appear as just 0W.
       - lambda: if (x < 2) return 0; else return x;
+      on_value_range:
+        - above: ${max_power}
+          then:
+            - switch.turn_off: shelly_relay_2
+            - homeassistant.service:
+                service: persistent_notification.create
+                data:
+                  title: Message from ${friendly_name}
+                data_template:
+                  message: Switch turned off because power exceeded ${max_power}W      
     update_interval: 10s
 
   - platform: total_daily_energy
@@ -218,7 +234,7 @@ binary_sensor:
 
 number:
   - platform: template
-    name: "${friendly_name} Scene"
+    name: "${nice_name} Scene"
     id: "${device_name}_scene"
     optimistic: true
     min_value: ${light_automation_input_number_min}
