@@ -97,7 +97,7 @@ sensor:
       name: ${channel_1} current
       internal: true
     active_power_a:
-      name: "${switch_2_friendly_name} Wattage"
+      name: "${switch_2_friendly_name} Watts"
       id: power_channel_2
       # active_power_a is normal, so don't multiply by -1
       on_value_range:
@@ -111,7 +111,7 @@ sensor:
                 data_template:
                   message: Switch turned off because power exceeded ${max_power_2}W
     active_power_b:
-      name: "${switch_1_friendly_name} Wattage"
+      name: "${switch_1_friendly_name} Watts"
       id: power_channel_1
       # active_power_b is inverted, so multiply by -1
       filters:
