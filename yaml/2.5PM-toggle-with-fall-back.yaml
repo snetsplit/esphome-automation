@@ -19,10 +19,10 @@ substitutions:
   switch_1_friendly_name: "Switch 1"
   switch_2_name: "switch_2"
   switch_2_friendly_name: "Switch 2"
-  slider_1_name: "slider_1"
-  slider_1_friendly_name: "Slider 1"
-  slider_2_name: "slider_2"
-  slider_2_friendly_name: "Slider 2"
+  slider_1_name: ${switch_1_name} Slider
+  slider_1_friendly_name: ${switch_1_friendly_name} Slider
+  slider_2_name: ${switch_2_name} Slider
+  slider_2_friendly_name: ${switch_2_friendly_name} Slider
   
   
   address: "${device_name}-switch.lan"
