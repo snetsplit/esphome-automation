@@ -40,7 +40,7 @@ substitutions:
   slider_2_friendly_name: "${switch_2_friendly_name} Setting: Scene"
   light_automation_2_input_number_min: "1"
   light_automation_2_input_number_max: "4"
-  channel_2: "${switch_2_friendly_name} Power Stat: "
+  channel_2: "${switch_2_friendly_name} Channel"
   max_power_2: "2000.0"
   restore_mode_2: ALWAYS_OFF
 
@@ -97,7 +97,7 @@ sensor:
       name: ${channel_1} current
       internal: true
     active_power_a:
-      name: ${channel_2} Watts
+      name: "${switch_2_friendly_name} Power Wattage"
       id: power_channel_2
       # active_power_a is normal, so don't multiply by -1
       on_value_range:
@@ -111,7 +111,7 @@ sensor:
                 data_template:
                   message: Switch turned off because power exceeded ${max_power_2}W
     active_power_b:
-      name: ${channel_1} Watts
+      name: "${switch_1_friendly_name} Power Wattage"
       id: power_channel_1
       # active_power_b is inverted, so multiply by -1
       filters:
@@ -129,7 +129,7 @@ sensor:
     update_interval: 30s
 
   - platform: total_daily_energy
-    name: ${channel_1} Daily Usage
+    name: "${switch_1_friendly_name} Power Daily Usage"
     power_id: power_channel_1
     filters:
       # Multiplication factor from W to kWh is 0.001
@@ -137,7 +137,7 @@ sensor:
     unit_of_measurement: kWh
 
   - platform: total_daily_energy
-    name: ${channel_2} Daily Usage
+    name: "${switch_2_friendly_name} Power Daily Usage"
     power_id: power_channel_2
     filters:
       # Multiplication factor from W to kWh is 0.001
