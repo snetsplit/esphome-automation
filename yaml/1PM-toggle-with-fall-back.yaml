@@ -20,6 +20,7 @@ globals:
 substitutions:
   device_name: "shelly-1pm"
   max_temp: "70.0"
+  max_power: "2000.0"
   friendly_name: "${nice_name} Shelly"
   restore_mode: RESTORE_DEFAULT_ON
   light_automation_input_number_min: '1'
