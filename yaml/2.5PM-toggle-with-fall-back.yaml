@@ -97,7 +97,7 @@ sensor:
       name: ${channel_1} current
       internal: true
     active_power_a:
-      name: "${switch_2_friendly_name} Power Wattage"
+      name: "${switch_2_friendly_name} Wattage"
       id: power_channel_2
       # active_power_a is normal, so don't multiply by -1
       on_value_range:
@@ -111,7 +111,7 @@ sensor:
                 data_template:
                   message: Switch turned off because power exceeded ${max_power_2}W
     active_power_b:
-      name: "${switch_1_friendly_name} Power Wattage"
+      name: "${switch_1_friendly_name} Wattage"
       id: power_channel_1
       # active_power_b is inverted, so multiply by -1
       filters:
@@ -129,7 +129,7 @@ sensor:
     update_interval: 30s
 
   - platform: total_daily_energy
-    name: "${switch_1_friendly_name} Power Daily Usage"
+    name: "${switch_1_friendly_name} Watts Last 24 hours"
     power_id: power_channel_1
     filters:
       # Multiplication factor from W to kWh is 0.001
@@ -137,7 +137,7 @@ sensor:
     unit_of_measurement: kWh
 
   - platform: total_daily_energy
-    name: "${switch_2_friendly_name} Power Daily Usage"
+    name: "${switch_2_friendly_name} Watts Last 24 hours"
     power_id: power_channel_2
     filters:
       # Multiplication factor from W to kWh is 0.001
@@ -251,7 +251,7 @@ binary_sensor:
   - platform: gpio
     pin:
       number: GPIO13
-    name: "${switch_1_friendly_name} Switch"
+    name: "${switch_1_friendly_name} Switch Now"
     on_state:
       then:
       - if:
@@ -270,7 +270,7 @@ binary_sensor:
   - platform: gpio
     pin:
       number: GPIO5
-    name: "${switch_2_friendly_name} Switch"
+    name: "${switch_2_friendly_name} Switch Now"
     on_state:
       then:
       - if:
