@@ -19,7 +19,7 @@ substitutions:
   
   address: "${device_name}-switch.lan"
   home_assistant_IP: "192.168.1.1"
-  ping_rate: 10sec
+  ping_rate: "10sec"
   web_server_port: 80
   ssid: "IP freely"
   password: "ewwwwwwwww"
