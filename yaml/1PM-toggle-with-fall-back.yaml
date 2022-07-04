@@ -20,7 +20,7 @@ globals:
 substitutions:
   device_name: "shelly-1pm"
   max_temp: "70.0"
-  friendly_name: "Shelly 1PM"
+  friendly_name: "${nice_name} Shelly"
   restore_mode: RESTORE_DEFAULT_ON
   light_automation_input_number_min: '1'
   light_automation_input_number_max: '4'
@@ -56,7 +56,7 @@ wifi:
   password: ${password}
   use_address: ${address}
   ap:
-    ssid: "${friendly_name} Fallback"
+    ssid: "${nice_name} Fallback"
     password: ${password}
 
 
@@ -69,13 +69,13 @@ captive_portal:
 
 switch:
   - platform: gpio
-    name: ${friendly_name}
+    name: "${nice_name} Switch Now"
     pin: GPIO15
     id: shelly_relay
     restore_mode: ${restore_mode}
     
   - platform: template
-    name: "${friendly_name} Edge Switch Mode"
+    name: "${nice_name} Switch Edge Mode"
     id: "basic_edge_switch_toggle_switch"
     optimistic: false
     restore_state: false
@@ -100,7 +100,7 @@ sensor:
     cf1_pin: GPIO13 # not used because it is not available on the 1PM but it is needed to compile
     sel_pin: GPIO14 # not used because it is not available on the 1PM but it is needed to compile
     power:
-      name: "${friendly_name} Power"
+      name: "${nice_name} watts"
       unit_of_measurement: W
       id: "shelly1pm_power"
       device_class: power
@@ -122,7 +122,7 @@ sensor:
     update_interval: 10s
 
   - platform: total_daily_energy
-    name: "${friendly_name} Daily Energy"
+    name: "${nice_name} Watts Last 24 hours"
     power_id: "shelly1pm_power"
     device_class: energy
     state_class: measurement
@@ -132,7 +132,7 @@ sensor:
 
   - platform: ntc
     sensor: temp_resistance_reading
-    name: "${friendly_name} Temperature"
+    name: "${nice_name} Temperature"
     unit_of_measurement: "°C"
     accuracy_decimals: 1
     device_class: temperature
@@ -208,7 +208,7 @@ binary_sensor:
               - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_toggle_boolean));
           then:
             - number.increment:
-                id: "${device_name}_toggle"
+                id: "${device_name}_scene"
                 cycle: true
                 
           else:
@@ -218,8 +218,8 @@ binary_sensor:
 
 number:
   - platform: template
-    name: "${friendly_name} Toggle"
-    id: "${device_name}_toggle"
+    name: "${friendly_name} Scene"
+    id: "${device_name}_scene"
     optimistic: true
     min_value: ${light_automation_input_number_min}
     max_value: ${light_automation_input_number_max}
