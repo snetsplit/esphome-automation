@@ -20,7 +20,7 @@ globals:
 substitutions:
   nice_name: "1PM Shelly"
   device_name: "shelly1pm"
-  max_temp: "70.0"
+  max_temp: "75.0"
   max_power: "2000.0"
   friendly_name: "${nice_name} Shelly"
   restore_mode: RESTORE_DEFAULT_ON
