@@ -27,10 +27,10 @@ substitutions:
   switch_1_name: "switch_1"
   switch_1_friendly_name: "Switch 1"
   slider_1_name: ${switch_1_name}_slider
-  slider_1_friendly_name: "${switch_1_friendly_name} Setting: Scene"
+  slider_1_friendly_name: "${switch_1_friendly_name} Setting Scene"
   light_automation_1_input_number_min: "1"
   light_automation_1_input_number_max: "4"
-  channel_1: "${switch_1_friendly_name} Power Stat: "
+  channel_1: "${switch_1_friendly_name} Power Stat "
   max_power_1: "2000.0"
   restore_mode_1: ALWAYS_OFF
   
@@ -216,7 +216,7 @@ switch:
     restore_mode: RESTORE_DEFAULT_OFF
 
   - platform: template
-    name: "${switch_1_friendly_name} Setting: Edge Switch Mode"
+    name: "${switch_1_friendly_name} Setting Edge Switch Mode"
     id: "basic_edge_switch_toggle_switch_1"
     optimistic: false
     restore_state: false
@@ -232,7 +232,7 @@ switch:
       return id(basic_edge_switch_1_toggle_boolean);
 
   - platform: template
-    name: "${switch_2_friendly_name} Setting: Switch Mode"
+    name: "${switch_2_friendly_name} Setting Switch Mode"
     id: "basic_edge_switch_toggle_switch_2"
     optimistic: false
     restore_state: false
