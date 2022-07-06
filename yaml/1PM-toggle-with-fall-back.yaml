@@ -146,7 +146,7 @@ sensor:
   - platform: ntc
     sensor: temp_resistance_reading
     name: "${nice_name} Temperature"
-    unit_of_measurement: "C"
+    unit_of_measurement: "°C"
     accuracy_decimals: 1
     device_class: temperature
     calibration:
