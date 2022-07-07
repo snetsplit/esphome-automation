@@ -257,7 +257,7 @@ number:
             data_template: 
               entity_id: !lambda  |- 
                 int sceneNameLength = 64;            
-                std::__cxx11::basic_string sceneName = sceneNameCharBuffer(sceneNameLength, '\0');;
+                std::__cxx11::basic_string sceneName(sceneNameLength, '\0');;
                 std::snprintf(sceneName.c_str(), sceneNameLength, "scene.${device_name}%.0f", x); 
                 ESP_LOGI("scene", "Setting scene: [%s]", sceneName.c_str()); 
                 return sceneName;
