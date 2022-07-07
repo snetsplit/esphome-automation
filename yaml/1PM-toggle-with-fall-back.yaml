@@ -256,9 +256,8 @@ number:
             service: scene.turn_on
             data_template: 
               entity_id: !lambda  |- 
-                int sceneNameLength = 64;
-                char sceneNameCharBuffer[sceneNameLength]; 
-                std::snprintf(sceneNameCharBuffer, sceneNameLength, "scene.${device_name}%.0f", x); 
-                std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
-                ESP_LOGI("scene", "Setting scene: [%s]", sceneName); 
+                int sceneNameLength = 64;            
+                std::__cxx11::basic_string sceneName = sceneNameCharBuffer(sceneNameLength, '\0');;
+                std::snprintf(sceneName.c_str(), sceneNameLength, "scene.${device_name}%.0f", x); 
+                ESP_LOGI("scene", "Setting scene: [%s]", sceneName.c_str()); 
                 return sceneName;
