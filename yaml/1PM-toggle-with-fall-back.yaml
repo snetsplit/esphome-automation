@@ -20,6 +20,7 @@ globals:
 substitutions:
   nice_name: "1PM Shelly"
   device_name: "shelly1pm"
+  name: ${device_name}
   max_temp: "80.0"
   max_power: "2000.0"
   friendly_name: "${nice_name} Shelly"
