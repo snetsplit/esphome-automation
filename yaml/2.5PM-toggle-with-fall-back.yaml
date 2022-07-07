@@ -177,8 +177,7 @@ sensor:
   - platform: ntc
     sensor: temp_resistance_reading
     name: ${friendly_name} Temperature
-    #leave out degree symbol so Home Assistant doesn't try to force it to F in displays C is better for engineering even in the States
-    unit_of_measurement: "C"
+    unit_of_measurement: "°C"
     accuracy_decimals: 1
     icon: "mdi:thermometer"
     calibration:
