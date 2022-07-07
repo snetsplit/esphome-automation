@@ -28,7 +28,7 @@ substitutions:
   light_automation_input_number_min: '1'
   light_automation_input_number_max: '4'
   home_assistant_host: "192.168.1.1"
-  ping_rate: 16sec
+  ping_rate: 1sec
   address: "${device_name}-switch.lan"
   web_server_port: "80"
   ssid: "IP freely"
