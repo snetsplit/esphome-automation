@@ -27,8 +27,8 @@ substitutions:
   restore_mode: RESTORE_DEFAULT_ON
   light_automation_input_number_min: '1'
   light_automation_input_number_max: '4'
-  home_assistant_host: "10.0.4.4"
-  ping_rate: 1sec
+  home_assistant_host: "home.lan"
+  ping_rate: 16sec
   address: "${device_name}-switch.lan"
   web_server_port: "80"
   ssid: "IP freely"
