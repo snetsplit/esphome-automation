@@ -20,7 +20,7 @@ globals:
 substitutions:
   nice_name: "1PM Shelly"
   device_name: "shelly1pm"
-  max_temp: "75.0"
+  max_temp: "80.0"
   max_power: "2000.0"
   friendly_name: "${nice_name} Shelly"
   restore_mode: RESTORE_DEFAULT_ON
@@ -259,5 +259,5 @@ number:
                 char sceneNameCharBuffer[sceneNameLength]; 
                 std::snprintf(sceneNameCharBuffer, sceneNameLength, "scene.${device_name}%.0f", x); 
                 std::string sceneName = sceneNameCharBuffer;
-                ESP_LOGI("scene", "Setting scene: %s %f", sceneName.c_str(), strlen(sceneName.c_str())); 
+                ESP_LOGI("scene", "Setting scene: %s %f", sceneName.c_str(), sceneName.length()); 
                 return sceneName.c_str();
