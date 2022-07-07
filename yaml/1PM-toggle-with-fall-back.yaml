@@ -259,5 +259,5 @@ number:
                 char sceneNameCharBuffer[sceneNameLength]; 
                 std::snprintf(sceneNameCharBuffer, sceneNameLength, "scene.${device_name}%.0f", x); 
                 std::string sceneName = sceneNameCharBuffer;
-                ESP_LOGI("scene", "Setting scene: %s", sceneName.c_str()); 
+                ESP_LOGI("scene", "Setting scene: %s %f", sceneName.c_str(), strlen(sceneName.c_str())); 
                 return sceneName.c_str();
