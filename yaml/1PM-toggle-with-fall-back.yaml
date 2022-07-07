@@ -268,7 +268,7 @@ number:
               entity_id: "input_text.thermostate_mode"
               value:  !lambda  |- 
                 *char sceneNameCharBuffer = "scene.${device_name}0"; 
-                std::snprintf(sceneNameCharBuffer, sceneNameLength, "scene.${device_name}%.0f", x); 
+                std::snprintf(sceneNameCharBuffer, sizeof(sceneNameCharBuffer), "scene.${device_name}%.0f", x); 
                 std::string sceneName = sceneNameCharBuffer;
                 ESP_LOGI("scene", "Setting scene: [%s]", sceneName.c_str()); 
                 return sceneName.c_str();
