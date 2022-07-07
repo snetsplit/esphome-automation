@@ -15,7 +15,7 @@ globals:
 substitutions:
   device_name: "shelly-25"
   friendly_name: "Shelly 2.5"
-  max_temp: "75.0"
+  max_temp: "80.0"
   
   address: "${device_name}-switch.lan"
   home_assistant_IP: "192.168.1.1"
