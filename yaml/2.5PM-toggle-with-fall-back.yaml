@@ -18,8 +18,8 @@ substitutions:
   max_temp: "80.0"
   
   address: "${device_name}-switch.lan"
-  home_assistant_IP: "192.168.1.1"
-  ping_rate: "10sec"
+  home_assistant_host: "home.lan"
+  ping_rate: "16sec"
   web_server_port: "80"
   ssid: "IP freely"
   password: "ewwwwwwwww"
@@ -205,7 +205,7 @@ sensor:
     pin: A0
        
   - platform: ping
-    ip_address: ${home_assistant_IP}
+    ip_address: ${home_assistant_host}
     num_attempts: 1
     timeout: 1sec
 
@@ -333,10 +333,10 @@ number:
               entity_id: !lambda  |- 
                 int sceneNameLength = 64;
                 char sceneNameCharBuffer[sceneNameLength]; 
-                std::snprintf(sceneNameCharBuffer, sceneNameLength, "scene.${switch_1_name}%.0f", x); 
-                std::string sceneName = sceneNameCharBuffer;
-                ESP_LOGI("scene", "Setting scene: %s", sceneName.c_str()); 
-                return sceneName.c_str();
+                std::snprintf(sceneNameCharBuffer, sceneNameLength, "scene.${device_name}%.0f", x); 
+                ESP_LOGI("scene", "Setting scene: [%s]", sceneNameCharBuffer); 
+                std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
+                return sceneName;
 
   - platform: template
     id: "${switch_2_name}_scene"
@@ -354,7 +354,7 @@ number:
               entity_id: !lambda  |- 
                 int sceneNameLength = 64;
                 char sceneNameCharBuffer[sceneNameLength]; 
-                std::snprintf(sceneNameCharBuffer, sceneNameLength, "scene.${switch_2_name}%.0f", x); 
-                std::string sceneName = sceneNameCharBuffer;
-                ESP_LOGI("scene", "Setting scene: %s", sceneName.c_str()); 
-                return sceneName.c_str();
+                std::snprintf(sceneNameCharBuffer, sceneNameLength, "scene.${device_name}%.0f", x); 
+                ESP_LOGI("scene", "Setting scene: [%s]", sceneNameCharBuffer); 
+                std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
+                return sceneName;
