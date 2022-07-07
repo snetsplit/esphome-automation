@@ -253,7 +253,7 @@ number:
     on_value:
       then:
         - homeassistant.service:
-            service: scene.turn_on
+            service: input_text.set_value
             data_template: 
               entity_id: "input_text.thermostate_mode"
               value: !lambda  |- 
