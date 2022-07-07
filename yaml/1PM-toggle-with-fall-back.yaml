@@ -253,11 +253,6 @@ number:
     on_value:
       then:
         - homeassistant.service:
-            service: input_text.set_value
-            data_template: 
-              entity_id: "input_text.thermostate_mode"
-              value: !lambda return "test1"
-        - homeassistant.service:
             service: scene.turn_on
             data_template: 
               entity_id: !lambda  |- 
@@ -271,4 +266,9 @@ number:
             service: input_text.set_value
             data_template: 
               entity_id: "input_text.thermostate_mode"
-              value: !lambda return "test2"
+              value:  !lambda  |- 
+                int sceneNameLength = 64;
+                char sceneNameCharBuffer[sceneNameLength]; 
+                std::string sceneName = "test3";
+                ESP_LOGI("scene", "Setting scene: [%s]", sceneName.c_str()); 
+                return sceneName.c_str();
