@@ -262,7 +262,7 @@ number:
                 std::snprintf(sceneNameCharBuffer, sceneNameLength, "scene.${device_name}%.0f", x); 
                 std::string sceneName = sceneNameCharBuffer;
                 ESP_LOGI("scene", "Setting scene: [%s]", sceneName.c_str()); 
-                return sceneName.c_str();
+                return sceneNameCharBuffer;
         - homeassistant.service:
             service: scene.turn_on
             data_template: 
