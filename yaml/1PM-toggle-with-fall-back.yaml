@@ -265,8 +265,10 @@ number:
         - homeassistant.service:
             service: input_text.set_value
             data_template: 
-              entity_id: "input_text.thermostate_mode"
-              value:  !lambda  |- 
-                char sceneNameCharBuffer = "scene.${device_name}0"; 
-                std::snprintf(sceneNameCharBuffer, sizeof(sceneNameCharBuffer), "scene.${device_name}%.0f", x); 
-                return sceneNameCharBuffer;
+              entity_id: "input_text.thermostate_mode
+              entity_id: !lambda  |- 
+                int sceneNameLength = 64;
+                char sceneName[sceneNameLength]; 
+                std::snprintf(sceneName, sceneNameLength, "scene.${device_name}%.0f", x);
+                ESP_LOGI("scene", "Setting scene: [%s]", &sceneName); 
+                return &sceneName;
