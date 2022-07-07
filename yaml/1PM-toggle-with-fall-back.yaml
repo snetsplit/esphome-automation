@@ -266,7 +266,7 @@ number:
             service: input_text.set_value
             data_template: 
               entity_id: "input_text.thermostate_mode"
-              entity_id: !lambda  |- 
+              value: !lambda  |- 
                 int sceneNameLength = 64;
                 char sceneName[sceneNameLength]; 
                 std::snprintf(sceneName, sceneNameLength, "scene.${device_name}%.0f", x);
