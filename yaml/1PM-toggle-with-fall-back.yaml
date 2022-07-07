@@ -265,7 +265,7 @@ number:
         - homeassistant.service:
             service: input_text.set_value
             data_template: 
-              entity_id: "input_text.thermostate_mode
+              entity_id: "input_text.thermostate_mode"
               entity_id: !lambda  |- 
                 int sceneNameLength = 64;
                 char sceneName[sceneNameLength]; 
