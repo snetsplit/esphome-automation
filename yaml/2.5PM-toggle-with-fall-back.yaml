@@ -99,19 +99,6 @@ sensor:
     active_power_a:
       name: "${switch_2_friendly_name} Watts"
       id: power_channel_2
-      filters:
-      # Map from sensor -> measured value
-      - calibrate_linear:
-          - 0.0 -> 1.0
-          - 110.33186 -> 20.62
-          - 131.01909 -> 24.32
-          - 341.33920 -> 62.08
-          - 5561.41553 -> 1000.0
-          - 2975.51221 -> 535.7
-          - 9612.66309 -> 1720.0
-          - 14891.35352 -> 2679.0
-      # Make everything below 2W appear as just 0W.
-      - lambda: if (x < 2) return 0; else return x;
       on_value_range:
         - above: ${max_power_2}
           then:
@@ -127,18 +114,6 @@ sensor:
       id: power_channel_1
       # active_power_b is inverted, so multiply by -1
       filters:
-      # Map from sensor -> measured value
-      - calibrate_linear:
-          - 0.0 -> 1.0
-          - 110.33186 -> 20.62
-          - 131.01909 -> 24.32
-          - 341.33920 -> 62.08
-          - 5561.41553 -> 1000.0
-          - 2975.51221 -> 535.7
-          - 9612.66309 -> 1720.0
-          - 14891.35352 -> 2679.0
-      # Make everything below 2W appear as just 0W.
-      - lambda: if (x < 2) return 0; else return x;
       - multiply: -1
       on_value_range:
         - above: ${max_power_1}
