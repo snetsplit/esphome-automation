@@ -26,7 +26,7 @@ substitutions:
   friendly_name: "${nice_name} Shelly"
   restore_mode: RESTORE_DEFAULT_ON
   light_automation_input_number_min: '1'
-  light_automation_input_number_max: '4'
+  light_automation_input_number_max: '3'
   home_assistant_host: "home.lan"
   ping_rate: 16sec
   address: "${device_name}-switch.lan"
