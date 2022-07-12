@@ -22,7 +22,7 @@ substitutions:
   device_name: "shelly1pm"
   name: ${device_name}
   max_temp: "80.0"
-  max_power: "2000.0"
+  max_power: "1600.0"
   friendly_name: "${nice_name} Shelly"
   restore_mode: RESTORE_DEFAULT_ON
   light_automation_input_number_min: '1'
