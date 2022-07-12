@@ -28,8 +28,8 @@ substitutions:
   switch_1_friendly_name: "Switch 1"
   slider_1_name: ${switch_1_name}_slider
   slider_1_friendly_name: "${switch_1_friendly_name} Setting Scene"
-  light_automation_1_input_number_min: "1"
-  light_automation_1_input_number_max: "3"
+  light_automation_1_input_number_min: "0"
+  light_automation_1_input_number_max: "2"
   channel_1: "${switch_1_friendly_name} Channel"
   max_power_1: "1000.0"
   restore_mode_1: ALWAYS_OFF
@@ -38,8 +38,8 @@ substitutions:
   switch_2_friendly_name: "Switch 2"
   slider_2_name: ${switch_2_name}_slider
   slider_2_friendly_name: "${switch_2_friendly_name} Setting Scene"
-  light_automation_2_input_number_min: "1"
-  light_automation_2_input_number_max: "3"
+  light_automation_2_input_number_min: "0"
+  light_automation_2_input_number_max: "2"
   channel_2: "${switch_2_friendly_name} Channel"
   max_power_2: "1000.0"
   restore_mode_2: ALWAYS_OFF
