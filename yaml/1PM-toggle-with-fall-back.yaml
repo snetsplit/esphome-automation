@@ -37,7 +37,9 @@ substitutions:
   
   time_server: "0.pool.ntp.org"
 
-logger:
+i2c:
+  sda: GPIO12
+  scl: GPIO14
 
 api:
 
