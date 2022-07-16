@@ -4,7 +4,19 @@ globals:
      type: bool
      restore_value: true
      initial_value: 'false'
-    
+   - id: too_hot_boolean
+     type: bool
+     restore_value: false
+     initial_value: 'false'
+   - id: sunrise_enabled_boolean
+     type: bool
+     restore_value: false
+     initial_value: 'false'
+   - id: sunset_enabled_boolean
+     type: bool
+     restore_value: false
+     initial_value: 'false'
+     
 substitutions:
   nice_name: "1PM Shelly"
   device_name: "shelly1pm"
@@ -72,7 +84,7 @@ switch:
     name: "${nice_name} Switch Edge Mode"
     id: "basic_edge_switch_toggle_switch"
     optimistic: false
-    restore_state: false
+    restore_state: true
     turn_on_action:
       - globals.set:
           id: basic_edge_switch_toggle_boolean
@@ -83,7 +95,37 @@ switch:
           value: 'false'
     lambda: |-
       return id(basic_edge_switch_toggle_boolean);
-
+  - platform: template
+    name: "${nice_name} Sunrise Scene Enabled"
+    id: "sunrise_scene_enabled"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: sunrise_enabled_boolean
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: sunrise_enabled_boolean
+          value: 'false'
+    lambda: |-
+      return id(sunrise_enabled_boolean);
+  - platform: template
+    name: "${nice_name} Sunset Scene Enabled"
+    id: "sunset_scene_enabled"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: sunset_enabled_boolean
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: sunset_enabled_boolean
+          value: 'false'
+    lambda: |-
+      return id(sunset_enabled_boolean);
+      
 sensor:
   - platform: wifi_signal
     name: "${friendly_name} WiFi Signal"
@@ -147,6 +189,9 @@ sensor:
     on_value_range:
       - above: ${max_temp}
         then:
+          - globals.set:
+              id: too_hot_boolean
+              value: 'true'
           - switch.turn_off: shelly_relay
           - homeassistant.service:
               service: persistent_notification.create
@@ -158,6 +203,11 @@ sensor:
               event: esphome.overheat
               data:
                 title: "${friendly_name} has overheated."
+      - below: ${max_temp}
+        then:
+          - globals.set:
+              id: too_hot_boolean
+              value: 'false'
   - platform: resistance
     id: temp_resistance_reading
     sensor: temp_analog_reading
@@ -215,7 +265,7 @@ binary_sensor:
             and:
               - wifi.connected:
               - api.connected:
-              - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_toggle_boolean));
+              - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_toggle_boolean) && !id(too_hot_boolean));
           then:
             - number.increment:
                 id: "${device_name}_scene"
@@ -247,19 +297,55 @@ number:
                 ESP_LOGI("scene", "Setting scene: [%s]", sceneNameCharBuffer); 
                 std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
                 return sceneName;
-
+  - platform: template
+    name: "${nice_name} Sunrise Scene"
+    id: "${device_name}_sunrise_scene"
+    optimistic: true
+    min_value: ${light_automation_input_number_min}
+    max_value: ${light_automation_input_number_max}
+    restore_value: true
+    step: 1
+  - platform: template
+    name: "${nice_name} Sunset Scene"
+    id: "${device_name}_sunset_scene"
+    optimistic: true
+    min_value: ${light_automation_input_number_min}
+    max_value: ${light_automation_input_number_max}
+    restore_value: true
+    step: 1
+    
 sun:
-  latitude: ${lat}
-  longitude: ${long}
+  latitude: ${latitude}
+  longitude: ${longitude}
 
   on_sunrise:
     - then:
-        - logger.log: Good morning!
-    # Custom elevation, will be called shortly after the trigger above.
-    - elevation: 5°
-      then:
-        - logger.log: Good morning 2!
+      - if:
+          condition:
+            and:
+              - wifi.connected:
+              - api.connected:
+              - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_toggle_boolean) && !id(too_hot_boolean));
+          then:
+            - number.set:
+                id: "${device_name}_scene"
+                value: !lambda |-
+                        return id(${device_name}_sunrise_scene); 
+          else:
+            - switch.turn_on: shelly_relay
 
   on_sunset:
     - then:
-        - logger.log: Good evening!
+      - if:
+          condition:
+            and:
+              - wifi.connected:
+              - api.connected:
+              - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_toggle_boolean) && !id(too_hot_boolean));
+          then:
+            - number.set:
+                id: "${device_name}_scene"
+                value: !lambda |-
+                        return id(${device_name}_sunset_scene);
+          else:
+            - switch.turn_off: shelly_relay
