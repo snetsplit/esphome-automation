@@ -8,14 +8,6 @@ globals:
      type: bool
      restore_value: false
      initial_value: 'false'
-   - id: sunrise_enabled_boolean
-     type: bool
-     restore_value: false
-     initial_value: 'false'
-   - id: sunset_enabled_boolean
-     type: bool
-     restore_value: false
-     initial_value: 'false'
      
 substitutions:
   nice_name: "1PM Shelly"
@@ -33,8 +25,15 @@ substitutions:
   web_server_port: "80"
   ssid: "IP freely"
   password: "ewwwwwwwww"
+  
+  sunrise_enabled: false
+  sunset_enabled: false
+  sunrise_scene: 1
+  sunset_scene: 0
   latitude: 48.8584°
   longitude: 2.2945°
+  sunrise_elevation: -0.833°
+  sunset_elevation: -0.833°
 
 logger:
 
@@ -95,38 +94,14 @@ switch:
           value: 'false'
     lambda: |-
       return id(basic_edge_switch_toggle_boolean);
-  - platform: template
-    name: "${nice_name} Sunrise Scene Enabled"
-    id: "sunrise_scene_enabled"
-    optimistic: false
-    restore_state: true
-    turn_on_action:
-      - globals.set:
-          id: sunrise_enabled_boolean
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: sunrise_enabled_boolean
-          value: 'false'
-    lambda: |-
-      return id(sunrise_enabled_boolean);
-  - platform: template
-    name: "${nice_name} Sunset Scene Enabled"
-    id: "sunset_scene_enabled"
-    optimistic: false
-    restore_state: true
-    turn_on_action:
-      - globals.set:
-          id: sunset_enabled_boolean
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: sunset_enabled_boolean
-          value: 'false'
-    lambda: |-
-      return id(sunset_enabled_boolean);
       
 sensor:
+  - platform: sun
+    name: Sun Elevation
+    type: elevation
+  - platform: sun
+    name: Sun Azimuth
+    type: azimuth
   - platform: wifi_signal
     name: "${friendly_name} WiFi Signal"
     device_class: signal_strength
@@ -319,33 +294,45 @@ sun:
   longitude: ${longitude}
 
   on_sunrise:
-    - then:
-      - if:
-          condition:
-            and:
-              - wifi.connected:
-              - api.connected:
-              - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_toggle_boolean) && !id(too_hot_boolean));
-          then:
-            - number.set:
-                id: "${device_name}_scene"
-                value: !lambda |-
-                        return id(${device_name}_sunrise_scene); 
-          else:
-            - switch.turn_on: shelly_relay
+    - elevation: ${sunrise_elevation}
+       then: 
+         - if:
+             condition:
+               and:
+                 - wifi.connected:
+                 - api.connected:
+                 - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_toggle_boolean) && !id(too_hot_boolean) && ${sunrise_enabled});
+             then:
+               - number.set:
+                   id: "${device_name}_scene"
+                   value: !lambda |-
+                           return id(${device_name}_sunrise_scene); 
+             else:
+         - if:
+             condition:
+               - lambda: return ${sunrise_enabled};
+             then:
+               - switch.turn_on: shelly_relay
+             else:
 
   on_sunset:
-    - then:
-      - if:
-          condition:
-            and:
-              - wifi.connected:
-              - api.connected:
-              - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_toggle_boolean) && !id(too_hot_boolean));
-          then:
-            - number.set:
-                id: "${device_name}_scene"
-                value: !lambda |-
-                        return id(${device_name}_sunset_scene);
-          else:
-            - switch.turn_off: shelly_relay
+    - elevation: ${sunset_elevation}
+       then:
+         - if:
+             condition:
+               and:
+                 - wifi.connected:
+                 - api.connected:
+                 - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_toggle_boolean) && !id(too_hot_boolean) && ${sunset_enabled});
+             then:
+               - number.set:
+                   id: "${device_name}_scene"
+                   value: !lambda |-
+                           return id(${device_name}_sunset_scene); 
+             else:
+         - if:
+             condition:
+               - lambda: return ${sunset_enabled};
+             then:
+               - switch.turn_off: shelly_relay
+             else:
