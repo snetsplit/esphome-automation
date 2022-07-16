@@ -19,6 +19,11 @@ substitutions:
   restore_mode: RESTORE_DEFAULT_ON
   light_automation_input_number_min: '0'
   light_automation_input_number_max: '2'
+  
+  auto_off_boolean: "false"
+  off_scene: '0'
+  delay_time:"1min"
+  
   home_assistant_host: "home.lan"
   ping_rate: 16sec
   address: "${device_name}-switch.lan"
@@ -253,6 +258,30 @@ binary_sensor:
                 
           else:
             - switch.toggle: shelly_relay
+            - if:
+                condition:
+                  - lambda: return ${auto_off_boolean};
+                then:
+                  - delay: ${delay_time}
+                  - if:
+                      condition:
+                        and:
+                          - wifi.connected:
+                          - api.connected:
+                          - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_toggle_boolean) && !id(too_hot_boolean) && ${auto_off_boolean});
+                      then:
+                        - number.set:
+                            id: "${device_name}_scene"
+                            value: ${off_scene}
+                      else:             
+                        - if:
+                            condition:
+                              - lambda: return ${auto_off_boolean};
+                            then:
+                              - switch.turn_off:
+                                  id: "shelly_relay"
+                            else: 
+                else:            
     internal: false
     id: switchid
 
@@ -277,7 +306,30 @@ number:
                 ESP_LOGI("scene", "Setting scene: [%s]", sceneNameCharBuffer); 
                 std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
                 return sceneName;
-
+         - if:
+             condition:
+               - lambda: return ${auto_off_boolean};
+             then:
+               - delay: ${delay_time}
+               - if:
+                   condition:
+                     and:
+                       - wifi.connected:
+                       - api.connected:
+                       - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_toggle_boolean) && !id(too_hot_boolean) && ${auto_off_boolean});
+                   then:
+                     - number.set:
+                         id: "${device_name}_scene"
+                         value: ${off_scene}
+                   else:             
+                     - if:
+                         condition:
+                           - lambda: return ${auto_off_boolean};
+                         then:
+                           - switch.turn_off:
+                               id: "shelly_relay"
+                         else: 
+             else:
     
 sun:
   latitude: ${latitude}
@@ -304,12 +356,12 @@ sun:
              then:
                - switch.turn_off: shelly_relay
              else:
-        - if:
-             condition:
-               - lambda: return ${sunrise_enabled};
-             then:
-               - switch.turn_on: shelly_relay
-             else:
+              - if:
+                   condition:
+                     - lambda: return ${sunrise_enabled};
+                   then:
+                     - switch.turn_on: shelly_relay
+                   else:
 
   on_sunset:
     - then:
@@ -326,9 +378,9 @@ sun:
                    id: "${device_name}_scene"
                    value: ${sunset_scene}
              else:
-        - if:
-             condition:
-               - lambda: return ${sunset_enabled};
-             then:
-               - switch.turn_off: shelly_relay
-             else:
+              - if:
+                   condition:
+                     - lambda: return ${sunset_enabled};
+                   then:
+                     - switch.turn_off: shelly_relay
+                   else:
