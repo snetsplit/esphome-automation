@@ -1,17 +1,5 @@
 #source for orginal: https://www.esphome-devices.com/devices/Shelly-1PM
 globals:
-   - id: input_number_min
-     type: int
-     restore_value: no
-     initial_value: ${light_automation_input_number_min}
-   - id: input_number_max
-     type: int
-     restore_value: no
-     initial_value: ${light_automation_input_number_min}
-   - id: input_number
-     type: int
-     restore_value: yes
-     initial_value: ${light_automation_input_number_max}
    - id: basic_edge_switch_toggle_boolean
      type: bool
      restore_value: true
@@ -222,11 +210,6 @@ binary_sensor:
     name: "${friendly_name} External Switch"
     on_state:
       then:
-      - lambda: |-
-          id(input_number) += 1;
-          if (id(input_number) > id(input_number_max) ) {
-             id(input_number) = id(input_number_min);
-          }
       - if:
           condition:
             and:
