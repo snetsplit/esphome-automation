@@ -51,13 +51,21 @@ esphome:
   libraries:
     - ESP8266WiFi
     - https://github.com/akaJes/AsyncPing#95ac7e4
-
+  on_boot:
+    then:
+      ds1307.read_time:
 
 time:
+  - platform: ds1307
+    update_interval: never
   - platform: sntp
     id: sntp_time
     servers: 
       - ${time_server}
+    on_time_sync:
+      then:
+        ds1307.write_time:
+
 wifi:
   ssid: ${ssid}
   password: ${password}
