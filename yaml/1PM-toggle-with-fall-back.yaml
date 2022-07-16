@@ -33,7 +33,9 @@ substitutions:
   web_server_port: "80"
   ssid: "IP freely"
   password: "ewwwwwwwww"
-    
+  latitude: 48.8584°
+  longitude: 2.2945°
+
 logger:
 
 api:
@@ -262,3 +264,19 @@ number:
                 ESP_LOGI("scene", "Setting scene: [%s]", sceneNameCharBuffer); 
                 std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
                 return sceneName;
+
+sun:
+  latitude: ${lat}
+  longitude: ${long}
+
+  on_sunrise:
+    - then:
+        - logger.log: Good morning!
+    # Custom elevation, will be called shortly after the trigger above.
+    - elevation: 5°
+      then:
+        - logger.log: Good morning 2!
+
+  on_sunset:
+    - then:
+        - logger.log: Good evening!
