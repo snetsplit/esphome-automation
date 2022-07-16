@@ -22,7 +22,7 @@ substitutions:
   
   auto_off_boolean: "false"
   off_scene: '0'
-  delay_time:"1min"
+  delay_time: "1min"
   
   home_assistant_host: "home.lan"
   ping_rate: 16sec
@@ -306,7 +306,7 @@ number:
                 ESP_LOGI("scene", "Setting scene: [%s]", sceneNameCharBuffer); 
                 std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
                 return sceneName;
-         - if:
+        - if:
              condition:
                - lambda: return ${auto_off_boolean};
              then:
