@@ -26,14 +26,14 @@ substitutions:
   ssid: "IP freely"
   password: "ewwwwwwwww"
   
-  sunrise_enabled: false
-  sunset_enabled: false
-  sunrise_scene: 1
-  sunset_scene: 0
+  sunrise_enabled: "false"
+  sunset_enabled: "false"
+  sunrise_scene: "1"
+  sunset_scene: "0"
   latitude: 48.8584°
   longitude: 2.2945°
-  sunrise_elevation: -0.833°
-  sunset_elevation: -0.833°
+  sunrise_elevation: "-0.833"
+  sunset_elevation: "-0.833"
 
 logger:
 
@@ -279,9 +279,10 @@ sun:
   longitude: ${longitude}
 
   on_sunrise:
-    - elevation: ${sunrise_elevation}
-       then: 
-         - if:
+    - then:
+    - elevation: ${sunrise_elevation} 
+      then: 
+        - if:
              condition:
                and:
                  - wifi.connected:
@@ -292,7 +293,13 @@ sun:
                    id: "${device_name}_scene"
                    value: ${sunrise_elevation}
              else:
-         - if:
+        - if:
+             condition:
+               - lambda: return ((id(packet_loss).state < 100) && ${sunrise_enabled});
+             then:
+               - switch.turn_off: shelly_relay
+             else:
+        - if:
              condition:
                - lambda: return ${sunrise_enabled};
              then:
@@ -300,9 +307,10 @@ sun:
              else:
 
   on_sunset:
+    - then:
     - elevation: ${sunset_elevation}
-       then:
-         - if:
+      then:
+        - if:
              condition:
                and:
                  - wifi.connected:
@@ -313,7 +321,7 @@ sun:
                    id: "${device_name}_scene"
                    value: ${sunset_elevation}
              else:
-         - if:
+        - if:
              condition:
                - lambda: return ${sunset_enabled};
              then:
