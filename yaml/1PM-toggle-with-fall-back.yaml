@@ -34,6 +34,8 @@ substitutions:
   longitude: 2.2945°
   sunrise_elevation: "-0.833"
   sunset_elevation: "-0.833"
+  
+  time_server: "0.pool.ntp.org"
 
 logger:
 
@@ -54,7 +56,8 @@ esphome:
 time:
   - platform: sntp
     id: sntp_time
-    
+    servers: 
+      - ${time_server}
 wifi:
   ssid: ${ssid}
   password: ${password}
