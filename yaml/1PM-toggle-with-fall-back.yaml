@@ -28,8 +28,8 @@ substitutions:
   
   sunrise_enabled: "false"
   sunset_enabled: "false"
-  sunrise_scene: "1"
-  sunset_scene: "0"
+  sunrise_scene: "0"
+  sunset_scene: "1"
   latitude: 48.8584°
   longitude: 2.2945°
   sunrise_elevation: "-0.833"
@@ -296,7 +296,7 @@ sun:
              then:
                - number.set:
                    id: "${device_name}_scene"
-                   value: ${sunrise_elevation}
+                   value: ${sunrise_scene}
              else:
         - if:
              condition:
@@ -324,7 +324,7 @@ sun:
              then:
                - number.set:
                    id: "${device_name}_scene"
-                   value: ${sunset_elevation}
+                   value: ${sunset_scene}
              else:
         - if:
              condition:
