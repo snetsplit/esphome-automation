@@ -77,7 +77,10 @@ wifi:
 
 web_server:
   port: ${web_server_port}
-
+  js_include: "./v2/www.js"
+  js_url: ""
+  version: 2
+  
 captive_portal:
 
 
