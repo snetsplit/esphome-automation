@@ -283,7 +283,7 @@ number:
             - switch.toggle: shelly_relay
       - if:
            condition:
-             - lambda: 'ESP_LOGI("scene", "Off scene: [%f] [%f] [%f]", ${off_scene}.0, x, ${off_scene}.0 == x); return (${auto_off_boolean} && ${off_scene} == x);'
+             - lambda: 'ESP_LOGI("scene", "Off scene: [%f] [%f] [%s]", ${off_scene}.0, x, (${off_scene}.0 == x  ? "true" : "false")); return (${auto_off_boolean} && ${off_scene} == x);'
            then:
              - delay: ${delay_time}
              - if:
