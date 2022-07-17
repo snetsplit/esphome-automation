@@ -283,27 +283,12 @@ number:
             - switch.toggle: shelly_relay
       - if:
            condition:
-             - lambda: 'ESP_LOGI("scene", "Off scene: [%f] [%f] [%s]", ${off_scene}.0, x, (${off_scene}.0 == x  ? "true" : "false")); return (${auto_off_boolean} && ${off_scene} == x);'
+             - lambda: return (${auto_off_boolean} && ${off_scene}.0 != x);
            then:
              - delay: ${delay_time}
-             - if:
-                 condition:
-                   and:
-                     - wifi.connected:
-                     - api.connected:
-                     - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_toggle_boolean) && !id(too_hot_boolean) && ${auto_off_boolean});
-                 then:
-                   - number.set:
-                       id: "${device_name}_scene"
-                       value: ${off_scene}
-                 else:             
-                   - if:
-                       condition:
-                         - lambda: return ${auto_off_boolean};
-                       then:
-                         - switch.turn_off:
-                             id: "shelly_relay"
-                       else: 
+             - number.set:
+                 id: "${device_name}_scene"
+                 value: ${off_scene}
            else:
     
 sun:
