@@ -91,7 +91,7 @@ switch:
     on_turn_on:
       - if:
            condition:
-             - lambda: return (${auto_off_boolean} && ${off_scene}.0 id(${device_name}_scene).state);
+             - lambda: return (${auto_off_boolean} && (${off_scene}.0 != id(${device_name}_scene).state));
            then:
              - delay: ${delay_time}
              - number.set:
