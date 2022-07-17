@@ -280,7 +280,13 @@ number:
                    std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
                    return sceneName;
           else:
-            - switch.toggle: shelly_relay
+            - if:
+                 condition:
+                   - lambda: return (${off_scene}.0 == x);
+                 then:
+                   - switch.turn_off: shelly_relay
+                 else:
+                   - switch.turn_on: shelly_relay
       - if:
            condition:
              - lambda: return (${auto_off_boolean} && ${off_scene}.0 != x);
