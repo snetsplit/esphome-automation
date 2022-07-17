@@ -91,7 +91,7 @@ switch:
     on_turn_on:
       - if:
            condition:
-             - lambda: ESP_LOGI("scene", "checking [%f] [%f] [%s]", ${off_scene}.0, id(${device_name}_scene).state, (${off_scene}.0 != id(${device_name}_scene).state)?"true","false"); return (${auto_off_boolean} && (${off_scene}.0 != id(${device_name}_scene).state));
+             - lambda: ESP_LOGI("scene", "checking [%f] [%f] [%s]", ${off_scene}.0, id(${device_name}_scene).state, (${off_scene}.0 != id(${device_name}_scene).state)?"true":"false"); return (${auto_off_boolean} && (${off_scene}.0 != id(${device_name}_scene).state));
            then:
              - delay: ${delay_time}
              - number.set:
