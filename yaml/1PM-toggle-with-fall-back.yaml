@@ -88,16 +88,16 @@ switch:
     id: shelly_relay
     icon: "mdi:electric-switch"
     restore_mode: ${restore_mode}
-    turn_on_action:
-         - if:
-              condition:
-                - lambda: return (${auto_off_boolean} && ${off_scene}.0 id(${device_name}_scene).state;
-              then:
-                - delay: ${delay_time}
-                - number.set:
-                    id: "${device_name}_scene"
-                    value: ${off_scene}
-              else:                       
+    on_turn_on:
+      - if:
+           condition:
+             - lambda: return (${auto_off_boolean} && ${off_scene}.0 id(${device_name}_scene).state;
+           then:
+             - delay: ${delay_time}
+             - number.set:
+                 id: "${device_name}_scene"
+                 value: ${off_scene}
+           else:                       
     
   - platform: template
     name: "${nice_name} Switch Edge Mode"
