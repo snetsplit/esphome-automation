@@ -394,7 +394,7 @@ number:
            then:
              - delay: ${delay_time_1}
              - number.set:
-                 id: "${device_name}_scene"
+                 id: "{switch_2_name}_scene"
                  value: ${off_scene_1}
            else:
 
@@ -439,7 +439,7 @@ number:
            then:
              - delay: ${delay_time_2}
              - number.set:
-                 id: "${device_name}_scene"
+                 id: "{switch_2_name}_scene"
                  value: ${off_scene_2}
            else:
     
