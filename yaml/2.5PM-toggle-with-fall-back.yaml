@@ -231,7 +231,6 @@ switch:
     pin: GPIO4
     icon: "mdi:electric-switch"
     restore_mode: ${restore_mode_1}
-  - platform: gpio
     on_turn_on:
       - if:
            condition:
@@ -241,7 +240,8 @@ switch:
                  id: "${switch_1_name}_scene"
                  value: ${on_scene_1}
            else:       
-           
+
+  - platform: gpio           
     id: shelly_relay_2
     name: "${switch_2_friendly_name} Switch Relay"
     pin: GPIO15
