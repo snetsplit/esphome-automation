@@ -8,6 +8,18 @@ globals:
      type: bool
      restore_value: false
      initial_value: 'false'
+   - id: auto_off_boolean
+     type: bool
+     restore_value: false
+     initial_value: 'false'
+   - id: sunrise_enabled_boolean
+     type: bool
+     restore_value: false
+     initial_value: 'false'
+   - id: sunset_enabled_boolean
+     type: bool
+     restore_value: false
+     initial_value: 'false'
      
 substitutions:
   nice_name: "1PM Shelly"
@@ -20,7 +32,6 @@ substitutions:
   light_automation_input_number_min: '0'
   light_automation_input_number_max: '2'
   
-  auto_off_boolean: "false"
   off_scene: '0'
   on_scene: '1'
   delay_time: "1min"
@@ -32,8 +43,6 @@ substitutions:
   ssid: "IP freely"
   password: "ewwwwwwwww"
   
-  sunrise_enabled: "false"
-  sunset_enabled: "false"
   sunrise_scene: "0"
   sunset_scene: "1"
   latitude: 48.8584°
@@ -92,7 +101,7 @@ switch:
     on_turn_on:
       - if:
            condition:
-             - lambda: return (${auto_off_boolean} && (${off_scene}.0 == id(${device_name}_scene).state));
+             - lambda: return (id(auto_off_boolean) && (${off_scene}.0 == id(${device_name}_scene).state));
            then:
              - number.set:
                  id: "${device_name}_scene"
@@ -114,7 +123,55 @@ switch:
           value: 'false'
     lambda: |-
       return id(basic_edge_switch_toggle_boolean);
-      
+
+  - platform: template
+    name: "${nice_name} Auto Off"
+    id: "auto_off_switch"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: auto_off_boolean
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: auto_off_boolean
+          value: 'false'
+    lambda: |-
+      return id(auto_off_boolean);
+
+  - platform: template
+    name: "${nice_name} Sunrise Scene Enabled"
+    id: "sunrise_enabled_switch"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: sunrise_enabled_boolean
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: sunrise_enabled_boolean
+          value: 'false'
+    lambda: |-
+      return id(sunrise_enabled_boolean;
+
+  - platform: template
+    name: "${nice_name} Sunset Scene Enabled"
+    id: "sunset_enabled_switch"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: sunset_enabled_boolean
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: sunset_enabled_boolean
+          value: 'false'
+    lambda: |-
+      return id(sunset_enabled_boolean;
+ 
 sensor:
   - platform: sun
     name: Sun Elevation
@@ -299,7 +356,7 @@ number:
                    - switch.turn_on: shelly_relay
       - if:
            condition:
-             - lambda: return (${auto_off_boolean} && ${off_scene}.0 != x);
+             - lambda: return (id(auto_off_boolean) && ${off_scene}.0 != x);
            then:
              - delay: ${delay_time}
              - number.set:
@@ -317,7 +374,7 @@ sun:
       then: 
         - if:
              condition:
-               - lambda: return  ${sunrise_enabled};
+               - lambda: return  id(sunrise_enabled_boolean);
              then:
                - number.set:
                    id: "${device_name}_scene"
@@ -329,7 +386,7 @@ sun:
       then: 
         - if:
              condition:
-               - lambda: return  ${sunset_enabled};
+               - lambda: return  id(sunset_enabled_boolean);
              then:
                - number.set:
                    id: "${device_name}_scene"
