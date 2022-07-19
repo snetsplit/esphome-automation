@@ -37,6 +37,10 @@ substitutions:
   off_scene_1: '0'
   on_scene_1: '1'
   delay_time_1: "1min"
+  sunrise_enabled_1: "false"
+  sunset_enabled_1: "false"
+  sunrise_scene_1: "0"
+  sunset_scene_1: "1"
   
   switch_2_name: "switch_2"
   switch_2_friendly_name: "Switch 2"
@@ -51,11 +55,12 @@ substitutions:
   off_scene_2: '0'
   on_scene_2: '1'
   delay_time_2: "1min"
+  sunrise_enabled_2: "false"
+  sunset_enabled_2: "false"
+  sunrise_scene_2: "0"
+  sunset_scene_2: "1"
 
-  sunrise_enabled: "false"
-  sunset_enabled: "false"
-  sunrise_scene: "0"
-  sunset_scene: "1"
+  
   latitude: 48.8584°
   longitude: 2.2945°
   sunrise_elevation: "-0.833"
