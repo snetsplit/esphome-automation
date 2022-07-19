@@ -1,6 +1,6 @@
 #source for orginal: https://www.esphome-devices.com/devices/Shelly-1PM
 globals:
-   - id: basic_edge_switch_toggle_boolean
+   - id: basic_edge_switch_1_toggle_boolean
      type: bool
      restore_value: true
      initial_value: 'false'
@@ -8,15 +8,15 @@ globals:
      type: bool
      restore_value: false
      initial_value: 'false'
-   - id: auto_off_boolean
+   - id: auto_off_boolean_1
      type: bool
      restore_value: false
      initial_value: 'false'
-   - id: sunrise_enabled_boolean
+   - id: sunrise_enabled_boolean_1
      type: bool
      restore_value: false
      initial_value: 'false'
-   - id: sunset_enabled_boolean
+   - id: sunset_enabled_boolean_1
      type: bool
      restore_value: false
      initial_value: 'false'
@@ -25,15 +25,11 @@ substitutions:
   nice_name: "1PM Shelly"
   device_name: "shelly1pm"
   name: ${device_name}
-  max_temp: "80.0"
-  max_power: "1600.0"
   friendly_name: "${nice_name} Shelly"
   restore_mode: RESTORE_DEFAULT_ON
   light_automation_input_number_min: '0'
   light_automation_input_number_max: '2'
   
-  off_scene: '0'
-  on_scene: '1'
   delay_time: "1min"
   
   home_assistant_host: "home.lan"
@@ -43,8 +39,6 @@ substitutions:
   ssid: "IP freely"
   password: "ewwwwwwwww"
   
-  sunrise_scene: "0"
-  sunset_scene: "1"
   latitude: 48.8584°
   longitude: 2.2945°
   sunrise_elevation: "-0.833"
@@ -110,19 +104,19 @@ switch:
     
   - platform: template
     name: "${nice_name} Switch Edge Mode"
-    id: "basic_edge_switch_toggle_switch"
+    id: "basic_edge_switch_toggle_switch_1"
     optimistic: false
     restore_state: true
     turn_on_action:
       - globals.set:
-          id: basic_edge_switch_toggle_boolean
+          id: basic_edge_switch_1_toggle_boolean
           value: 'true'
     turn_off_action:
       - globals.set:
-          id: basic_edge_switch_toggle_boolean
+          id: basic_edge_switch_1_toggle_boolean
           value: 'false'
     lambda: |-
-      return id(basic_edge_switch_toggle_boolean);
+      return id(basic_edge_switch_1_toggle_boolean);
 
   - platform: template
     name: "${nice_name} Auto Off"
@@ -208,7 +202,7 @@ sensor:
       # Make everything below 2W appear as just 0W.
       - lambda: if (x < 2) return 0; else return x;
       on_value_range:
-        - above: ${max_power}
+        - above: id(max_power).state
           then:
             - switch.turn_off: shelly_relay
             - homeassistant.service:
@@ -216,7 +210,12 @@ sensor:
                 data:
                   title: Message from ${friendly_name}
                 data_template:
-                  message: Switch turned off because power exceeded ${max_power}W      
+                  message: !lambda  |- 
+                   int sceneNameLength = 64;
+                   char sceneNameCharBuffer[sceneNameLength]; 
+                   std::snprintf(sceneNameCharBuffer, sceneNameLength, "Switch turned off because power exceeded %fW", id(max_power).state); 
+                   std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
+                   return sceneName;  
     update_interval: 10s
 
   - platform: total_daily_energy
@@ -239,7 +238,8 @@ sensor:
       reference_resistance: 10kOhm
       reference_temperature: 298.15K
     on_value_range:
-      - above: ${max_temp}
+      - above: !lambda |-
+               return id(max_temp).state;
         then:
           - globals.set:
               id: too_hot_boolean
@@ -250,12 +250,18 @@ sensor:
               data:
                 title: Message from ${friendly_name}
               data_template:
-                message: Switch turned off because temperature exceeded ${max_temp}°C
+                message: !lambda  |- 
+                   int sceneNameLength = 64;
+                   char sceneNameCharBuffer[sceneNameLength]; 
+                   std::snprintf(sceneNameCharBuffer, sceneNameLength, "Switch turned off because temperature exceeded %f°C", id(max_temp).state); 
+                   std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
+                   return sceneName;
           - homeassistant.event:
               event: esphome.overheat
               data:
                 title: "${friendly_name} has overheated."
-      - below: ${max_temp}
+      - below: !lambda |-
+               return id(max_temp).state;
         then:
           - globals.set:
               id: too_hot_boolean
@@ -320,9 +326,63 @@ binary_sensor:
 
 number:
   - platform: template
+    name: "${nice_name} On Scene"
+    id: "on_scene_1"
+    optimistic: false
+    min_value: ${light_automation_input_number_min}
+    max_value: ${light_automation_input_number_max}
+    restore_value: true
+    initial_value: 1
+    step: 1
+  - platform: template
+    name: "${nice_name} Off Scene"
+    id: "off_scene_1"
+    optimistic: false
+    min_value: ${light_automation_input_number_min}
+    max_value: ${light_automation_input_number_max}
+    restore_value: true
+    initial_value: 0
+    step: 1
+  - platform: template
+    name: "${nice_name} Sunrise Scene"
+    id: "sunrise_scene_1"
+    optimistic: false
+    min_value: ${light_automation_input_number_min}
+    max_value: ${light_automation_input_number_max}
+    restore_value: true
+    initial_value: 1
+    step: 1
+  - platform: template
+    name: "${nice_name} Sunset Scene"
+    id: "sunset_scene_1"
+    optimistic: false
+    min_value: ${light_automation_input_number_min}
+    max_value: ${light_automation_input_number_max}
+    restore_value: true
+    initial_value: 0
+    step: 1
+  - platform: template
+    name: "${nice_name} Max Temp"
+    id: "max_temp"
+    optimistic: false
+    min_value: 40
+    max_value: 80
+    restore_value: true
+    initial_value: 70
+    step: 1
+  - platform: template
+    name: "${nice_name} Max Power"
+    id: "max_power"
+    optimistic: false
+    min_value: 0
+    max_value: 1600
+    initial_value: 1600
+    restore_value: true
+    step: 1
+  - platform: template
     name: "${nice_name} Switch Scene"
     id: "${device_name}_scene"
-    optimistic: true
+    optimistic: false
     min_value: ${light_automation_input_number_min}
     max_value: ${light_automation_input_number_max}
     restore_value: true
@@ -334,7 +394,7 @@ number:
             and:
               - wifi.connected:
               - api.connected:
-              - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_toggle_boolean) && !id(too_hot_boolean));
+              - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_1_toggle_boolean) && !id(too_hot_boolean));
           then:
             - homeassistant.service:
                service: scene.turn_on
@@ -378,7 +438,8 @@ sun:
              then:
                - number.set:
                    id: "${device_name}_scene"
-                   value: ${sunrise_scene}
+                   value: !lambda |-
+                     return return  id(sunrise_scene_1);
 
   on_sunset:
     - then:
@@ -390,4 +451,5 @@ sun:
              then:
                - number.set:
                    id: "${device_name}_scene"
-                   value: ${sunset_scene}
+                   value: !lambda |-
+                     return return  id(sunset_scene_1);
