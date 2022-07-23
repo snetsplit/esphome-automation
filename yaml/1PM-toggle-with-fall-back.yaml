@@ -103,7 +103,8 @@ switch:
            then:
              - number.set:
                  id: "${device_name}_scene"
-                 value: ${on_scene}
+                 value: |-
+                 return id(off_scene_1).state;
            else:                         
     
   - platform: template
