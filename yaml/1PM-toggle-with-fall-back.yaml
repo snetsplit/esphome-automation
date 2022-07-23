@@ -80,6 +80,8 @@ wifi:
 
 web_server:
   port: ${web_server_port}
+  version: 2
+  js_url: http://homeassistant.local:8123/local/_static/v2/www.js
   
 captive_portal:
 
