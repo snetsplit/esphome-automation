@@ -66,12 +66,6 @@ esphome:
   libraries:
     - ESP8266WiFi
     - https://github.com/akaJes/AsyncPing#95ac7e4
-  on_boot:
-      then:
-      - globals.set:
-          id: auto_off_wait_time_string_1
-          value: |-
-               return id(auto_off_wait_time_1).state + id(auto_off_wait_time_unit_1);
 
 time:
   - platform: sntp
@@ -105,7 +99,7 @@ switch:
     on_turn_on:
       - if:
            condition:
-             - lambda: return (id(auto_off_boolean) && (${off_scene}.0 == id(${device_name}_scene).state));
+             - lambda: return (id(auto_off_boolean) && (id(off_scene_1).state == id(${device_name}_scene).state));
            then:
              - number.set:
                  id: "${device_name}_scene"
@@ -465,7 +459,8 @@ number:
                      return id(auto_off_wait_time_string_1); 
              - number.set:
                  id: "${device_name}_scene"
-                 value: ${off_scene}
+                 value: |-
+                        return id(off_scene_1).state;
            else:
     
 sun:
