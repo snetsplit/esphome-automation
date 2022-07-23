@@ -453,7 +453,7 @@ number:
                    - switch.turn_on: shelly_relay
       - if:
            condition:
-             - lambda: return (id(auto_off_boolean) && id(off_scene_1).state != x);
+             - lambda: return (id(auto_off_boolean_1) && id(off_scene_1).state != x);
            then:
              - delay: !lambda 'return id(auto_off_wait_time_string_1);'
              - number.set:
@@ -471,7 +471,7 @@ sun:
       then: 
         - if:
              condition:
-               - lambda: return  id(sunrise_enabled_boolean);
+               - lambda: return  id(sunrise_enabled_boolean_1);
              then:
                - number.set:
                    id: "${device_name}_scene"
@@ -484,7 +484,7 @@ sun:
       then: 
         - if:
              condition:
-               - lambda: return  id(sunset_enabled_boolean);
+               - lambda: return  id(sunset_enabled_boolean_1);
              then:
                - number.set:
                    id: "${device_name}_scene"
