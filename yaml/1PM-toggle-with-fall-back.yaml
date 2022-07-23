@@ -124,9 +124,9 @@ switch:
     name: "${nice_name} Auto Off"
     id: "auto_off_switch"
     optimistic: false
+    entity_category: config
     restore_state: true
     turn_on_action:
-    entity_category: config
       - globals.set:
           id: auto_off_boolean_1
           value: 'true'
@@ -140,10 +140,10 @@ switch:
     name: "${nice_name} Sunrise Scene Enabled"
     id: "sunrise_enabled_switch"
     optimistic: false
+    entity_category: config
     restore_state: true
     turn_on_action:
       - globals.set:
-    entity_category: config
           id: sunrise_enabled_boolean_1
           value: 'true'
     turn_off_action:
@@ -336,7 +336,6 @@ number:
     min_value: ${light_automation_input_number_min}
     max_value: ${light_automation_input_number_max}
     restore_value: true
-    entity_category: config
     initial_value: 1
     step: 1
   - platform: template
@@ -347,7 +346,6 @@ number:
     min_value: ${light_automation_input_number_min}
     max_value: ${light_automation_input_number_max}
     restore_value: true
-    entity_category: config
     initial_value: 1
     step: 1
   - platform: template
@@ -388,7 +386,6 @@ number:
     min_value: 40
     max_value: 80
     restore_value: true
-    entity_category: config
     initial_value: 70
     step: 1
   - platform: template
