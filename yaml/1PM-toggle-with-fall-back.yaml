@@ -151,7 +151,7 @@ switch:
           id: sunrise_enabled_boolean_1
           value: 'false'
     lambda: |-
-      return id(sunrise_enabled_boolean_1;
+      return id(sunrise_enabled_boolean_1);
 
   - platform: template
     name: "${nice_name} Sunset Scene Enabled"
@@ -167,7 +167,7 @@ switch:
           id: sunset_enabled_boolean_1
           value: 'false'
     lambda: |-
-      return id(sunset_enabled_boolean_1;
+      return id(sunset_enabled_boolean_1);
  
 sensor:
   - platform: sun
@@ -263,8 +263,7 @@ sensor:
               event: esphome.overheat
               data:
                 title: "${friendly_name} has overheated."
-      - below: !lambda |-
-               return id(max_temp).state;
+      - below: !lambda return id(max_temp).state;
         then:
           - globals.set:
               id: too_hot_boolean
@@ -475,7 +474,7 @@ sun:
                - number.set:
                    id: "${device_name}_scene"
                    value: !lambda |-
-                     return return  id(sunrise_scene_1);
+                     return id(sunrise_scene_1);
 
   on_sunset:
     - then:
@@ -488,4 +487,4 @@ sun:
                - number.set:
                    id: "${device_name}_scene"
                    value: !lambda |-
-                     return return  id(sunset_scene_1);
+                     return id(sunset_scene_1);
