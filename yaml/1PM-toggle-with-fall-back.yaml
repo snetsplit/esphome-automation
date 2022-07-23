@@ -343,7 +343,7 @@ select:
           value: !lambda  |- 
                    int sceneNameLength = 64;
                    char sceneNameCharBuffer[sceneNameLength]; 
-                   std::snprintf(sceneNameCharBuffer, sceneNameLength, "%f" + id(auto_off_wait_time_unit_1).c_str(), id(max_temp).state); 
+                   std::snprintf(sceneNameCharBuffer, sceneNameLength, "%f" + id(auto_off_wait_time_unit_1).state.c_str(), id(max_temp).state.c_str()); 
                    std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
                    return sceneName;
 
@@ -364,7 +364,7 @@ number:
           value: !lambda  |- 
                    int sceneNameLength = 64;
                    char sceneNameCharBuffer[sceneNameLength]; 
-                   std::snprintf(sceneNameCharBuffer, sceneNameLength, "%f" + id(auto_off_wait_time_unit_1).c_str(), id(max_temp).state); 
+                   std::snprintf(sceneNameCharBuffer, sceneNameLength, "%f" + id(auto_off_wait_time_unit_1).state.c_str(), id(max_temp).state.c_str()); 
                    std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
                    return sceneName;
 
