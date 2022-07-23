@@ -241,8 +241,7 @@ sensor:
       reference_resistance: 10kOhm
       reference_temperature: 298.15K
     on_value_range:
-      - above: !lambda |-
-               return id(max_temp).state;
+      - above: !lambda 'return id(max_temp).state;'
         then:
           - globals.set:
               id: too_hot_boolean
