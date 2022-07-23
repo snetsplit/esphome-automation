@@ -262,7 +262,7 @@ sensor:
               event: esphome.overheat
               data:
                 title: "${friendly_name} has overheated."
-      - below: !lambda return id(max_temp).state;
+      - below: !lambda 'return id(max_temp).state;'
         then:
           - globals.set:
               id: too_hot_boolean
@@ -452,7 +452,7 @@ number:
            condition:
              - lambda: return (id(auto_off_boolean_1) && id(off_scene_1).state != x);
            then:
-             - delay: !lambda 'return id(auto_off_wait_time_string_1);'
+             - delay: !lambda 'return id(auto_off_wait_time_string_1).state;'
              - number.set:
                  id: "${device_name}_scene"
                  value: !lambda 'return id(off_scene_1).state;'
