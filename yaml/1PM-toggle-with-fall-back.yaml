@@ -461,7 +461,7 @@ number:
            condition:
              - lambda: return (id(auto_off_boolean_1) && id(off_scene_1).state != x);
            then:
-             - delay: !lambda 'return id(auto_off_wait_time_string_1).state;'
+             - delay: !lambda 'return id(auto_off_wait_time_string_1);'
              - number.set:
                  id: "${device_name}_scene"
                  value: !lambda 'return id(off_scene_1).state;'
