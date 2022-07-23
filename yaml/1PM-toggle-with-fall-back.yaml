@@ -321,18 +321,6 @@ binary_sensor:
     internal: false
     id: switchid
     
-select:
-  - platform: template
-    name: "${nice_name} Auto Off Time Unit"
-    id: "auto_off_wait_time_unit_1"
-    optimistic: false
-    restore_value: true
-    options:
-      - sec
-      - min
-      - h
-    initial_option: sec 
-
 
 number:
   - platform: template
