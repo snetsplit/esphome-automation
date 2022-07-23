@@ -218,6 +218,7 @@ sensor:
                   message: !lambda  |- 
                    int sceneNameLength = 64;
                    char sceneNameCharBuffer[sceneNameLength]; 
+                   foo = ${bar};
                    std::snprintf(sceneNameCharBuffer, sceneNameLength, "Switch turned off because power exceeded %fW", id(max_power).state); 
                    std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
                    return sceneName;  
