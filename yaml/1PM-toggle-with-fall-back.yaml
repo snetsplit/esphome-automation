@@ -20,10 +20,6 @@ globals:
      type: bool
      restore_value: true
      initial_value: 'false'
-   - id: auto_off_wait_time_string_1
-     type: std::string
-     restore_value: true
-     initial_value: '""'
 
 substitutions:
   nice_name: "1PM Shelly"
@@ -336,16 +332,7 @@ select:
       - min
       - h
     initial_option: sec 
-    set_action:
-      then:
-      - globals.set:
-          id: auto_off_wait_time_string_1
-          value: !lambda  |- 
-                   int sceneNameLength = 64;
-                   char sceneNameCharBuffer[sceneNameLength]; 
-                   std::snprintf(sceneNameCharBuffer, sceneNameLength, id(auto_off_wait_time_unit_1).state.c_str(), id(max_temp).state); 
-                   std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
-                   return sceneName;
+
 
 number:
   - platform: template
@@ -357,17 +344,6 @@ number:
     restore_value: true
     initial_value: 1
     step: 1
-    on_value:
-      then:
-      - globals.set:
-          id: auto_off_wait_time_string_1
-          value: !lambda  |- 
-                   int sceneNameLength = 64;
-                   char sceneNameCharBuffer[sceneNameLength]; 
-                   std::snprintf(sceneNameCharBuffer, sceneNameLength, id(auto_off_wait_time_unit_1).state.c_str(), id(max_temp).state); 
-                   std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
-                   return sceneName;
-
   - platform: template
     name: "${nice_name} On Scene"
     id: "on_scene_1"
