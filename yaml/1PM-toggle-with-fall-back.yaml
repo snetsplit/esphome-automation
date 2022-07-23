@@ -452,14 +452,14 @@ number:
           else:
             - if:
                  condition:
-                   - lambda: return (${off_scene}.0 == x);
+                   - lambda: return (id(off_scene_1).state == x);
                  then:
                    - switch.turn_off: shelly_relay
                  else:
                    - switch.turn_on: shelly_relay
       - if:
            condition:
-             - lambda: return (id(auto_off_boolean) && ${off_scene}.0 != x);
+             - lambda: return (id(auto_off_boolean) && id(off_scene_1).state != x);
            then:
              - delay: |-
                      return id(auto_off_wait_time_string_1); 
