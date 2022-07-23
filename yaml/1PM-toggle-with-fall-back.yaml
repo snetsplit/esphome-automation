@@ -151,7 +151,7 @@ switch:
           id: sunrise_enabled_boolean_1
           value: 'false'
     lambda: |-
-      return id(sunrise_enabled_boolean;
+      return id(sunrise_enabled_boolean_1;
 
   - platform: template
     name: "${nice_name} Sunset Scene Enabled"
@@ -167,7 +167,7 @@ switch:
           id: sunset_enabled_boolean_1
           value: 'false'
     lambda: |-
-      return id(sunset_enabled_boolean;
+      return id(sunset_enabled_boolean_1;
  
 sensor:
   - platform: sun
