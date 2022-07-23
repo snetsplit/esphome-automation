@@ -6,23 +6,23 @@ globals:
      initial_value: 'false'
    - id: too_hot_boolean
      type: bool
-     restore_value: false
+     restore_value: true
      initial_value: 'false'
    - id: auto_off_boolean_1
      type: bool
-     restore_value: false
+     restore_value: true
      initial_value: 'false'
    - id: sunrise_enabled_boolean_1
      type: bool
-     restore_value: false
+     restore_value: true
      initial_value: 'false'
    - id: sunset_enabled_boolean_1
      type: bool
-     restore_value: false
+     restore_value: true
      initial_value: 'false'
    - id: auto_off_wait_time_string_1
      type: std::string
-     restore_value: 
+     restore_value: true
      initial_value: '""'
 
 substitutions:
