@@ -333,8 +333,9 @@ number:
     id: "auto_off_wait_time_1"
     optimistic: true
     entity_category: config
-    min_value: ${light_automation_input_number_min}
-    max_value: ${light_automation_input_number_max}
+    min_value: 1
+    max_value: 4294967295
+    mode: box
     restore_value: true
     initial_value: 1
     step: 1
