@@ -20,7 +20,11 @@ globals:
      type: bool
      restore_value: false
      initial_value: 'false'
-     
+   - id: auto_off_wait_time_string_1
+     type: std::string
+     restore_value: 
+     initial_value: '""'
+
 substitutions:
   nice_name: "1PM Shelly"
   device_name: "shelly1pm"
@@ -30,7 +34,7 @@ substitutions:
   light_automation_input_number_min: '0'
   light_automation_input_number_max: '2'
   
-  delay_time: "1min"
+  
   
   home_assistant_host: "home.lan"
   ping_rate: 16sec
@@ -62,6 +66,12 @@ esphome:
   libraries:
     - ESP8266WiFi
     - https://github.com/akaJes/AsyncPing#95ac7e4
+  on_boot:
+      then:
+      - globals.set:
+          id: auto_off_wait_time_string_1
+          value: |-
+               return id(auto_off_wait_time_1).state + id(auto_off_wait_time_unit_1);
 
 time:
   - platform: sntp
@@ -323,8 +333,41 @@ binary_sensor:
           cycle: true
     internal: false
     id: switchid
+    
+select:
+  - platform: template
+    name: "${nice_name} Auto Off Time Unit"
+    id: "auto_off_wait_time_unit_1"
+    optimistic: false
+    restore_value: true
+    options:
+      - sec
+      - min
+      - h
+    initial_option: sec 
+    set_action:
+      then:
+      - globals.set:
+          id: auto_off_wait_time_string_1
+          value: |-
+               return id(auto_off_wait_time_1).state + id(auto_off_wait_time_unit_1);
 
 number:
+  - platform: template
+    name: "${nice_name} Auto Off Time"
+    id: "auto_off_wait_time_1"
+    optimistic: false
+    min_value: ${light_automation_input_number_min}
+    max_value: ${light_automation_input_number_max}
+    restore_value: true
+    initial_value: 1
+    step: 1
+    on_value:
+      then:
+      - globals.set:
+          id: auto_off_wait_time_string_1
+          value: |-
+               return id(auto_off_wait_time_1).state + id(auto_off_wait_time_unit_1);
   - platform: template
     name: "${nice_name} On Scene"
     id: "on_scene_1"
@@ -418,7 +461,8 @@ number:
            condition:
              - lambda: return (id(auto_off_boolean) && ${off_scene}.0 != x);
            then:
-             - delay: ${delay_time}
+             - delay: |-
+                     return id(auto_off_wait_time_string_1); 
              - number.set:
                  id: "${device_name}_scene"
                  value: ${off_scene}
