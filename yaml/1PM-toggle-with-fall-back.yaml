@@ -99,12 +99,11 @@ switch:
     on_turn_on:
       - if:
            condition:
-             - lambda: return (id(auto_off_boolean) && (id(off_scene_1).state == id(${device_name}_scene).state));
+             - lambda: return (id(auto_off_boolean_1) && (id(off_scene_1).state == id(${device_name}_scene).state));
            then:
              - number.set:
                  id: "${device_name}_scene"
-                 value: |-
-                 return id(off_scene_1).state;
+                 value: !lambda 'return id(off_scene_1).state;'
            else:                         
     
   - platform: template
@@ -130,14 +129,13 @@ switch:
     restore_state: true
     turn_on_action:
       - globals.set:
-          id: auto_off_boolean
+          id: auto_off_boolean_1
           value: 'true'
     turn_off_action:
       - globals.set:
-          id: auto_off_boolean
+          id: auto_off_boolean_1
           value: 'false'
-    lambda: |-
-      return id(auto_off_boolean);
+    lambda: return id(auto_off_boolean_1);
 
   - platform: template
     name: "${nice_name} Sunrise Scene Enabled"
@@ -146,11 +144,11 @@ switch:
     restore_state: true
     turn_on_action:
       - globals.set:
-          id: sunrise_enabled_boolean
+          id: sunrise_enabled_boolean_1
           value: 'true'
     turn_off_action:
       - globals.set:
-          id: sunrise_enabled_boolean
+          id: sunrise_enabled_boolean_1
           value: 'false'
     lambda: |-
       return id(sunrise_enabled_boolean;
@@ -162,11 +160,11 @@ switch:
     restore_state: true
     turn_on_action:
       - globals.set:
-          id: sunset_enabled_boolean
+          id: sunset_enabled_boolean_1
           value: 'true'
     turn_off_action:
       - globals.set:
-          id: sunset_enabled_boolean
+          id: sunset_enabled_boolean_1
           value: 'false'
     lambda: |-
       return id(sunset_enabled_boolean;
@@ -207,7 +205,7 @@ sensor:
       # Make everything below 2W appear as just 0W.
       - lambda: if (x < 2) return 0; else return x;
       on_value_range:
-        - above: id(max_power).state
+        - above: !lambda return id(max_power).state;
           then:
             - switch.turn_off: shelly_relay
             - homeassistant.service:
@@ -352,7 +350,7 @@ number:
   - platform: template
     name: "${nice_name} Auto Off Time"
     id: "auto_off_wait_time_1"
-    optimistic: false
+    optimistic: true
     min_value: ${light_automation_input_number_min}
     max_value: ${light_automation_input_number_max}
     restore_value: true
@@ -367,7 +365,7 @@ number:
   - platform: template
     name: "${nice_name} On Scene"
     id: "on_scene_1"
-    optimistic: false
+    optimistic: true
     min_value: ${light_automation_input_number_min}
     max_value: ${light_automation_input_number_max}
     restore_value: true
@@ -376,7 +374,7 @@ number:
   - platform: template
     name: "${nice_name} Off Scene"
     id: "off_scene_1"
-    optimistic: false
+    optimistic: true
     min_value: ${light_automation_input_number_min}
     max_value: ${light_automation_input_number_max}
     restore_value: true
@@ -385,7 +383,7 @@ number:
   - platform: template
     name: "${nice_name} Sunrise Scene"
     id: "sunrise_scene_1"
-    optimistic: false
+    optimistic: true
     min_value: ${light_automation_input_number_min}
     max_value: ${light_automation_input_number_max}
     restore_value: true
@@ -394,7 +392,7 @@ number:
   - platform: template
     name: "${nice_name} Sunset Scene"
     id: "sunset_scene_1"
-    optimistic: false
+    optimistic: true
     min_value: ${light_automation_input_number_min}
     max_value: ${light_automation_input_number_max}
     restore_value: true
@@ -403,7 +401,7 @@ number:
   - platform: template
     name: "${nice_name} Max Temp"
     id: "max_temp"
-    optimistic: false
+    optimistic: true
     min_value: 40
     max_value: 80
     restore_value: true
@@ -412,7 +410,7 @@ number:
   - platform: template
     name: "${nice_name} Max Power"
     id: "max_power"
-    optimistic: false
+    optimistic: true
     min_value: 0
     max_value: 1600
     initial_value: 1600
@@ -421,7 +419,7 @@ number:
   - platform: template
     name: "${nice_name} Switch Scene"
     id: "${device_name}_scene"
-    optimistic: false
+    optimistic: true
     min_value: ${light_automation_input_number_min}
     max_value: ${light_automation_input_number_max}
     restore_value: true
@@ -457,12 +455,10 @@ number:
            condition:
              - lambda: return (id(auto_off_boolean) && id(off_scene_1).state != x);
            then:
-             - delay: |-
-                     return id(auto_off_wait_time_string_1); 
+             - delay: !lambda 'return id(auto_off_wait_time_string_1);'
              - number.set:
                  id: "${device_name}_scene"
-                 value: |-
-                        return id(off_scene_1).state;
+                 value: !lambda 'return id(off_scene_1).state;'
            else:
     
 sun:
