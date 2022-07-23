@@ -340,8 +340,12 @@ select:
       then:
       - globals.set:
           id: auto_off_wait_time_string_1
-          value: |-
-               return id(auto_off_wait_time_1).state + id(auto_off_wait_time_unit_1);
+          value: !lambda  |- 
+                   int sceneNameLength = 64;
+                   char sceneNameCharBuffer[sceneNameLength]; 
+                   std::snprintf(sceneNameCharBuffer, sceneNameLength, "%f" + id(auto_off_wait_time_unit_1), id(max_temp).state); 
+                   std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
+                   return sceneName;
 
 number:
   - platform: template
@@ -357,8 +361,13 @@ number:
       then:
       - globals.set:
           id: auto_off_wait_time_string_1
-          value: |-
-               return id(auto_off_wait_time_1).state + id(auto_off_wait_time_unit_1);
+          value: !lambda  |- 
+                   int sceneNameLength = 64;
+                   char sceneNameCharBuffer[sceneNameLength]; 
+                   std::snprintf(sceneNameCharBuffer, sceneNameLength, "%f" + id(auto_off_wait_time_unit_1), id(max_temp).state); 
+                   std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
+                   return sceneName;
+
   - platform: template
     name: "${nice_name} On Scene"
     id: "on_scene_1"
