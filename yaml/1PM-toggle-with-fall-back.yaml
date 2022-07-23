@@ -100,7 +100,7 @@ switch:
            then:
              - number.set:
                  id: "${device_name}_scene"
-                 value: !lambda 'return id(off_scene_1).state;'
+                 value: !lambda 'return id(on_scene_1).state;'
            else:                         
     
   - platform: template
@@ -329,7 +329,7 @@ binary_sensor:
 
 number:
   - platform: template
-    name: "${nice_name} Auto Off Time"
+    name: "${nice_name} Auto Off Time in ms"
     id: "auto_off_wait_time_1"
     optimistic: true
     entity_category: config
