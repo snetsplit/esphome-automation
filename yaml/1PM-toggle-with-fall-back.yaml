@@ -90,6 +90,7 @@ switch:
     name: "${nice_name} Switch Relay"
     pin: GPIO15
     id: shelly_relay
+    entity_category: config
     icon: "mdi:electric-switch"
     restore_mode: ${restore_mode}
     on_turn_on:
@@ -107,6 +108,7 @@ switch:
     id: "basic_edge_switch_toggle_switch_1"
     optimistic: false
     restore_state: true
+    entity_category: config
     turn_on_action:
       - globals.set:
           id: basic_edge_switch_1_toggle_boolean
@@ -124,6 +126,7 @@ switch:
     optimistic: false
     restore_state: true
     turn_on_action:
+    entity_category: config
       - globals.set:
           id: auto_off_boolean_1
           value: 'true'
@@ -140,6 +143,7 @@ switch:
     restore_state: true
     turn_on_action:
       - globals.set:
+    entity_category: config
           id: sunrise_enabled_boolean_1
           value: 'true'
     turn_off_action:
@@ -153,6 +157,7 @@ switch:
     name: "${nice_name} Sunset Scene Enabled"
     id: "sunset_enabled_switch"
     optimistic: false
+    entity_category: config
     restore_state: true
     turn_on_action:
       - globals.set:
@@ -327,24 +332,29 @@ number:
     name: "${nice_name} Auto Off Time"
     id: "auto_off_wait_time_1"
     optimistic: true
+    entity_category: config
     min_value: ${light_automation_input_number_min}
     max_value: ${light_automation_input_number_max}
     restore_value: true
+    entity_category: config
     initial_value: 1
     step: 1
   - platform: template
     name: "${nice_name} On Scene"
     id: "on_scene_1"
     optimistic: true
+    entity_category: config
     min_value: ${light_automation_input_number_min}
     max_value: ${light_automation_input_number_max}
     restore_value: true
+    entity_category: config
     initial_value: 1
     step: 1
   - platform: template
     name: "${nice_name} Off Scene"
     id: "off_scene_1"
     optimistic: true
+    entity_category: config
     min_value: ${light_automation_input_number_min}
     max_value: ${light_automation_input_number_max}
     restore_value: true
@@ -354,6 +364,7 @@ number:
     name: "${nice_name} Sunrise Scene"
     id: "sunrise_scene_1"
     optimistic: true
+    entity_category: config
     min_value: ${light_automation_input_number_min}
     max_value: ${light_automation_input_number_max}
     restore_value: true
@@ -363,6 +374,7 @@ number:
     name: "${nice_name} Sunset Scene"
     id: "sunset_scene_1"
     optimistic: true
+    entity_category: config
     min_value: ${light_automation_input_number_min}
     max_value: ${light_automation_input_number_max}
     restore_value: true
@@ -372,6 +384,7 @@ number:
     name: "${nice_name} Max Temp"
     id: "max_temp"
     optimistic: true
+    entity_category: config
     min_value: 40
     max_value: 80
     restore_value: true
