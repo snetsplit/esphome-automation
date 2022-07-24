@@ -22,11 +22,11 @@ globals:
      initial_value: 'false'
    - id: sunrise_event_fired_1
      type: bool
-     restore_value: true
+     restore_value: false
      initial_value: 'false'
    - id: sunset_event_fired_1
      type: bool
-     restore_value: true
+     restore_value: false
      initial_value: 'false'
 
 substitutions:
