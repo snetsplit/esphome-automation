@@ -182,34 +182,33 @@ sensor:
     type: elevation
     on_value:
       then:
-         if:
-            condition:
+      - if:
+          condition:
               lambda: 'return !id(sunrise_event_fired_1) && id(sunrise_elevation_1).state > x;'
           then:
-           - global.set:
+           - globals.set:
                id: "sunrise_event_fired_1"
                value: true;
-           - global.set:
+           - globals.set:
                id: "sunset_event_fired_1"
                value: false;
            - number.set:
                id: "${device_name}_scene"
                value: !lambda 'return id(sunrise_scene_1).state;'
           else:
-         if:
+      - if:
           condition:
               lambda: 'return !id(sunset_event_fired_1) && id(sunset_elevation_1).state < x;'
           then:
-           - global.set:
+           - globals.set:
                id: "sunset_event_fired_1"
                value: true;
-           - global.set:
+           - globals.set:
                id: "sunrise_event_fired_1"
                value: false;
            - number.set:
                id: "${device_name}_scene"
                value: !lambda 'return id(sunset_scene_1).state;'
-          else:
   - platform: sun
     name: Sun Azimuth
     type: azimuth
