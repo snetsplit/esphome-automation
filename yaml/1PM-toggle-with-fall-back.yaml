@@ -20,6 +20,14 @@ globals:
      type: bool
      restore_value: true
      initial_value: 'false'
+   - id: sunrise_event_fired_1
+     type: bool
+     restore_value: true
+     initial_value: 'false'
+   - id: sunset_event_fired_1
+     type: bool
+     restore_value: true
+     initial_value: 'false'
 
 substitutions:
   nice_name: "1PM Shelly"
@@ -173,6 +181,30 @@ sensor:
   - platform: sun
     name: Sun Elevation
     type: elevation
+    on_value:
+      then:
+      - if:
+          condition:
+            lambda: 'return !id(sunrise_event_fired_1) && id(sunrise_elevation_1).state > x;'
+        then:
+         - global.set:
+             id: "sunrise_event_fired_1"
+             value: true;
+         - number.set:
+             id: "${device_name}_scene"
+             value: !lambda 'return id(sunrise_scene_1).state;'
+        else:
+      - if:
+          condition:
+            lambda: 'return !id(sunset_event_fired_1) && id(sunset_elevation_1).state < x;'
+        then:
+         - global.set:
+             id: "sunset_event_fired_1"
+             value: true;
+         - number.set:
+             id: "${device_name}_scene"
+             value: !lambda 'return id(sunset_scene_1).state;'
+        else:
   - platform: sun
     name: Sun Azimuth
     type: azimuth
@@ -467,28 +499,3 @@ number:
 sun:
   latitude: ${latitude}
   longitude: ${longitude}
-
-  on_sunrise:
-    - then:
-    - elevation: !lambda 'return id(sunrise_elevation_1).state;'
-      then: 
-        - if:
-             condition:
-               - lambda: return  id(sunrise_enabled_boolean_1);
-             then:
-               - number.set:
-                   id: "${device_name}_scene"
-                   value: !lambda 'return id(sunrise_scene_1).state;'
-
-  on_sunset:
-    - then:
-    - elevation: !lambda 'return id(sunset_elevation_1).state;'
-      then: 
-        - if:
-             condition:
-               - lambda: return  id(sunset_enabled_boolean_1);
-             then:
-               - number.set:
-                   id: "${device_name}_scene"
-                   value: !lambda |-
-                     return id(sunset_scene_1).state;
