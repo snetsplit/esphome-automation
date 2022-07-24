@@ -197,7 +197,7 @@ sensor:
              value: !lambda 'return id(sunrise_scene_1).state;'
         else:
       - if:
-          condition:
+        condition:
             lambda: 'return !id(sunset_event_fired_1) && id(sunset_elevation_1).state < x;'
         then:
          - global.set:
