@@ -74,7 +74,6 @@ time:
     id: sntp_time
     servers: 
       - ${time_server}
-
 wifi:
   ssid: ${ssid}
   password: ${password}
@@ -190,6 +189,9 @@ sensor:
          - global.set:
              id: "sunrise_event_fired_1"
              value: true;
+         - global.set:
+             id: "sunset_event_fired_1"
+             value: false;
          - number.set:
              id: "${device_name}_scene"
              value: !lambda 'return id(sunrise_scene_1).state;'
@@ -201,6 +203,9 @@ sensor:
          - global.set:
              id: "sunset_event_fired_1"
              value: true;
+         - global.set:
+             id: "sunrise_event_fired_1"
+             value: false;
          - number.set:
              id: "${device_name}_scene"
              value: !lambda 'return id(sunset_scene_1).state;'
