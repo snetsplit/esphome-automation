@@ -41,8 +41,6 @@ substitutions:
   
   latitude: 48.8584°
   longitude: 2.2945°
-  sunrise_elevation: "-0.833"
-  sunset_elevation: "-0.833"
   
   time_server: "0.pool.ntp.org"
 
@@ -361,6 +359,16 @@ number:
     initial_value: 0
     step: 1
   - platform: template
+    name: "${nice_name} Sunrise Elevation Degrees"
+    id: "sunrise_elevation"
+    optimistic: true
+    entity_category: config
+    min_value: -90
+    max_value: 90
+    mode: box
+    restore_value: true
+    initial_value: -0.833
+  - platform: template
     name: "${nice_name} Sunrise Scene"
     id: "sunrise_scene_1"
     optimistic: true
@@ -370,6 +378,16 @@ number:
     restore_value: true
     initial_value: 1
     step: 1
+  - platform: template
+    name: "${nice_name} Sunset Elevation Degrees"
+    id: "sunset_elevation"
+    optimistic: true
+    entity_category: config
+    min_value: -90
+    max_value: 90
+    mode: box
+    restore_value: true
+    initial_value: -0.833
   - platform: template
     name: "${nice_name} Sunset Scene"
     id: "sunset_scene_1"
@@ -452,7 +470,7 @@ sun:
 
   on_sunrise:
     - then:
-    - elevation: ${sunrise_elevation} 
+    - elevation: !lambda 'return id(sunrise__elevation).state;'
       then: 
         - if:
              condition:
@@ -460,8 +478,7 @@ sun:
              then:
                - number.set:
                    id: "${device_name}_scene"
-                   value: !lambda |-
-                     return id(sunrise_scene_1).state;
+                   value: !lambda 'return id(sunrise_scene_1).state;'
 
   on_sunset:
     - then:
