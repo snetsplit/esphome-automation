@@ -360,7 +360,7 @@ number:
     step: 1
   - platform: template
     name: "${nice_name} Sunrise Elevation Degrees"
-    id: "sunrise_elevation"
+    id: "sunrise_elevation_1"
     optimistic: true
     entity_category: config
     min_value: -90
@@ -380,7 +380,7 @@ number:
     step: 1
   - platform: template
     name: "${nice_name} Sunset Elevation Degrees"
-    id: "sunset_elevation"
+    id: "sunset_elevation_1"
     optimistic: true
     entity_category: config
     min_value: -90
@@ -470,7 +470,7 @@ sun:
 
   on_sunrise:
     - then:
-    - elevation: !lambda 'return id(sunrise__elevation).state;'
+    - elevation: !lambda 'return id(sunrise_elevation_1).state;'
       then: 
         - if:
              condition:
@@ -482,7 +482,7 @@ sun:
 
   on_sunset:
     - then:
-    - elevation: ${sunset_elevation} 
+    - elevation: !lambda 'return id(sunset_elevation_1).state;'
       then: 
         - if:
              condition:
