@@ -198,7 +198,7 @@ sensor:
           else:
       - if:
           condition:
-              lambda: 'return !id(sunset_event_fired_1) && id(sunset_elevation_1).state < x && id(sntp_time).now().hour > 12;'
+              lambda: 'return id(sntp_time).now().hour > 12;'
           then:
            - globals.set:
                id: "sunset_event_fired_1"
