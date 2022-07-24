@@ -188,10 +188,10 @@ sensor:
           then:
            - globals.set:
                id: "sunrise_event_fired_1"
-               value: true
+               value: "true"
            - globals.set:
                id: "sunset_event_fired_1"
-               value: false
+               value: "false"
            - number.set:
                id: "${device_name}_scene"
                value: !lambda 'return id(sunrise_scene_1).state;'
@@ -202,10 +202,10 @@ sensor:
           then:
            - globals.set:
                id: "sunset_event_fired_1"
-               value: true
+               value: "true"
            - globals.set:
                id: "sunrise_event_fired_1"
-               value: false
+               value: "false"
            - number.set:
                id: "${device_name}_scene"
                value: !lambda 'return id(sunset_scene_1).state;'
