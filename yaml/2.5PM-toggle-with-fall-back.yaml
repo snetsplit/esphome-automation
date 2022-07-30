@@ -93,7 +93,6 @@ esphome:
 
 ota:
 
-captive_portal:
 
 # Enable logging
 logger:
