@@ -104,6 +104,11 @@ api:
 web_server:
   port: ${web_server_port}
 
+http_request:
+  useragent: esphome/device
+  timeout: 10s
+  esp8266_disable_ssl_support: true
+
 time:
   - platform: homeassistant
     id: homeassistant_time
