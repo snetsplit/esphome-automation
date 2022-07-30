@@ -409,11 +409,11 @@ number:
                  value: ${off_scene_1}
            else:
       - http_request.post:
-         url: http://vanity-right-light.lan/number/vanity_right_scene/set?value=1
+         url: http://vanity-right-light.lan/number/vanity_right_scene/set
          headers:
            Content-Type: application/json
          json:
-           value: !lambda  |- 
+           value: !lambda |- 
                    int sceneNameLength = 64;
                    char sceneNameCharBuffer[sceneNameLength]; 
                    std::snprintf(sceneNameCharBuffer, sceneNameLength, "%f", x); 
