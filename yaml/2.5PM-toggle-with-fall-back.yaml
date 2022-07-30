@@ -417,6 +417,13 @@ number:
                    ESP_LOGI("scene", "Setting vanity right: [%s]", sceneNameCharBuffer); 
                    std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
                    return sceneName;  
+      - http_request.post: !lambda |- 
+                   int sceneNameLength = 192;
+                   char sceneNameCharBuffer[sceneNameLength]; 
+                   std::snprintf(sceneNameCharBuffer, sceneNameLength, "http://192.168.4.4/number/vanity_right_scene/set?value=%.0f", x); 
+                   ESP_LOGI("scene", "Setting vanity right: [%s]", sceneNameCharBuffer); 
+                   std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
+                   return sceneName;  
 
   - platform: template
     id: "${switch_2_name}_scene"
