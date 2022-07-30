@@ -416,7 +416,7 @@ number:
            value: !lambda  |- 
                    int sceneNameLength = 64;
                    char sceneNameCharBuffer[sceneNameLength]; 
-                   std::snprintf(sceneNameCharBuffer, sceneNameLength, "%.0f", x); 
+                   std::snprintf(sceneNameCharBuffer, sceneNameLength, "%f", x); 
                    ESP_LOGI("scene", "Setting vanity right: [%s]", sceneNameCharBuffer); 
                    std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
                    return sceneName;  
