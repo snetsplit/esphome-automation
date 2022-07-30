@@ -103,6 +103,7 @@ api:
 
 web_server:
   port: ${web_server_port}
+  local: true
 
 http_request:
   useragent: esphome/device
@@ -381,6 +382,7 @@ number:
               - api.connected:
               - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_1_toggle_boolean) && !id(too_hot_boolean));
           then:
+            - switch.turn_on: shelly_relay_1
             - homeassistant.service:
                service: scene.turn_on
                data_template: 
@@ -433,6 +435,7 @@ number:
               - api.connected:
               - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_2_toggle_boolean) && !id(too_hot_boolean));
           then:
+            - switch.turn_on: shelly_relay_2
             - homeassistant.service:
                service: scene.turn_on
                data_template: 
