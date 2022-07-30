@@ -408,15 +408,10 @@ number:
                  id: "${switch_2_name}_scene"
                  value: ${off_scene_1}
            else:
-      - http_request.post:
-         url: http://vanity-right-light.lan/number/vanity_right_scene/set
-         headers:
-           Content-Type: application/json
-         json:
-           value: !lambda |- 
+      - http_request.post: !lambda |- 
                    int sceneNameLength = 64;
                    char sceneNameCharBuffer[sceneNameLength]; 
-                   std::snprintf(sceneNameCharBuffer, sceneNameLength, "%f", x); 
+                   std::snprintf(sceneNameCharBuffer, sceneNameLength, "http://vanity-right-light.lan/number/vanity_right_scene/set?value=%.0f", x); 
                    ESP_LOGI("scene", "Setting vanity right: [%s]", sceneNameCharBuffer); 
                    std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
                    return sceneName;  
