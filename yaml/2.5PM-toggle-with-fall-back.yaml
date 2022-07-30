@@ -77,6 +77,7 @@ wifi:
   password: ${password}
   use_address: ${address}
   reboot_timeout: 1h
+  output_power: 19db
   ap:
     ssid: "${friendly_name} Fallback"
     password: ${password}
