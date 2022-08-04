@@ -418,7 +418,7 @@ number:
               char sceneNameCharBuffer[sceneNameLength]; 
               std::snprintf(sceneNameCharBuffer, sceneNameLength, "http://vanity-right-light.lan/number/vanity_right_scene/set?value=%.0f", x); 
               std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
-              std::vector<HttpRequestResponseTrigger *> foo;
+              const std::vector<esphome::http_request::HttpRequestResponseTrigger*>& foo;
               esphome::http_request::HttpRequestComponent request;
               request.set_url(sceneName);
               request.send(foo);
