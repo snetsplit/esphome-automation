@@ -15,7 +15,11 @@ globals:
      type: bool
      restore_value: false
      initial_value: 'false'
-     
+   - id: scene_url_string_1
+     type: std::string
+     restore_value: no  # Strings cannot be saved/restored
+     initial_value: '"hello world"'
+
 substitutions:
   device_name: "shelly-25"
   friendly_name: "Shelly 2.5"
@@ -410,14 +414,18 @@ number:
                  id: "${switch_2_name}_scene"
                  value: ${off_scene_1}
            else:
-      - http_request.post: !lambda |- 
-                   int sceneNameLength = 192;
-                   char sceneNameCharBuffer[sceneNameLength]; 
-                   std::snprintf(sceneNameCharBuffer, sceneNameLength, "http://vanity-right-light.lan/number/vanity_right_scene/set?value=%.0f", x); 
-                   ESP_LOGI("scene", "Setting vanity right: [%s]", sceneNameCharBuffer); 
-                   std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
-                   return sceneName;  
-
+      - lambda |- 
+            int sceneNameLength = 192;
+            char sceneNameCharBuffer[sceneNameLength]; 
+            std::snprintf(sceneNameCharBuffer, sceneNameLength, "http://vanity-right-light.lan/number/vanity_right_scene/set?value=%.0f", x); 
+            ESP_LOGI("scene", "Setting vanity right: [%s]", sceneNameCharBuffer); 
+            std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
+            esphome::http_request::HttpRequestComponent request
+            request.set_url(sceneName);
+            request.send(null);
+            return;
+      
+      
   - platform: template
     id: "${switch_2_name}_scene"
     name: "${switch_2_friendly_name} Scene"
