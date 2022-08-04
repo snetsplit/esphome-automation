@@ -421,6 +421,7 @@ number:
               std::vector<esphome::http_request::HttpRequestResponseTrigger*> foo;
               esphome::http_request::HttpRequestComponent request;
               request.set_url(sceneName);
+              request.set_method("POST");
               request.send(foo);
               return;
       
