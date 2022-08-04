@@ -418,9 +418,10 @@ number:
               char sceneNameCharBuffer[sceneNameLength]; 
               std::snprintf(sceneNameCharBuffer, sceneNameLength, "http://vanity-right-light.lan/number/vanity_right_scene/set?value=%.0f", x); 
               std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
+              ESP_LOGI("scene", "Setting vanity right: [%s]", sceneNameCharBuffer); 
               esphome::http_request::HttpRequestComponent request;
               request.set_url(sceneName);
-              request.send(null);
+              request.send();
               return;
       
       
