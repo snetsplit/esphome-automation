@@ -436,14 +436,6 @@ number:
                          ESP_LOGI("scene", "Setting vanity right: [%s]", sceneNameCharBuffer); 
                          id(scene_light_index_1)++;
                          return sceneName;  
-           
-   - id: scene_light_hosts_1
-   - id: scene_light_controls_1
-   - id: scene_url_string_1
-   - id: scene_light_index_1
-   - id: scene_light_hosts_1
-   - id: scene_light_controls_1
-   - id: scene_url_string_1
 
   - platform: template
     id: "${switch_2_name}_scene"
