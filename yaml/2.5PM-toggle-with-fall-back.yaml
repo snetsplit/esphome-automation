@@ -20,7 +20,7 @@ globals:
      restore_value: no
      initial_value: '0'
    - id: scene_light_url_string_1
-     type: std::string[1]
+     type: std::vector<std::string>
      restore_value: no
      initial_value: '{"http://vanity-right-light.lan/number/vanity_right_scene/set?value="}' 
    - id: scene_value_string_1
