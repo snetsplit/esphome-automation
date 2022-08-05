@@ -425,12 +425,12 @@ number:
       - lambda: id(scene_light_index_1) = 0;
       - while:
            condition:
-             - lambda: return (id(scene_light_index_1) < 1);
+             - lambda: return (id(scene_light_index_1) < id(scene_light_url_string_1).size());
            then:
              - http_request.post: !lambda |- 
-                         std::string sceneName = id(scene_light_url_string_1)[scene_light_index_1].c_str() + to_string(x).c_str();
+                         std::string sceneName = id(scene_light_url_string_1)[scene_light_index_1];
                          ESP_LOGI("scene", "Setting vanity right: [%s]", sceneName); 
-                         id(scene_light_index_1)++;
+                         id(scene_light_index_1) += 1;
                          return sceneName;  
 
   - platform: template
