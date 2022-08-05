@@ -429,7 +429,7 @@ number:
                 id(scene_value_string_1) = sceneNameCharBuffer;
       - while:
            condition:
-             - lambda: return (id(scene_light_index_1) < id(scene_light_url_string_1));
+             - lambda: return (id(scene_light_index_1) < 1);
            then:
              - http_request.post: !lambda |- 
                          std::__cxx11::basic_string sceneName = id(scene_light_url_string_1)[scene_light_index_1] + id(scene_value_string_1);
