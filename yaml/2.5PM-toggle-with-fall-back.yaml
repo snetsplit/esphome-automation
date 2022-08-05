@@ -422,11 +422,7 @@ number:
                  id: "${switch_2_name}_scene"
                  value: ${off_scene_1}
            else:
-      - lambda: |- 
-                int sceneNameLength = 4;
-                char sceneNameCharBuffer[sceneNameLength]; 
-                std::snprintf(sceneNameCharBuffer, sceneNameLength, "%.0f", x); 
-                id(scene_value_string_1) = sceneNameCharBuffer;
+      - lambda: id(scene_light_index_1) = 0;
       - while:
            condition:
              - lambda: return (id(scene_light_index_1) < 1);
