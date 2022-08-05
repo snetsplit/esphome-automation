@@ -20,7 +20,7 @@ globals:
      restore_value: no
      initial_value: '0'
    - id: scene_light_url_string_1
-     type: std::string[1]
+     type: std::__cxx11::basic_string[1]
      restore_value: no
      initial_value: '{"http://vanity-right-light.lan/number/vanity_right_scene/set?value="}' 
    - id: scene_value_string_1
@@ -432,7 +432,8 @@ number:
              - lambda: return (id(scene_light_index_1) < 1);
            then:
              - http_request.post: !lambda |- 
-                         std::__cxx11::basic_string sceneName = id(scene_light_url_string_1)[scene_light_index_1] + id(scene_value_string_1);
+                         std::__cxx11::basic_string sceneName = id(scene_light_url_string_1)[scene_light_index_1]; 
+                         sceneName += to_string(x);
                          ESP_LOGI("scene", "Setting vanity right: [%s]", sceneNameCharBuffer); 
                          id(scene_light_index_1)++;
                          return sceneName;  
