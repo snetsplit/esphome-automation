@@ -15,10 +15,18 @@ globals:
      type: bool
      restore_value: false
      initial_value: 'false'
-   - id: scene_url_string_1
+   - id: scene_light_index_1
+     type: int
+     restore_value: no
+     initial_value: '0'
+   - id: scene_light_url_string_1
+     type: std::string[1]
+     restore_value: no
+     initial_value: '{"http://vanity-right-light.lan/number/vanity_right_scene/set?value="}' 
+   - id: scene_value_string_1
      type: std::string
-     restore_value: no  # Strings cannot be saved/restored
-     initial_value: '"hello world"'
+     restore_value: no
+     initial_value: '"0"'
 
 substitutions:
   device_name: "shelly-25"
@@ -414,15 +422,29 @@ number:
                  id: "${switch_2_name}_scene"
                  value: ${off_scene_1}
            else:
-      - http_request.post: !lambda |- 
-                   int sceneNameLength = 192;
-                   char sceneNameCharBuffer[sceneNameLength]; 
-                   std::snprintf(sceneNameCharBuffer, sceneNameLength, "http://vanity-right-light.lan/number/vanity_right_scene/set?value=%.0f", x); 
-                   ESP_LOGI("scene", "Setting vanity right: [%s]", sceneNameCharBuffer); 
-                   std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
-                   return sceneName;  
-      
-      
+      - lambda: |- 
+                int sceneNameLength = 4;
+                char sceneNameCharBuffer[sceneNameLength]; 
+                std::snprintf(sceneNameCharBuffer, sceneNameLength, "%.0f", x); 
+                id(scene_value_string_1) = sceneNameCharBuffer;
+      - while:
+           condition:
+             - lambda: return (id(scene_light_index_1) < id(scene_light_url_string_1));
+           then:
+             - http_request.post: !lambda |- 
+                         std::__cxx11::basic_string sceneName = id(scene_light_url_string_1)[scene_light_index_1] + id(scene_value_string_1);
+                         ESP_LOGI("scene", "Setting vanity right: [%s]", sceneNameCharBuffer); 
+                         id(scene_light_index_1)++;
+                         return sceneName;  
+           
+   - id: scene_light_hosts_1
+   - id: scene_light_controls_1
+   - id: scene_url_string_1
+   - id: scene_light_index_1
+   - id: scene_light_hosts_1
+   - id: scene_light_controls_1
+   - id: scene_url_string_1
+
   - platform: template
     id: "${switch_2_name}_scene"
     name: "${switch_2_friendly_name} Scene"
