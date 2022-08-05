@@ -434,7 +434,7 @@ number:
              - http_request.post: !lambda |- 
                          std::__cxx11::basic_string sceneName = id(scene_light_url_string_1)[scene_light_index_1]; 
                          sceneName += to_string(x);
-                         ESP_LOGI("scene", "Setting vanity right: [%s]", sceneNameCharBuffer); 
+                         ESP_LOGI("scene", "Setting vanity right: [%s]", sceneName); 
                          id(scene_light_index_1)++;
                          return sceneName;  
 
