@@ -103,7 +103,7 @@ switch:
     pin: GPIO15
     id: shelly_relay_1
     icon: "mdi:electric-switch"
-    restore_mode_1: ${restore_mode_1}
+    restore_mode: ${restore_mode_1}
     on_turn_on:
       - if:
            condition:
