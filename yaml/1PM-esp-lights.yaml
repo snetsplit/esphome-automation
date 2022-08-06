@@ -62,13 +62,12 @@ esphome:
   comment: ${friendly_name}
   libraries:
     - ESP8266WiFi
-    - https://github.com/akaJes/AsyncPing#95ac7e4
   on_boot:
     priority: 200
     then:
        - if:
             condition:
-              - lambda: return (${off_scene_1}.0 == id(${switch_1_name}_scene).state);
+              - lambda: return (${off_scene_1}.0 == id(scene).state);
             then:
               - switch.turn_on: shelly_relay_1
             else:
@@ -106,28 +105,12 @@ switch:
     on_turn_on:
       - if:
            condition:
-             - lambda: return (${auto_off_boolean} && (${off_scene_1}.0 == id(${device_name}_scene).state));
+             - lambda: return (${auto_off_boolean} && (${off_scene_1}.0 == id(scene).state));
            then:
              - number.set:
                  id: "${device_name}_scene"
                  value: ${on_scene_1}
            else:                         
-    
-  - platform: template
-    name: "${nice_name} Switch Edge Mode"
-    id: "basic_edge_switch_toggle_switch"
-    optimistic: false
-    restore_state: true
-    turn_on_action:
-      - globals.set:
-          id: basic_edge_switch_toggle_boolean
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: basic_edge_switch_toggle_boolean
-          value: 'false'
-    lambda: |-
-      return id(basic_edge_switch_toggle_boolean);
       
 sensor:
   - platform: sun
@@ -225,23 +208,6 @@ sensor:
   - platform: adc
     id: temp_analog_reading
     pin: A0
-    
-  - platform: ping
-    ip_address: ${home_assistant_host}
-    num_attempts: 1
-    timeout: 1sec
-
-    loss:
-      id: packet_loss
-      name: "Home Assistant Packet Loss"
-
-    latency:
-      id: latency
-      name: "Home Assistant Latency"
-      accuracy_decimals: 3
-
-    update_interval: ${ping_rate}
-
 
 output:
   - platform: esp8266_pwm
@@ -250,12 +216,7 @@ output:
       number: GPIO00
       inverted: true
 
-
-external_components:
-  - source: github://trombik/esphome-component-ping
-    components: [ ping ]
-    
-     
+         
 binary_sensor:
   - platform: gpio
     pin: GPIO16
@@ -323,7 +284,7 @@ number:
                    - lambda: return ((${off_scene_1}.0 == x) && (${on_scene_1}.0 == x));
                  then:
                    - number.set:
-                       id: "${switch_1_name}_scene"
+                       id: "scene"
                        value: ${off_scene_1}
       - if:
            condition:
@@ -331,7 +292,7 @@ number:
            then:
              - delay: ${delay_time_1}
              - number.set:
-                 id: "${switch_1_name}_scene"
+                 id: "scene"
                  value: ${off_scene_1}
 
     
