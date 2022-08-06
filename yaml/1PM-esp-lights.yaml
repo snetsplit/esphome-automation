@@ -233,6 +233,15 @@ output:
       number: GPIO00
       inverted: true
 
+text_sensor:
+  - platform: template
+    name: "Current time"
+    lambda: |-
+      char str[17];
+      time_t currTime = id(sntp_time).now().timestamp;
+      strftime(str, sizeof(str), "%Y-%m-%d %H:%M", localtime(&currTime));
+      return  { str };
+    update_interval: 60s
          
 binary_sensor:
   - platform: gpio
