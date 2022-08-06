@@ -110,7 +110,7 @@ switch:
              - lambda: return (${auto_off_boolean_1} && (${off_scene_1}.0 == id(scene).state));
            then:
              - number.set:
-                 id: "${device_name}_scene"
+                 id: "scene"
                  value: ${on_scene_1}
            else:                         
       
@@ -233,7 +233,7 @@ binary_sensor:
     on_state:
       then:
       - number.increment:
-          id: "${device_name}_scene"
+          id: "scene"
           cycle: true
     internal: false
     id: switchid
