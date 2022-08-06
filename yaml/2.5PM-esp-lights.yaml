@@ -1,16 +1,7 @@
 #code used from: 
 #https://www.esphome-devices.com/devices/Shelly-1PM
 #https://www.esphome-devices.com/devices/Shelly-25
-#https://community.home-assistant.io/t/fall-back-to-relay-if-not-connected-to-ha/396459/11
 globals:
-   - id: basic_edge_switch_1_toggle_boolean
-     type: bool
-     restore_value: true
-     initial_value: 'false'
-   - id: basic_edge_switch_2_toggle_boolean
-     type: bool
-     restore_value: true
-     initial_value: 'false'
    - id: too_hot_boolean
      type: bool
      restore_value: false
@@ -282,38 +273,6 @@ switch:
                  id: "${switch_2_name}_scene"
                  value: ${on_scene_2}
            else:       
-
-  - platform: template
-    name: "${switch_1_friendly_name} Switch Edge Mode"
-    id: "basic_edge_switch_toggle_switch_1"
-    optimistic: false
-    restore_state: false
-    turn_on_action:
-      - globals.set:
-          id: basic_edge_switch_1_toggle_boolean
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: basic_edge_switch_1_toggle_boolean
-          value: 'false'
-    lambda: |-
-      return id(basic_edge_switch_1_toggle_boolean);
-
-  - platform: template
-    name: "${switch_2_friendly_name} Switch Edge Mode"
-    id: "basic_edge_switch_toggle_switch_2"
-    optimistic: false
-    restore_state: false
-    turn_on_action:
-      - globals.set:
-          id: basic_edge_switch_2_toggle_boolean
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: basic_edge_switch_2_toggle_boolean
-          value: 'false'
-    lambda: |-
-      return id(basic_edge_switch_2_toggle_boolean);
 
 binary_sensor:
   - platform: gpio
