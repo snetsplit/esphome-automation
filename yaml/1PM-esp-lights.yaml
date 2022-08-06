@@ -26,7 +26,7 @@ substitutions:
   restore_mode_1: RESTORE_DEFAULT_ON
   light_automation_input_number_min_1: '0'
   light_automation_input_number_max_1: '2'
-  scene_master_1:
+  scene_master_1:""
   
   auto_off_boolean_1: "false"
   off_scene_1: '0'
