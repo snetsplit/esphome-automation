@@ -16,12 +16,12 @@ substitutions:
   nice_name: "1PM Shelly"
   device_name: "shelly1pm"
   name: ${device_name}
-  max_temp: "80.0"
-  max_power: "1600.0"
-  friendly_name: "${nice_name} Shelly"
-  restore_mode: RESTORE_DEFAULT_ON
-  light_automation_input_number_min: '0'
-  light_automation_input_number_max: '2'
+  max_temp_1: "80.0"
+  max_power_1: "1600.0"
+  friendly_name_1: "${nice_name} Shelly"
+  restore_mode_1: RESTORE_DEFAULT_ON
+  light_automation_input_number_min_1: '0'
+  light_automation_input_number_max_1: '2'
   
   auto_off_boolean_1: "false"
   off_scene_1: '0'
@@ -29,21 +29,20 @@ substitutions:
   delay_time_1: "1min"
   scene_light_host_string_1: '{}'
   
-  home_assistant_host: "home.lan"
-  ping_rate: 16sec
-  address: "${device_name}-switch.lan"
+  address: "${device_name}.local"
   web_server_port: "80"
   ssid: "IP freely"
   password: "ewwwwwwwww"
   
-  sunrise_enabled: "false"
-  sunset_enabled: "false"
-  sunrise_scene: "0"
-  sunset_scene: "1"
+  sunrise_enabled_1: "false"
+  sunset_enabled_1: "false"
+  sunrise_scene_1: "0"
+  sunset_scene_1: "1"
+  sunrise_elevation_1: "-0.833"
+  sunset_elevation_1: "-0.833"
+  
   latitude: 48.8584°
   longitude: 2.2945°
-  sunrise_elevation: "-0.833"
-  sunset_elevation: "-0.833"
   
   time_server: "0.pool.ntp.org"
 
@@ -305,24 +304,24 @@ sun:
 
   on_sunrise:
     - then:
-    - elevation: ${sunrise_elevation} 
+    - elevation: ${sunrise_elevation_1} 
       then: 
         - if:
              condition:
-               - lambda: return  ${sunrise_enabled};
+               - lambda: return  ${sunrise_enabled_1};
              then:
                - number.set:
                    id: "scene"
-                   value: ${sunrise_scene}
+                   value: ${sunrise_scene_1}
 
   on_sunset:
     - then:
-    - elevation: ${sunset_elevation} 
+    - elevation: ${sunset_elevation_1} 
       then: 
         - if:
              condition:
-               - lambda: return  ${sunset_enabled};
+               - lambda: return  ${sunset_enabled_1};
              then:
                - number.set:
                    id: "scene"
-                   value: ${sunset_scene}
+                   value: ${sunset_scene_1}
