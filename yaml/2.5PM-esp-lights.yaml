@@ -322,18 +322,9 @@ binary_sensor:
     name: "${switch_1_friendly_name} Switch Now"
     on_state:
       then:
-      - if:
-          condition:
-            and:
-              - wifi.connected:
-              - api.connected:
-              - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_1_toggle_boolean));
-          then:
-            - number.increment:
-                id: "${switch_1_name}_scene"
-                cycle: true
-          else:
-            - switch.toggle: shelly_relay_1
+      - number.increment:
+          id: "${switch_1_name}_scene"
+          cycle: true
             
   - platform: gpio
     pin:
@@ -341,18 +332,9 @@ binary_sensor:
     name: "${switch_2_friendly_name} Switch Now"
     on_state:
       then:
-      - if:
-          condition:
-            and:
-              - wifi.connected:
-              - api.connected:
-              - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_2_toggle_boolean));
-          then:
-            - number.increment:
-                id: "${switch_2_name}_scene"
-                cycle: true
-          else:
-            - switch.toggle: shelly_relay_2
+      - number.increment:
+          id: "${switch_2_name}_scene"
+          cycle: true
         
         
 number:
