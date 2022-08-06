@@ -107,7 +107,22 @@ esphome:
   libraries:
     - ESP8266WiFi
     - https://github.com/akaJes/AsyncPing#95ac7e4
-
+  on_boot:
+    priority: 200
+    then:
+       - if:
+            condition:
+              - lambda: return (${off_scene_1}.0 == id(${switch_1_name}_scene).state);
+            then:
+              - switch.turn_on: shelly_relay_1
+            else:
+       - if:
+            condition:
+              - lambda: return (${off_scene_2}.0 == id(${switch_2_name}_scene).state);
+            then:
+              - switch.turn_on: shelly_relay_2
+            else:
+            
 ota:
 
 
@@ -127,8 +142,10 @@ http_request:
   esp8266_disable_ssl_support: true
 
 time:
-  - platform: homeassistant
-    id: homeassistant_time
+  - platform: sntp
+    id: sntp_time
+    servers:
+      - ${time_server}
 
 i2c:
   sda: GPIO12
