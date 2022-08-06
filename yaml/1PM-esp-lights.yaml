@@ -71,7 +71,7 @@ esphome:
     then:
       - if:
             condition:
-              - lambda: return (("${restore_mode_1}" != "ALWAYS_OFF") && ${off_scene_1}.0 != id(scene).state);
+              - lambda: return ((strcmp("${restore_mode_1}", "ALWAYS_OFF") != 0) && ${off_scene_1}.0 != id(scene).state);
             then:
               - switch.turn_on: shelly_relay_1
             else:
