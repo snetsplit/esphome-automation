@@ -69,12 +69,11 @@ esphome:
   on_boot:
     priority: 200
     then:
-       - if:
+      - if:
             condition:
               - lambda: return (${off_scene_1}.0 == id(scene).state);
             then:
               - switch.turn_on: shelly_relay_1
-            else:
       - http_request.get:
           url: "http://${scene_master_host_1}/number/scene"
           on_response:
