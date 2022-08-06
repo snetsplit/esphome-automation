@@ -112,7 +112,7 @@ logger:
 api:
 
 web_server:
-  port: ${web_server_port}
+  port: 80
   local: true
 
 http_request:
