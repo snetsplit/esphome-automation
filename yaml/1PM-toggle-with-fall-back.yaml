@@ -1,44 +1,29 @@
 #source for orginal: https://www.esphome-devices.com/devices/Shelly-1PM
 globals:
-   - id: basic_edge_switch_1_toggle_boolean
+   - id: basic_edge_switch_toggle_boolean
      type: bool
      restore_value: true
      initial_value: 'false'
    - id: too_hot_boolean
      type: bool
-     restore_value: true
+     restore_value: false
      initial_value: 'false'
-   - id: auto_off_boolean_1
-     type: bool
-     restore_value: true
-     initial_value: 'false'
-   - id: sunrise_enabled_boolean_1
-     type: bool
-     restore_value: true
-     initial_value: 'false'
-   - id: sunset_enabled_boolean_1
-     type: bool
-     restore_value: true
-     initial_value: 'false'
-   - id: sunrise_event_fired_1
-     type: bool
-     restore_value: true
-     initial_value: 'false'
-   - id: sunset_event_fired_1
-     type: bool
-     restore_value: true
-     initial_value: 'false'
-
+     
 substitutions:
   nice_name: "1PM Shelly"
   device_name: "shelly1pm"
   name: ${device_name}
+  max_temp: "80.0"
+  max_power: "1600.0"
   friendly_name: "${nice_name} Shelly"
   restore_mode: RESTORE_DEFAULT_ON
   light_automation_input_number_min: '0'
   light_automation_input_number_max: '2'
   
-  
+  auto_off_boolean: "false"
+  off_scene: '0'
+  on_scene: '1'
+  delay_time: "1min"
   
   home_assistant_host: "home.lan"
   ping_rate: 16sec
@@ -47,8 +32,14 @@ substitutions:
   ssid: "IP freely"
   password: "ewwwwwwwww"
   
+  sunrise_enabled: "false"
+  sunset_enabled: "false"
+  sunrise_scene: "0"
+  sunset_scene: "1"
   latitude: 48.8584°
   longitude: 2.2945°
+  sunrise_elevation: "-0.833"
+  sunset_elevation: "-0.833"
   
   time_server: "0.pool.ntp.org"
 
@@ -68,12 +59,13 @@ esphome:
   libraries:
     - ESP8266WiFi
     - https://github.com/akaJes/AsyncPing#95ac7e4
-               
+
 time:
   - platform: sntp
     id: sntp_time
     servers: 
       - ${time_server}
+
 wifi:
   ssid: ${ssid}
   password: ${password}
@@ -96,119 +88,38 @@ switch:
     name: "${nice_name} Switch Relay"
     pin: GPIO15
     id: shelly_relay
-    entity_category: config
     icon: "mdi:electric-switch"
     restore_mode: ${restore_mode}
     on_turn_on:
       - if:
            condition:
-             - lambda: return (id(auto_off_boolean_1) && (id(off_scene_1).state == id(${device_name}_scene).state));
+             - lambda: return (${auto_off_boolean} && (${off_scene}.0 == id(${device_name}_scene).state));
            then:
              - number.set:
                  id: "${device_name}_scene"
-                 value: !lambda 'return id(on_scene_1).state;'
+                 value: ${on_scene}
            else:                         
     
   - platform: template
     name: "${nice_name} Switch Edge Mode"
-    id: "basic_edge_switch_toggle_switch_1"
+    id: "basic_edge_switch_toggle_switch"
     optimistic: false
     restore_state: true
-    entity_category: config
     turn_on_action:
       - globals.set:
-          id: basic_edge_switch_1_toggle_boolean
+          id: basic_edge_switch_toggle_boolean
           value: 'true'
     turn_off_action:
       - globals.set:
-          id: basic_edge_switch_1_toggle_boolean
+          id: basic_edge_switch_toggle_boolean
           value: 'false'
     lambda: |-
-      return id(basic_edge_switch_1_toggle_boolean);
-
-  - platform: template
-    name: "${nice_name} Auto Off"
-    id: "auto_off_switch"
-    optimistic: false
-    entity_category: config
-    restore_state: true
-    turn_on_action:
-      - globals.set:
-          id: auto_off_boolean_1
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: auto_off_boolean_1
-          value: 'false'
-    lambda: return id(auto_off_boolean_1);
-
-  - platform: template
-    name: "${nice_name} Sunrise Scene Enabled"
-    id: "sunrise_enabled_switch"
-    optimistic: false
-    entity_category: config
-    restore_state: true
-    turn_on_action:
-      - globals.set:
-          id: sunrise_enabled_boolean_1
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: sunrise_enabled_boolean_1
-          value: 'false'
-    lambda: |-
-      return id(sunrise_enabled_boolean_1);
-
-  - platform: template
-    name: "${nice_name} Sunset Scene Enabled"
-    id: "sunset_enabled_switch"
-    optimistic: false
-    entity_category: config
-    restore_state: true
-    turn_on_action:
-      - globals.set:
-          id: sunset_enabled_boolean_1
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: sunset_enabled_boolean_1
-          value: 'false'
-    lambda: |-
-      return id(sunset_enabled_boolean_1);
- 
+      return id(basic_edge_switch_toggle_boolean);
+      
 sensor:
   - platform: sun
     name: Sun Elevation
     type: elevation
-    on_value:
-      then:
-      - if:
-          condition:
-              lambda: 'return !id(sunrise_event_fired_1) && id(sunrise_elevation_1).state > x && id(sntp_time).now().hour <= 12;'
-          then:
-           - globals.set:
-               id: "sunrise_event_fired_1"
-               value: "true"
-           - globals.set:
-               id: "sunset_event_fired_1"
-               value: "false"
-           - number.set:
-               id: "${device_name}_scene"
-               value: !lambda 'return id(sunrise_scene_1).state;'
-          else:
-      - if:
-          condition:
-              lambda: 'return !id(sunset_event_fired_1) && id(sunset_elevation_1).state < x &&  id(sntp_time).now().hour > 12;'
-          then:
-           - globals.set:
-               id: "sunset_event_fired_1"
-               value: "true"
-           - globals.set:
-               id: "sunrise_event_fired_1"
-               value: "false"
-           - number.set:
-               id: "${device_name}_scene"
-               value: !lambda 'return id(sunset_scene_1).state;'
   - platform: sun
     name: Sun Azimuth
     type: azimuth
@@ -241,7 +152,7 @@ sensor:
       # Make everything below 2W appear as just 0W.
       - lambda: if (x < 2) return 0; else return x;
       on_value_range:
-        - above: !lambda return id(max_power).state;
+        - above: ${max_power}
           then:
             - switch.turn_off: shelly_relay
             - homeassistant.service:
@@ -249,12 +160,7 @@ sensor:
                 data:
                   title: Message from ${friendly_name}
                 data_template:
-                  message: !lambda  |- 
-                   int sceneNameLength = 64;
-                   char sceneNameCharBuffer[sceneNameLength]; 
-                   std::snprintf(sceneNameCharBuffer, sceneNameLength, "Switch turned off because power exceeded %fW", id(max_power).state); 
-                   std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
-                   return sceneName;  
+                  message: Switch turned off because power exceeded ${max_power}W      
     update_interval: 10s
 
   - platform: total_daily_energy
@@ -277,7 +183,7 @@ sensor:
       reference_resistance: 10kOhm
       reference_temperature: 298.15K
     on_value_range:
-      - above: !lambda 'return id(max_temp).state;'
+      - above: ${max_temp}
         then:
           - globals.set:
               id: too_hot_boolean
@@ -288,17 +194,12 @@ sensor:
               data:
                 title: Message from ${friendly_name}
               data_template:
-                message: !lambda  |- 
-                   int sceneNameLength = 64;
-                   char sceneNameCharBuffer[sceneNameLength]; 
-                   std::snprintf(sceneNameCharBuffer, sceneNameLength, "Switch turned off because temperature exceeded %f°C", id(max_temp).state); 
-                   std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
-                   return sceneName;
+                message: Switch turned off because temperature exceeded ${max_temp}°C
           - homeassistant.event:
               event: esphome.overheat
               data:
                 title: "${friendly_name} has overheated."
-      - below: !lambda 'return id(max_temp).state;'
+      - below: ${max_temp}
         then:
           - globals.set:
               id: too_hot_boolean
@@ -360,117 +261,12 @@ binary_sensor:
           cycle: true
     internal: false
     id: switchid
-    
 
 number:
-  - platform: template
-    name: "${nice_name} Auto Off Time in ms"
-    id: "auto_off_wait_time_1"
-    optimistic: true
-    entity_category: config
-    min_value: 1
-    max_value: 4294967295
-    mode: box
-    restore_value: true
-    initial_value: 1
-    step: 1
-  - platform: template
-    name: "${nice_name} On Scene"
-    id: "on_scene_1"
-    optimistic: true
-    entity_category: config
-    min_value: ${light_automation_input_number_min}
-    max_value: ${light_automation_input_number_max}
-    restore_value: true
-    initial_value: 1
-    step: 1
-  - platform: template
-    name: "${nice_name} Off Scene"
-    id: "off_scene_1"
-    optimistic: true
-    entity_category: config
-    min_value: ${light_automation_input_number_min}
-    max_value: ${light_automation_input_number_max}
-    restore_value: true
-    initial_value: 0
-    step: 1
-  - platform: template
-    name: "${nice_name} Sunrise Elevation Degrees"
-    id: "sunrise_elevation_1"
-    optimistic: true
-    entity_category: config
-    min_value: -90
-    max_value: 90
-    mode: box
-    restore_value: true
-    initial_value: -0.833
-    step: 0.001
-  - platform: template
-    name: "${nice_name} Sunrise Scene"
-    on_value:
-      then:
-        - globals.set:
-            id: "sunrise_event_fired_1"
-            value: "false"
-    id: "sunrise_scene_1"
-    optimistic: true
-    entity_category: config
-    min_value: ${light_automation_input_number_min}
-    max_value: ${light_automation_input_number_max}
-    restore_value: true
-    initial_value: 1
-    step: 1
-  - platform: template
-    name: "${nice_name} Sunset Elevation Degrees"
-    id: "sunset_elevation_1"
-    optimistic: true
-    entity_category: config
-    min_value: -90
-    max_value: 90
-    mode: box
-    restore_value: true
-    initial_value: -0.833
-    step: 0.001
-    on_value:
-      then:
-        - globals.set:
-            id: "sunset_event_fired_1"
-            value: "false"
-  - platform: template
-    name: "${nice_name} Sunset Scene"
-    id: "sunset_scene_1"
-    optimistic: true
-    entity_category: config
-    min_value: ${light_automation_input_number_min}
-    max_value: ${light_automation_input_number_max}
-    restore_value: true
-    initial_value: 0
-    step: 1
-  - platform: template
-    name: "${nice_name} Max Temp"
-    id: "max_temp"
-    optimistic: true
-    entity_category: config
-    min_value: 40
-    max_value: 80
-    restore_value: true
-    initial_value: 70
-    step: 1
-  - platform: template
-    name: "${nice_name} Max Power"
-    id: "max_power"
-    optimistic: true
-    entity_category: config
-    min_value: 0
-    max_value: 1600
-    initial_value: 1600
-    restore_value: true
-    step: 1
   - platform: template
     name: "${nice_name} Switch Scene"
     id: "${device_name}_scene"
     optimistic: true
-    entity_category: config
     min_value: ${light_automation_input_number_min}
     max_value: ${light_automation_input_number_max}
     restore_value: true
@@ -482,7 +278,7 @@ number:
             and:
               - wifi.connected:
               - api.connected:
-              - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_1_toggle_boolean) && !id(too_hot_boolean));
+              - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_toggle_boolean) && !id(too_hot_boolean));
           then:
             - homeassistant.service:
                service: scene.turn_on
@@ -497,21 +293,45 @@ number:
           else:
             - if:
                  condition:
-                   - lambda: return (id(off_scene_1).state == x);
+                   - lambda: return (${off_scene}.0 == x);
                  then:
                    - switch.turn_off: shelly_relay
                  else:
                    - switch.turn_on: shelly_relay
       - if:
            condition:
-             - lambda: return (id(auto_off_boolean_1) && id(off_scene_1).state != x);
+             - lambda: return (${auto_off_boolean} && ${off_scene}.0 != x);
            then:
-             - delay: !lambda 'return static_cast<unsigned int>(id(auto_off_wait_time_1).state);'
+             - delay: ${delay_time}
              - number.set:
                  id: "${device_name}_scene"
-                 value: !lambda 'return id(off_scene_1).state;'
+                 value: ${off_scene}
            else:
     
 sun:
   latitude: ${latitude}
   longitude: ${longitude}
+
+  on_sunrise:
+    - then:
+    - elevation: ${sunrise_elevation} 
+      then: 
+        - if:
+             condition:
+               - lambda: return  ${sunrise_enabled};
+             then:
+               - number.set:
+                   id: "${device_name}_scene"
+                   value: ${sunrise_scene}
+
+  on_sunset:
+    - then:
+    - elevation: ${sunset_elevation} 
+      then: 
+        - if:
+             condition:
+               - lambda: return  ${sunset_enabled};
+             then:
+               - number.set:
+                   id: "${device_name}_scene"
+                   value: ${sunset_scene}
