@@ -20,7 +20,7 @@ globals:
      restore_value: no
      initial_value: '0'
    - id: scene_light_url_string_1
-     type: std::vector<std::string, 1>
+     type: const std::vector<std::string>
      initial_value: '{"http://vanity-right-light.lan/number/vanity_right_scene/set?value="}' 
    - id: scene_value_string_1
      type: std::string
@@ -427,7 +427,7 @@ number:
              - lambda: return (id(scene_light_index_1) < id(scene_light_url_string_1).size());
            then:
              - http_request.post: !lambda |- 
-                         std::string sceneName = id(scene_light_url_string_1)[scene_light_index_1];
+                         std::string sceneName = id(scene_light_url_string_1).at(scene_light_index_1);
                          ESP_LOGI("scene", "Setting vanity right: [%s]", sceneName); 
                          id(scene_light_index_1) += 1;
                          return sceneName;  
