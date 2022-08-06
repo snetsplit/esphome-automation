@@ -36,11 +36,6 @@ substitutions:
   max_temp: "80.0"
   
   address: "${device_name}-switch.lan"
-  home_assistant_host: "home.lan"
-  ping_rate: "16sec"
-  web_server_port: "80"
-  ssid: "IP freely"
-  password: "ewwwwwwwww"
 
   switch_1_name: "switch_1"
   switch_1_friendly_name: "Switch 1"
@@ -106,7 +101,6 @@ esphome:
   comment: ${friendly_name}
   libraries:
     - ESP8266WiFi
-    - https://github.com/akaJes/AsyncPing#95ac7e4
 
 ota:
 
@@ -249,32 +243,13 @@ sensor:
     id: temp_analog_reading
     pin: A0
        
-  - platform: ping
-    ip_address: ${home_assistant_host}
-    num_attempts: 1
-    timeout: 1sec
-
-    loss:
-      id: packet_loss
-      name: "Home Assistant Packet Loss"
-
-    latency:
-      id: latency
-      name: "Home Assistant Latency"
-      accuracy_decimals: 3
-
-    update_interval: ${ping_rate}
 
 status_led:
   pin:
     number: GPIO0
     inverted: yes
 
-external_components:
-  - source: github://trombik/esphome-component-ping
-    components: [ ping ]
     
-
 switch:
   - platform: gpio
     id: shelly_relay_1
@@ -393,23 +368,8 @@ number:
       then:
       - if:
           condition:
-            and:
-              - wifi.connected:
-              - api.connected:
-              - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_1_toggle_boolean) && !id(too_hot_boolean));
+            - wifi.connected:
           then:
-            - switch.turn_on: shelly_relay_1
-            - homeassistant.service:
-               service: scene.turn_on
-               data_template: 
-                 entity_id: !lambda  |- 
-                   int sceneNameLength = 64;
-                   char sceneNameCharBuffer[sceneNameLength]; 
-                   std::snprintf(sceneNameCharBuffer, sceneNameLength, "scene.${switch_1_name}%.0f", x); 
-                   ESP_LOGI("scene", "Setting scene: [%s]", sceneNameCharBuffer); 
-                   std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
-                   return sceneName;     
-          else:
             - if:
                  condition:
                    - lambda: return (${off_scene_1}.0 == x);
@@ -417,25 +377,16 @@ number:
                    - switch.turn_off: shelly_relay_1
                  else:
                    - switch.turn_on: shelly_relay_1
-      - if:
-           condition:
-             - lambda: return (${auto_off_boolean_1} && ${off_scene_1}.0 != x);
-           then:
-             - delay: ${delay_time_1}
-             - number.set:
-                 id: "${switch_2_name}_scene"
-                 value: ${off_scene_1}
-           else:
-      - lambda: id(scene_light_index_1) = 0;
-      - while:
-           condition:
-             - lambda: return (id(scene_light_index_1) < id(scene_light_host_string_1).size());
-           then:
-             - http_request.post: !lambda |- 
-                         std::string sceneName = "http://" + id(scene_light_host_string_1).at(id(scene_light_index_1)) + "/number/scene/set?value=" + std::to_string(int(x));
-                         ESP_LOGI("scene", "Setting vanity right: [%s]", sceneName); 
-                         id(scene_light_index_1) += 1;
-                         return sceneName;  
+            - lambda: id(scene_light_index_1) = 0;
+            - while:
+                 condition:
+                   - lambda: return (id(scene_light_index_1) < id(scene_light_host_string_1).size());
+                 then:
+                   - http_request.post: !lambda |- 
+                               std::string sceneName = "http://" + id(scene_light_host_string_1).at(id(scene_light_index_1)) + "/number/scene/set?value=" + std::to_string(int(x));
+                               ESP_LOGI("scene", "Setting vanity right: [%s]", sceneName); 
+                               id(scene_light_index_1) += 1;
+                               return sceneName;  
 
   - platform: template
     id: "${switch_2_name}_scene"
@@ -449,23 +400,8 @@ number:
       then:
       - if:
           condition:
-            and:
-              - wifi.connected:
-              - api.connected:
-              - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_2_toggle_boolean) && !id(too_hot_boolean));
+            - wifi.connected:
           then:
-            - switch.turn_on: shelly_relay_2
-            - homeassistant.service:
-               service: scene.turn_on
-               data_template: 
-                 entity_id: !lambda  |- 
-                   int sceneNameLength = 64;
-                   char sceneNameCharBuffer[sceneNameLength]; 
-                   std::snprintf(sceneNameCharBuffer, sceneNameLength, "scene.${switch_2_name}%.0f", x); 
-                   ESP_LOGI("scene", "Setting scene: [%s]", sceneNameCharBuffer); 
-                   std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
-                   return sceneName;                   
-          else:
             - if:
                  condition:
                    - lambda: return (${off_scene_2}.0 == x);
@@ -473,6 +409,16 @@ number:
                    - switch.turn_off: shelly_relay_2
                  else:
                    - switch.turn_on: shelly_relay_2
+            - lambda: id(scene_light_index_2) = 0;
+            - while:
+                 condition:
+                   - lambda: return (id(scene_light_index_2) < id(scene_light_host_string_2).size());
+                 then:
+                   - http_request.post: !lambda |- 
+                               std::string sceneName = "http://" + id(scene_light_host_string_2).at(id(scene_light_index_2)) + "/number/scene/set?value=" + std::to_string(int(x));
+                               ESP_LOGI("scene", "Setting vanity right: [%s]", sceneName); 
+                               id(scene_light_index_2) += 1;
+                               return sceneName;  
       - if:
            condition:
              - lambda: return (${auto_off_boolean_2} && ${off_scene_2}.0 != x);
@@ -482,16 +428,6 @@ number:
                  id: "${switch_2_name}_scene"
                  value: ${off_scene_2}
            else: 
-      - lambda: id(scene_light_index_2) = 0;
-      - while:
-           condition:
-             - lambda: return (id(scene_light_index_2) < id(scene_light_host_string_2).size());
-           then:
-             - http_request.post: !lambda |- 
-                         std::string sceneName = "http://" + id(scene_light_host_string_2).at(id(scene_light_index_2)) + "/number/scene/set?value=" + std::to_string(int(x));
-                         ESP_LOGI("scene", "Setting vanity right: [%s]", sceneName); 
-                         id(scene_light_index_2) += 1;
-                         return sceneName;  
                          
 sun:
   latitude: ${latitude}
