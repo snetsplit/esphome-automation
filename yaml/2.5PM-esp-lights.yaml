@@ -34,7 +34,7 @@ substitutions:
   slider_1_friendly_name: "${switch_1_friendly_name} Setting Scene"
   light_automation_1_input_number_min: "0"
   light_automation_1_input_number_max: "2"
-  scene_light_host_string_1: '{}'
+  scene_light_host_string_1: ""
   channel_1: "${switch_1_friendly_name} Channel"
   max_power_1: "1000.0"
   restore_mode_1: ALWAYS_OFF
@@ -53,7 +53,7 @@ substitutions:
   slider_2_friendly_name: "${switch_2_friendly_name} Setting Scene"
   light_automation_2_input_number_min: "0"
   light_automation_2_input_number_max: "2"
-  scene_light_host_string_2: '{}'
+  scene_light_host_string_2: ""
   channel_2: "${switch_2_friendly_name} Channel"
   max_power_2: "1000.0"
   restore_mode_2: ALWAYS_OFF
