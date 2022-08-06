@@ -277,7 +277,7 @@ binary_sensor:
 
 number:
   - platform: template
-    name: "${nice_name} Switch Scene"
+    name: "scene"
     id: "${device_name}_scene"
     optimistic: true
     min_value: ${light_automation_input_number_min}
