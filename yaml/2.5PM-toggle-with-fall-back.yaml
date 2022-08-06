@@ -16,12 +16,11 @@ globals:
      restore_value: false
      initial_value: 'false'
    - id: scene_light_index_1
-     type: std::vector<std::__cxx11::basic_string<char> >::size_type
+     type: unsigned int
      restore_value: no
      initial_value: '0'
    - id: scene_light_url_string_1
-     type: std::vector<std::string>
-     restore_value: no
+     type: std::vector<std::string, 1>
      initial_value: '{"http://vanity-right-light.lan/number/vanity_right_scene/set?value="}' 
    - id: scene_value_string_1
      type: std::string
