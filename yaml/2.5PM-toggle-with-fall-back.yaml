@@ -439,7 +439,7 @@ number:
     min_value: ${light_automation_2_input_number_min}
     max_value: ${light_automation_2_input_number_max}
     restore_value: true
-    step: 1
+    step: 1 
     on_value:
       then:
       - if:
