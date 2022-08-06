@@ -21,16 +21,21 @@ globals:
      initial_value: '0'
    - id: scene_light_url_string_1
      type: const std::vector<std::string>
-     initial_value: '{"http://vanity-right-light.lan/number/vanity_right_scene/set?value="}' 
-   - id: scene_value_string_1
-     type: std::string
+     initial_value: ${scene_light_url_string_1}
+   - id: scene_light_index_2
+     type: unsigned int
      restore_value: no
-     initial_value: '"0"'
-
+     initial_value: '0'
+   - id: scene_light_url_string_2
+     type: const std::vector<std::string>
+     initial_value: ${scene_light_url_string_2}
+     
 substitutions:
   device_name: "shelly-25"
   friendly_name: "Shelly 2.5"
   max_temp: "80.0"
+  scene_light_url_string_1: '{""}'
+  scene_light_url_string_2: '{""}'
   
   address: "${device_name}-switch.lan"
   home_assistant_host: "home.lan"
@@ -477,7 +482,17 @@ number:
                  id: "${switch_2_name}_scene"
                  value: ${off_scene_2}
            else: 
-
+      - lambda: id(scene_light_index_2) = 0;
+      - while:
+           condition:
+             - lambda: return (id(scene_light_index_2) < id(scene_light_url_string_2).size());
+           then:
+             - http_request.post: !lambda |- 
+                         std::string sceneName = id(scene_light_url_string_2).at(id(scene_light_index_2)) + std::to_string(int(x));
+                         ESP_LOGI("scene", "Setting vanity right: [%s]", sceneName); 
+                         id(scene_light_index_2) += 1;
+                         return sceneName;  
+                         
 sun:
   latitude: ${latitude}
   longitude: ${longitude}
