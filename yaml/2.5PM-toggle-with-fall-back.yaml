@@ -19,23 +19,23 @@ globals:
      type: unsigned int
      restore_value: no
      initial_value: '0'
-   - id: scene_light_url_string_1
+   - id: scene_light_host_string_1
      type: const std::vector<std::string>
-     initial_value: ${scene_light_url_string_1}
+     initial_value: ${scene_light_host_string_1}
    - id: scene_light_index_2
      type: unsigned int
      restore_value: no
      initial_value: '0'
-   - id: scene_light_url_string_2
+   - id: scene_light_host_string_2
      type: const std::vector<std::string>
-     initial_value: ${scene_light_url_string_2}
+     initial_value: ${scene_light_host_string_2}
      
 substitutions:
   device_name: "shelly-25"
   friendly_name: "Shelly 2.5"
   max_temp: "80.0"
-  scene_light_url_string_1: '{""}'
-  scene_light_url_string_2: '{""}'
+  scene_light_host_string_1: '{""}'
+  scene_light_host_string_2: '{""}'
   
   address: "${device_name}-switch.lan"
   home_assistant_host: "home.lan"
@@ -429,10 +429,10 @@ number:
       - lambda: id(scene_light_index_1) = 0;
       - while:
            condition:
-             - lambda: return (id(scene_light_index_1) < id(scene_light_url_string_1).size());
+             - lambda: return (id(scene_light_index_1) < id(scene_light_host_string_1).size());
            then:
              - http_request.post: !lambda |- 
-                         std::string sceneName = id(scene_light_url_string_1).at(id(scene_light_index_1)) + std::to_string(int(x));
+                         std::string sceneName = "http://" + id(scene_light_host_string_1).at(id(scene_light_index_1)) + "/number/scene/set?value=" + std::to_string(int(x));
                          ESP_LOGI("scene", "Setting vanity right: [%s]", sceneName); 
                          id(scene_light_index_1) += 1;
                          return sceneName;  
@@ -485,10 +485,10 @@ number:
       - lambda: id(scene_light_index_2) = 0;
       - while:
            condition:
-             - lambda: return (id(scene_light_index_2) < id(scene_light_url_string_2).size());
+             - lambda: return (id(scene_light_index_2) < id(scene_light_host_string_2).size());
            then:
              - http_request.post: !lambda |- 
-                         std::string sceneName = id(scene_light_url_string_2).at(id(scene_light_index_2)) + std::to_string(int(x));
+                         std::string sceneName = "http://" + id(scene_light_host_string_2).at(id(scene_light_index_2)) + "/number/scene/set?value=" + std::to_string(int(x));
                          ESP_LOGI("scene", "Setting vanity right: [%s]", sceneName); 
                          id(scene_light_index_2) += 1;
                          return sceneName;  
