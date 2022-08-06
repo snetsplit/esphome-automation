@@ -8,6 +8,13 @@ globals:
      type: bool
      restore_value: false
      initial_value: 'false'
+   - id: scene_light_index_1
+     type: unsigned int
+     restore_value: no
+     initial_value: '0'
+   - id: scene_light_host_string_1
+     type: const std::vector<std::string>
+     initial_value: ${scene_light_host_string_1}
      
 substitutions:
   nice_name: "1PM Shelly"
@@ -60,6 +67,16 @@ esphome:
     - ESP8266WiFi
     - https://github.com/akaJes/AsyncPing#95ac7e4
 
+  on_boot:
+    priority: 200
+    then:
+       - if:
+            condition:
+              - lambda: return (${off_scene_1}.0 == id(${switch_1_name}_scene).state);
+            then:
+              - switch.turn_on: shelly_relay_1
+            else:
+            
 time:
   - platform: sntp
     id: sntp_time
@@ -87,7 +104,7 @@ switch:
   - platform: gpio
     name: "${nice_name} Switch Relay"
     pin: GPIO15
-    id: shelly_relay
+    id: shelly_relay_1
     icon: "mdi:electric-switch"
     restore_mode: ${restore_mode}
     on_turn_on:
@@ -154,7 +171,7 @@ sensor:
       on_value_range:
         - above: ${max_power}
           then:
-            - switch.turn_off: shelly_relay
+            - switch.turn_off: shelly_relay_1
             - homeassistant.service:
                 service: persistent_notification.create
                 data:
@@ -188,7 +205,7 @@ sensor:
           - globals.set:
               id: too_hot_boolean
               value: 'true'
-          - switch.turn_off: shelly_relay
+          - switch.turn_off: shelly_relay_1
           - homeassistant.service:
               service: persistent_notification.create
               data:
@@ -295,9 +312,9 @@ number:
                  condition:
                    - lambda: return (${off_scene}.0 == x);
                  then:
-                   - switch.turn_off: shelly_relay
+                   - switch.turn_off: shelly_relay_1
                  else:
-                   - switch.turn_on: shelly_relay
+                   - switch.turn_on: shelly_relay_1
       - if:
            condition:
              - lambda: return (${auto_off_boolean} && ${off_scene}.0 != x);
@@ -307,7 +324,17 @@ number:
                  id: "${device_name}_scene"
                  value: ${off_scene}
            else:
-    
+      - lambda: id(scene_light_index_1) = 0;
+      - while:
+           condition:
+             - lambda: return (id(scene_light_index_1) < id(scene_light_host_string_1).size());
+           then:
+             - http_request.post: !lambda |- 
+                         std::string sceneName = "http://" + id(scene_light_host_string_1).at(id(scene_light_index_1)) + "/number/scene/set?value=" + std::to_string(int(x));
+                         ESP_LOGI("scene", "Setting vanity right: [%s]", sceneName); 
+                         id(scene_light_index_1) += 1;
+                         return sceneName;  
+                         
 sun:
   latitude: ${latitude}
   longitude: ${longitude}
