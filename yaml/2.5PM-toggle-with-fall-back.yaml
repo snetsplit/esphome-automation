@@ -427,7 +427,7 @@ number:
              - lambda: return (id(scene_light_index_1) < id(scene_light_url_string_1).size());
            then:
              - http_request.post: !lambda |- 
-                         std::string sceneName = id(scene_light_url_string_1).at(0);
+                         std::string sceneName = id(scene_light_url_string_1).at(id(scene_light_index_1));
                          ESP_LOGI("scene", "Setting vanity right: [%s]", sceneName); 
                          id(scene_light_index_1) += 1;
                          return sceneName;  
