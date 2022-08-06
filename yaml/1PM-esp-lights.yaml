@@ -242,7 +242,7 @@ binary_sensor:
 number:
   - platform: template
     name: "scene"
-    id: "${device_name}_scene"
+    id: "scene"
     optimistic: true
     min_value: ${light_automation_input_number_min}
     max_value: ${light_automation_input_number_max}
@@ -312,7 +312,7 @@ sun:
                - lambda: return  ${sunrise_enabled};
              then:
                - number.set:
-                   id: "${device_name}_scene"
+                   id: "scene"
                    value: ${sunrise_scene}
 
   on_sunset:
@@ -324,5 +324,5 @@ sun:
                - lambda: return  ${sunset_enabled};
              then:
                - number.set:
-                   id: "${device_name}_scene"
+                   id: "scene"
                    value: ${sunset_scene}
