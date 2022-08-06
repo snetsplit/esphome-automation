@@ -18,7 +18,7 @@ substitutions:
   name: ${device_name}
   max_temp_1: "80.0"
   max_power_1: "1600.0"
-  friendly_name_1: "${nice_name} Shelly"
+  friendly_name: "${nice_name} Shelly"
   restore_mode_1: RESTORE_DEFAULT_ON
   light_automation_input_number_min_1: '0'
   light_automation_input_number_max_1: '2'
@@ -103,7 +103,7 @@ switch:
     pin: GPIO15
     id: shelly_relay_1
     icon: "mdi:electric-switch"
-    restore_mode: ${restore_mode}
+    restore_mode_1: ${restore_mode_1}
     on_turn_on:
       - if:
            condition:
@@ -243,8 +243,8 @@ number:
     name: "scene"
     id: "scene"
     optimistic: true
-    min_value: ${light_automation_input_number_min}
-    max_value: ${light_automation_input_number_max}
+    min_value: ${light_automation_input_number_min_1}
+    max_value: ${light_automation_input_number_max_1}
     restore_value: true
     step: 1
     on_value:
