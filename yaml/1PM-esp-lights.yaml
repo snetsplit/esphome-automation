@@ -23,7 +23,7 @@ substitutions:
   light_automation_input_number_min: '0'
   light_automation_input_number_max: '2'
   
-  auto_off_boolean: "false"
+  auto_off_boolean_1: "false"
   off_scene_1: '0'
   on_scene_1: '1'
   delay_time: "1min"
@@ -105,7 +105,7 @@ switch:
     on_turn_on:
       - if:
            condition:
-             - lambda: return (${auto_off_boolean} && (${off_scene_1}.0 == id(scene).state));
+             - lambda: return (${auto_off_boolean_1} && (${off_scene_1}.0 == id(scene).state));
            then:
              - number.set:
                  id: "${device_name}_scene"
