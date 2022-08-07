@@ -60,6 +60,7 @@ substitutions:
   sunset_enabled_1: "false"
   sunrise_scene_1: "0"
   sunset_scene_1: "1"
+  energery_saving_1: true
   
   switch_2_name: "switch_2"
   switch_2_friendly_name: "Switch 2"
@@ -79,6 +80,7 @@ substitutions:
   sunset_enabled_2: "false"
   sunrise_scene_2: "0"
   sunset_scene_2: "1"
+  energery_saving_2: true
 
   
   latitude: 48.8584°
@@ -429,7 +431,7 @@ number:
           else:
             - if:
                  condition:
-                   - lambda: return (${off_scene_1}.0 == x);
+                   - lambda: return (energery_saving_1 && (${off_scene_1}.0 == x));
                  then:
                    - switch.turn_off: shelly_relay_1
                  else:
@@ -485,7 +487,7 @@ number:
           else:
             - if:
                  condition:
-                   - lambda: return (${off_scene_2}.0 == x);
+                   - lambda: return (energery_saving_2 && (${off_scene_1}.0 == x));
                  then:
                    - switch.turn_off: shelly_relay_2
                  else:
