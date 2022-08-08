@@ -333,7 +333,7 @@ number:
           then:
             - if:
                  condition:
-                   - lambda: return (energy_saving_1 && (${off_scene_1}.0 == x));
+                   - lambda: return (${energy_saving_1} && (${off_scene_1}.0 == x));
                  then:
                    - switch.turn_off: shelly_relay_1
                  else:
@@ -391,7 +391,7 @@ number:
           then:
             - if:
                  condition:
-                   - lambda: return (energy_saving_2 && (${off_scene_2}.0 == x));
+                   - lambda: return (${energy_saving_2} && (${off_scene_2}.0 == x));
                  then:
                    - switch.turn_off: shelly_relay_2
                  else:
