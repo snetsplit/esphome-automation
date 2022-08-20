@@ -320,7 +320,7 @@ number:
            condition:
              - lambda: return (${auto_off_boolean_1} && ${off_scene_1}.0 != x);
            then:
-             - delay: ${delay_time}
+             - delay: ${delay_time_1}
              - number.set:
                  id: "${device_name}_scene"
                  value: ${off_scene_1}
