@@ -111,7 +111,7 @@ switch:
     on_turn_on:
       - if:
            condition:
-             - lambda: return (${auto_off_boolean} && (${off_scene_1}.0 == id(${device_name}_scene).state));
+             - lambda: return (${auto_off_boolean_1} && (${off_scene_1}.0 == id(${device_name}_scene).state));
            then:
              - number.set:
                  id: "${device_name}_scene"
@@ -318,7 +318,7 @@ number:
                    - switch.turn_on: shelly_relay_1
       - if:
            condition:
-             - lambda: return (${auto_off_boolean} && ${off_scene_1}.0 != x);
+             - lambda: return (${auto_off_boolean_1} && ${off_scene_1}.0 != x);
            then:
              - delay: ${delay_time}
              - number.set:
