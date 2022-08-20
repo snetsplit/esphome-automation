@@ -31,7 +31,7 @@ substitutions:
   off_scene_1: '0'
   on_scene_1: '1'
   delay_time_1: "1min"
-  scene_light_host_string_1: '{}'
+  scene_light_host_string_1: ""
   
   home_assistant_host: "home.lan"
   ping_rate: 16sec
