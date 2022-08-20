@@ -99,7 +99,11 @@ web_server:
   
 captive_portal:
 
-
+http_request:
+  id: http_request_data
+  useragent: esphome/device
+  timeout: 2s
+  esp8266_disable_ssl_support: true
 
 switch:
   - platform: gpio
