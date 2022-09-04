@@ -315,7 +315,23 @@ binary_sensor:
           id: "${switch_2_name}_scene"
           cycle: true
         
-        
+text_sensor:
+  - platform: template
+    name: "Current time"
+    lambda: |-
+      char str[17];
+      time_t currTime = id(sntp_time).now().timestamp;
+      strftime(str, sizeof(str), "%Y-%m-%d %H:%M", localtime(&currTime));
+      return  { str };
+    update_interval: 60s
+    
+    
+
+button:
+  - platform: restart
+    id: restart_button
+    name: "${friendly_name} Restart"  
+    
 number:
   - platform: template
     id: "${switch_1_name}_scene"
