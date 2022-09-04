@@ -243,7 +243,14 @@ text_sensor:
       strftime(str, sizeof(str), "%Y-%m-%d %H:%M", localtime(&currTime));
       return  { str };
     update_interval: 60s
-         
+    
+    
+
+button:
+  - platform: restart
+    id: restart_button
+    name: "${friendly_name} Restart"  
+
 binary_sensor:
   - platform: gpio
     pin: GPIO16
