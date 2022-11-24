@@ -303,8 +303,9 @@ number:
                          - lambda: return (id(scene_light_index_1) < id(scene_light_host_string_1).size());
                        then:
                          - http_request.post: !lambda |- 
-                                     std::string sceneName = "http://" + id(scene_light_host_string_1).at(id(scene_light_index_1)) + "/number/scene/set?value=" + std::to_string(int(x));
-                                     ESP_LOGI("scene", "Setting vanity right: [%s]", sceneName); 
+                                    // std::string sceneName = "http://" + id(scene_light_host_string_1).at(id(scene_light_index_1)) + "/number/scene/set?value=" + std::to_string(int(x));
+                                     std::string sceneName = id(scene_light_host_string_1).at(id(scene_light_index_1)) + "/set?value=" + std::to_string(int(x));
+                                     ESP_LOGI("scene", "Setting switch at: [%s]", sceneName); 
                                      id(scene_light_index_1) += 1;
                                      return sceneName;   
                 else:
