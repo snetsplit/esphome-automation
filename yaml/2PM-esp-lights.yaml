@@ -1,6 +1,7 @@
 #code used from: 
 #https://www.esphome-devices.com/devices/Shelly-1PM
 #https://www.esphome-devices.com/devices/Shelly-25
+#NOT COMPLETE. NOT WARRENTIED. USE AT OWN RISK.
 globals:
    - id: too_hot_boolean
      type: bool
