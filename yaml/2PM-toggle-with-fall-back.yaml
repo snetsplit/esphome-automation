@@ -2,6 +2,7 @@
 #https://www.esphome-devices.com/devices/Shelly-1PM
 #https://www.esphome-devices.com/devices/Shelly-25
 #https://community.home-assistant.io/t/fall-back-to-relay-if-not-connected-to-ha/396459/11
+#NOT COMPLETE. NOT WARRENTIED. USE AT OWN RISK.
 globals:
    - id: basic_edge_switch_1_toggle_boolean
      type: bool
