@@ -57,7 +57,7 @@ i2c:
   scl: GPIO14
 
 api:
-   reboot_timeout: 0
+   reboot_timeout: 0s
 
 ota:
 
