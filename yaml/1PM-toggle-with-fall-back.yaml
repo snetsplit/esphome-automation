@@ -54,10 +54,13 @@ substitutions:
 i2c:
   sda: GPIO12
   scl: GPIO14
-
+  
 api:
-
+   reboot_timeout: 0
+   
 ota:
+
+logger:
 
 esphome:
   name: ${device_name}
@@ -91,7 +94,7 @@ wifi:
   ap:
     ssid: "${nice_name} Fallback"
     password: ${password}
-
+  power_save_mode: HIGH # for ESP8266 LOW/HIGH are mixed up, esphome/issues/issues/1532
 
 web_server:
   port: ${web_server_port}
