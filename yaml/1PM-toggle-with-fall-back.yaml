@@ -1,4 +1,5 @@
 #source for orginal: https://www.esphome-devices.com/devices/Shelly-1PM
+#NOT COMPLETE. NOT WARRENTIED. USE AT OWN RISK.
 globals:
    - id: basic_edge_switch_toggle_boolean
      type: bool
