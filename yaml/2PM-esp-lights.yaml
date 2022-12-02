@@ -85,7 +85,8 @@ wifi:
   ap:
     ssid: "${friendly_name} Fallback"
     password: ${password}
-
+  power_save_mode: HIGH # for ESP8266 LOW/HIGH are mixed up, esphome/issues/issues/1532
+  
 esphome:
   name: ${device_name}
   platform: ESP8266
@@ -119,6 +120,9 @@ logger:
   level: DEBUG
 
 api:
+   reboot_timeout: 0
+
+logger:
 
 web_server:
   port: 80
