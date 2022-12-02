@@ -92,7 +92,6 @@ wifi:
   ssid: ${ssid}
   password: ${password}
   use_address: ${address}
-  reboot_timeout: 1h
   output_power: 19db
   ap:
     ssid: "${friendly_name} Fallback"
@@ -130,7 +129,7 @@ ota:
 logger:
 
 api:
-   reboot_timeout: 0
+   reboot_timeout: 0s
 
 web_server:
   port: ${web_server_port}
