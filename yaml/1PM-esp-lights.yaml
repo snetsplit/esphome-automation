@@ -61,6 +61,8 @@ api:
 
 ota:
 
+logger:
+
 esphome:
   name: ${device_name}
   platform: ESP8266
@@ -100,7 +102,7 @@ wifi:
   ap:
     ssid: "${nice_name} Fallback"
     password: ${password}
-
+  power_save_mode: HIGH # for ESP8266 LOW/HIGH are mixed up, esphome/issues/issues/1532
 
 web_server:
   port: ${web_server_port}
