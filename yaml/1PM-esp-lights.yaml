@@ -1,4 +1,5 @@
 #source for orginal: https://www.esphome-devices.com/devices/Shelly-1PM
+#NOT COMPLETE. NOT WARRENTIED. USE AT OWN RISK.
 globals:
    - id: too_hot_boolean
      type: bool
