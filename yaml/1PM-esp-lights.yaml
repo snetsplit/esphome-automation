@@ -278,7 +278,7 @@ binary_sensor:
 number:
   - platform: template
     name: "Scene"
-    id: "${scene_id}
+    id: "${scene_id}"
     optimistic: true
     min_value: ${light_automation_input_number_min_1}
     max_value: ${light_automation_input_number_max_1}
