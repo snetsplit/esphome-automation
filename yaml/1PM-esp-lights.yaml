@@ -77,7 +77,7 @@ esphome:
     then:
       - if:
             condition:
-              - lambda: return ((strcmp("${restore_mode_1}", "ALWAYS_OFF") != 0) && ${off_scene_1}.0 != id(scene).state);
+              - lambda: return ((strcmp("${restore_mode_1}", "ALWAYS_OFF") != 0) && ${off_scene_1}.0 != id(${scene_id}).state);
             then:
               - switch.turn_on: shelly_relay_1
             else:
@@ -88,7 +88,7 @@ esphome:
             then:
              - lambda: |-
                   json::parse_json(id(http_request_data).get_string(), [](JsonObject root) {
-                      id(scene).publish_state(root["state"]);
+                      id(${scene_id}).publish_state(root["state"]);
                   });
                   
 time:
@@ -128,7 +128,7 @@ switch:
     on_turn_on:
       - if:
            condition:
-             - lambda: return (${auto_off_boolean_1} && (${off_scene_1}.0 == id(scene).state));
+             - lambda: return (${auto_off_boolean_1} && (${off_scene_1}.0 == id(${scene_id}).state));
            then:
              - number.set:
                  id: "${scene_id}"
