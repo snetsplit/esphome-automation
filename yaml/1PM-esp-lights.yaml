@@ -20,6 +20,7 @@ globals:
 substitutions:
   nice_name: "1PM Shelly"
   device_name: "shelly1pm"
+  scene_id: "${device_name}_scene"
   name: ${device_name}
   max_temp_1: "80.0"
   max_power_1: "1600.0"
@@ -130,7 +131,7 @@ switch:
              - lambda: return (${auto_off_boolean_1} && (${off_scene_1}.0 == id(scene).state));
            then:
              - number.set:
-                 id: "scene"
+                 id: "${scene_id}"
                  value: ${on_scene_1}
            else:                         
       
@@ -269,7 +270,7 @@ binary_sensor:
     on_state:
       then:
       - number.increment:
-          id: "scene"
+          id: "${scene_id}"
           cycle: true
     internal: false
     id: switchid
@@ -277,7 +278,7 @@ binary_sensor:
 number:
   - platform: template
     name: "Scene"
-    id: "${device_name}_scene"
+    id: "${scene_id}
     optimistic: true
     min_value: ${light_automation_input_number_min_1}
     max_value: ${light_automation_input_number_max_1}
@@ -309,7 +310,7 @@ number:
                          - http_request.post: !lambda |- 
                                     // std::string sceneName = "http://" + id(scene_light_host_string_1).at(id(scene_light_index_1)) + "/number/scene/set?value=" + std::to_string(int(x));
                                      std::string sceneName = id(scene_light_host_string_1).at(id(scene_light_index_1)) + "/set?value=" + std::to_string(int(x));
-                                     ESP_LOGI("scene", "Setting switch at: [%s]", sceneName); 
+                                     ESP_LOGI("${scene_id}", "Setting switch at: [%s]", sceneName); 
                                      id(scene_light_index_1) += 1;
                                      return sceneName;   
                 else:
@@ -328,7 +329,7 @@ number:
                          - lambda: return ((${off_scene_1}.0 == x) && (${on_scene_1}.0 == x));
                        then:
                          - number.set:
-                             id: "scene"
+                             id: "${scene_id}"
                              value: ${off_scene_1}
             - if:
                  condition:
@@ -336,7 +337,7 @@ number:
                  then:
                    - delay: ${delay_time_1}
                    - number.set:
-                       id: "scene"
+                       id: "${scene_id}"
                        value: ${off_scene_1}
 
     
@@ -353,7 +354,7 @@ sun:
                - lambda: return  ${sunrise_enabled_1};
              then:
                - number.set:
-                   id: "scene"
+                   id: "${scene_id}"
                    value: ${sunrise_scene_1}
 
   on_sunset:
@@ -365,5 +366,5 @@ sun:
                - lambda: return  ${sunset_enabled_1};
              then:
                - number.set:
-                   id: "scene"
+                   id: "${scene_id}"
                    value: ${sunset_scene_1}
