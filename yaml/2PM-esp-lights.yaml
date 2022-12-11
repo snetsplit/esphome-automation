@@ -355,7 +355,7 @@ number:
                 - lambda: return ((${light_automation_1_input_number_max} != 1) && (x == 1) && ${dont_ignore_sun_1});
             then:
               - number.increment:
-                   id: "${device_name}_scene"
+                   id: "${switch_1_name}_scene"
                    cycle: true
             else:
                - if:
@@ -423,7 +423,7 @@ number:
                 - lambda: return ((${light_automation_2_input_number_max} != 1) && (x == 1) && ${dont_ignore_sun_2});
             then:
               - number.increment:
-                   id: "${device_name}_scene"
+                   id: "${switch_2_name}_scene"
                    cycle: true
             else:
                - if:
