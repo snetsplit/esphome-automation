@@ -5,10 +5,6 @@ globals:
      type: bool
      restore_value: false
      initial_value: 'false'
-   - id: dont_ignore_sun_1
-     type: bool
-     restore_value: false
-     initial_value: ${dont_ignore_sun_1}
    - id: light_automation_input_number_previous_1
      type: unsigned int
      restore_value: no
@@ -50,7 +46,7 @@ substitutions:
   sunset_scene_1: "1"
   sunrise_elevation_1: "-0.833"
   sunset_elevation_1: "-0.833"
-  energy_saving_1: "true"
+  energy_saving_1: "false"
   
   dont_ignore_sun_1: "true"
 
