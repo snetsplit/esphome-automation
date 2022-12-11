@@ -330,9 +330,9 @@ number:
                 - sun.is_above_horizon:
                 - lambda: return x == 1;
             then:
-              - number.set:
-                  id: "${device_name}_scene"
-                  value: ${on_scene_1}
+              - number.increment:
+                   id: "${device_name}_scene"
+                   cycle: true
             else:
               - if:
                   condition:
