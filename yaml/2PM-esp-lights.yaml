@@ -48,6 +48,7 @@ substitutions:
   sunrise_scene_1: "0"
   sunset_scene_1: "1"
   energy_saving_1: "true"
+  dont_ignore_sun_1: "true"
   
   switch_2_name: "switch_2"
   switch_2_friendly_name: "Switch 2"
@@ -68,6 +69,7 @@ substitutions:
   sunrise_scene_2: "0"
   sunset_scene_2: "1"
   energy_saving_2: "true"
+  dont_ignore_sun_2: "true"
 
   
   latitude: 48.8584°
@@ -323,8 +325,12 @@ text_sensor:
       strftime(str, sizeof(str), "%Y-%m-%d %H:%M", localtime(&currTime));
       return  { str };
     update_interval: 60s
-    
-    
+  - platform: sun
+    name: Sunrise
+    type: sunrise
+  - platform: sun
+    name: Sunset
+    type: sunset        
 
 button:
   - platform: restart
@@ -343,52 +349,62 @@ number:
     on_value:
       then:
       - if:
-          condition:
-            - wifi.connected:
-          then:
-            - if:
-                 condition:
-                   - lambda: return (${energy_saving_1} && (${off_scene_1}.0 == x));
-                 then:
-                   - switch.turn_off: shelly_relay_1
-                 else:
-                   - switch.turn_on: shelly_relay_1
-            - lambda: id(scene_light_index_1) = 0;
-            - while:
-                 condition:
-                   - lambda: return (id(scene_light_index_1) < id(scene_light_host_string_1).size());
-                 then:
-                   - http_request.post: !lambda |- 
-                               std::string sceneName = "http://" + id(scene_light_host_string_1).at(id(scene_light_index_1)) + "/number/scene/set?value=" + std::to_string(int(x));
-                               ESP_LOGI("scene", "Setting vanity right: [%s]", sceneName); 
-                               id(scene_light_index_1) += 1;
-                               return sceneName;  
-          else:
-            - if:
-                 condition:
-                   - lambda: return (${off_scene_1}.0 == x);
-                 then:
-                   - switch.turn_off: shelly_relay_1
-            - if:
-                 condition:
-                   - lambda: return (${on_scene_1}.0 == x);
-                 then:
-                   - switch.turn_on: shelly_relay_1
-            - if:
-                 condition:
-                   - lambda: return ((${off_scene_1}.0 == x) && (${on_scene_1}.0 == x));
-                 then:
-                   - number.set:
-                       id: "${switch_1_name}_scene"
-                       value: ${off_scene_1}
-      - if:
-           condition:
-             - lambda: return (${auto_off_boolean_1} && ${off_scene_1}.0 != x);
-           then:
-             - delay: ${delay_time_1}
-             - number.set:
-                 id: "${switch_1_name}_scene"
-                 value: ${off_scene_1}
+            condition:
+              and:
+                - sun.is_above_horizon:
+                - lambda: return ((${light_automation_1_input_number_max} != 1) && (x == 1) && ${dont_ignore_sun_1});
+            then:
+              - number.increment:
+                   id: "${device_name}_scene"
+                   cycle: true
+            else:
+               - if:
+                   condition:
+                     - wifi.connected:
+                   then:
+                     - if:
+                          condition:
+                            - lambda: return (${energy_saving_1} && (${off_scene_1}.0 == x));
+                          then:
+                            - switch.turn_off: shelly_relay_1
+                          else:
+                            - switch.turn_on: shelly_relay_1
+                     - lambda: id(scene_light_index_1) = 0;
+                     - while:
+                          condition:
+                            - lambda: return (id(scene_light_index_1) < id(scene_light_host_string_1).size());
+                          then:
+                            - http_request.post: !lambda |- 
+                                        std::string sceneName = "http://" + id(scene_light_host_string_1).at(id(scene_light_index_1)) + "/number/scene/set?value=" + std::to_string(int(x));
+                                        ESP_LOGI("scene", "Setting vanity right: [%s]", sceneName); 
+                                        id(scene_light_index_1) += 1;
+                                        return sceneName;  
+                   else:
+                     - if:
+                          condition:
+                            - lambda: return (${off_scene_1}.0 == x);
+                          then:
+                            - switch.turn_off: shelly_relay_1
+                     - if:
+                          condition:
+                            - lambda: return (${on_scene_1}.0 == x);
+                          then:
+                            - switch.turn_on: shelly_relay_1
+                     - if:
+                          condition:
+                            - lambda: return ((${off_scene_1}.0 == x) && (${on_scene_1}.0 == x));
+                          then:
+                            - number.set:
+                                id: "${switch_1_name}_scene"
+                                value: ${off_scene_1}
+               - if:
+                    condition:
+                      - lambda: return (${auto_off_boolean_1} && ${off_scene_1}.0 != x);
+                    then:
+                      - delay: ${delay_time_1}
+                      - number.set:
+                          id: "${switch_1_name}_scene"
+                          value: ${off_scene_1}
                  
   - platform: template
     id: "${switch_2_name}_scene"
@@ -401,52 +417,62 @@ number:
     on_value:
       then:
       - if:
-          condition:
-            - wifi.connected:
-          then:
-            - if:
-                 condition:
-                   - lambda: return (${energy_saving_2} && (${off_scene_2}.0 == x));
-                 then:
-                   - switch.turn_off: shelly_relay_2
-                 else:
-                   - switch.turn_on: shelly_relay_2
-            - lambda: id(scene_light_index_2) = 0;
-            - while:
-                 condition:
-                   - lambda: return (id(scene_light_index_2) < id(scene_light_host_string_2).size());
-                 then:
-                   - http_request.post: !lambda |- 
-                               std::string sceneName = "http://" + id(scene_light_host_string_2).at(id(scene_light_index_2)) + "/number/scene/set?value=" + std::to_string(int(x));
-                               ESP_LOGI("scene", "Setting vanity right: [%s]", sceneName); 
-                               id(scene_light_index_2) += 1;
-                               return sceneName;  
-          else:
-            - if:
-                 condition:
-                   - lambda: return (${off_scene_2}.0 == x);
-                 then:
-                   - switch.turn_off: shelly_relay_2
-            - if:
-                 condition:
-                   - lambda: return (${on_scene_2}.0 == x);
-                 then:
-                   - switch.turn_on: shelly_relay_2
-            - if:
-                 condition:
-                   - lambda: return ((${off_scene_2}.0 == x) && (${on_scene_2}.0 == x));
-                 then:
-                   - number.set:
-                       id: "${switch_2_name}_scene"
-                       value: ${off_scene_2}
-      - if:
-           condition:
-             - lambda: return (${auto_off_boolean_2} && ${off_scene_2}.0 != x);
-           then:
-             - delay: ${delay_time_2}
-             - number.set:
-                 id: "${switch_2_name}_scene"
-                 value: ${off_scene_2}
+            condition:
+              and:
+                - sun.is_above_horizon:
+                - lambda: return ((${light_automation_2_input_number_max} != 1) && (x == 1) && ${dont_ignore_sun_2});
+            then:
+              - number.increment:
+                   id: "${device_name}_scene"
+                   cycle: true
+            else:
+               - if:
+                   condition:
+                     - wifi.connected:
+                   then:
+                     - if:
+                          condition:
+                            - lambda: return (${energy_saving_2} && (${off_scene_2}.0 == x));
+                          then:
+                            - switch.turn_off: shelly_relay_2
+                          else:
+                            - switch.turn_on: shelly_relay_2
+                     - lambda: id(scene_light_index_2) = 0;
+                     - while:
+                          condition:
+                            - lambda: return (id(scene_light_index_2) < id(scene_light_host_string_2).size());
+                          then:
+                            - http_request.post: !lambda |- 
+                                        std::string sceneName = "http://" + id(scene_light_host_string_2).at(id(scene_light_index_2)) + "/number/scene/set?value=" + std::to_string(int(x));
+                                        ESP_LOGI("scene", "Setting vanity right: [%s]", sceneName); 
+                                        id(scene_light_index_2) += 1;
+                                        return sceneName;  
+                   else:
+                     - if:
+                          condition:
+                            - lambda: return (${off_scene_2}.0 == x);
+                          then:
+                            - switch.turn_off: shelly_relay_2
+                     - if:
+                          condition:
+                            - lambda: return (${on_scene_2}.0 == x);
+                          then:
+                            - switch.turn_on: shelly_relay_2
+                     - if:
+                          condition:
+                            - lambda: return ((${off_scene_2}.0 == x) && (${on_scene_2}.0 == x));
+                          then:
+                            - number.set:
+                                id: "${switch_2_name}_scene"
+                                value: ${off_scene_2}
+               - if:
+                    condition:
+                      - lambda: return (${auto_off_boolean_2} && ${off_scene_2}.0 != x);
+                    then:
+                      - delay: ${delay_time_2}
+                      - number.set:
+                          id: "${switch_2_name}_scene"
+                          value: ${off_scene_2}
                          
 sun:
   latitude: ${latitude}
