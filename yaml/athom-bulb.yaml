@@ -1,5 +1,5 @@
 substitutions:
-  name: "athom_bulb"
+  name: "athom-bulb"
   id: "athom_bulb"
   friendly_name: "Athom Bulb"
   light_automation_1_input_number_min: "0"
@@ -8,7 +8,7 @@ substitutions:
   project_version: "1.0"
   light_restore_mode: ALWAYS_ON
   color_interlock: 'true'
-  address: "${device_name}-light.lan"
+  address: "${name}-light.lan"
   web_server_port: "80"
   ssid: "IP freely"
   password: "ewwwwwwwww"
@@ -62,7 +62,7 @@ web_server:
 
 wifi:
   ap:
-    ssid: "${nice_name} Fallback"
+    ssid: "${friendly_name} Fallback"
     password: ${password}
   networks:
    - ssid: ${ssid}
@@ -91,7 +91,7 @@ sensor:
     name: "${friendly_name} Uptime"
   - platform: ntc
     sensor: temp_resistance_reading
-    name: "${nice_name} Temperature"
+    name: "${friendly_name} Temperature"
     unit_of_measurement: "°C"
     accuracy_decimals: 1
     device_class: temperature
