@@ -46,8 +46,8 @@ substitutions:
   ssid: "IP freely"
   password: "ewwwwwwwww"
   
-  sunrise_enabled: "false"
-  sunset_enabled: "false"
+  sunrise_enabled: "true"
+  sunset_enabled: "true"
   sunrise_scene: "0"
   sunset_scene: "1"
   latitude: 48.8584°
