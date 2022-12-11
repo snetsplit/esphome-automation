@@ -297,7 +297,7 @@ number:
             condition:
               and:
                 - sun.is_above_horizon:
-                - lambda: return ((x == 1) && ${dont_ignore_sun_1});
+                - lambda: return ((${light_automation_input_number_max_1} != 1) && (x == 1) && ${dont_ignore_sun_1});
             then:
               - number.increment:
                    id: "${device_name}_scene"
