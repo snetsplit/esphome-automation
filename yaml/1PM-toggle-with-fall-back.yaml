@@ -283,10 +283,10 @@ text_sensor:
       return  { str };
     update_interval: 60s
   - platform: sun
-    name: Sun Sunrise
+    name: Sunrise
     type: sunrise
   - platform: sun
-    name: Sun Sunset
+    name: Sunset
     type: sunset    
 
 button:
