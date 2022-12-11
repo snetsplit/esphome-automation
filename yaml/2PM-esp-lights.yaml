@@ -47,7 +47,7 @@ substitutions:
   sunset_enabled_1: "false"
   sunrise_scene_1: "0"
   sunset_scene_1: "1"
-  energy_saving_1: "true"
+  energy_saving_1: "false"
   dont_ignore_sun_1: "true"
   
   switch_2_name: "switch_2"
@@ -68,7 +68,7 @@ substitutions:
   sunset_enabled_2: "false"
   sunrise_scene_2: "0"
   sunset_scene_2: "1"
-  energy_saving_2: "true"
+  energy_saving_2: "false"
   dont_ignore_sun_2: "true"
 
   
