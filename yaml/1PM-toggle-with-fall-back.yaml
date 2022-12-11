@@ -9,10 +9,10 @@ globals:
      type: bool
      restore_value: false
      initial_value: 'false'
-   - id: nighty_night
+   - id: dont_ignore_sun
      type: bool
      restore_value: false
-     initial_value: 'false'
+     initial_value: ${ignore_sun}
    - id: scene_light_index_1
      type: unsigned int
      restore_value: no
@@ -31,6 +31,7 @@ substitutions:
   restore_mode: RESTORE_DEFAULT_ON
   light_automation_input_number_min: '0'
   light_automation_input_number_max: '2'
+  dont_ignore_sun: "true"
   
   auto_off_boolean_1: "false"
   off_scene_1: '0'
@@ -328,7 +329,7 @@ number:
             condition:
               and:
                 - sun.is_above_horizon:
-                - lambda: return x == 1;
+                - lambda: return ((x == 1) && ${dont_ignore_sun_1});
             then:
               - number.increment:
                    id: "${device_name}_scene"
