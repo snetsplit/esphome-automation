@@ -318,7 +318,7 @@ number:
   - platform: template
     name: "${nice_name} Switch Scene"
     id: "${device_name}_scene"
-    optimistic: false
+    optimistic: true
     min_value: ${light_automation_input_number_min}
     max_value: ${light_automation_input_number_max}
     restore_value: true
