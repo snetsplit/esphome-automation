@@ -8,6 +8,11 @@ substitutions:
   project_version: "1.0"
   light_restore_mode: ALWAYS_ON
   color_interlock: 'true'
+  address: "${device_name}-light.lan"
+  web_server_port: "80"
+  ssid: "IP freely"
+  password: "ewwwwwwwww"
+  switch_ssid: "Switch Shelly Fallback"
 
 
 esphome:
@@ -54,19 +59,23 @@ web_server:
   port: 80
   local: true
 
+
 wifi:
-  ap: {} # This spawns an AP with the device name and mac address with no password.
+  ap:
+    ssid: "${nice_name} Fallback"
+    password: ${password}
   networks:
-   - ssid: !secret wifi_ssid
-     password: !secret wifi_password
-   - ssid: "Bathroom Shelly Fallback"
+   - ssid: ${ssid}
+     password: ${password}
+   - ssid: "${switch_ssid}"
      password: !secret wifi_password
      manual_ip: 
       static_ip: 192.168.4.4
       subnet: 255.255.255.0
       gateway: 192.168.4.1
       dns1: 192.168.4.1
-  use_address: vanity-right-light.lan
+  use_address: ${address}
+  power_save_mode: HIGH # for ESP8266 LOW/HIGH are mixed up, esphome/issues/issues/1532
   
 captive_portal:
 
@@ -80,7 +89,17 @@ binary_sensor:
 sensor:
   - platform: uptime
     name: "${friendly_name} Uptime"
-
+  - platform: ntc
+    sensor: temp_resistance_reading
+    name: "${nice_name} Temperature"
+    unit_of_measurement: "°C"
+    accuracy_decimals: 1
+    device_class: temperature
+    calibration:
+      b_constant: 3350
+      reference_resistance: 10kOhm
+      reference_temperature: 298.15K
+      
 button:
   - platform: restart
     id: restart_button
