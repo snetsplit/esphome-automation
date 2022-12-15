@@ -199,3 +199,22 @@ number:
                   color_mode: "COLOR_TEMPERATURE"
                   brightness: 100%
                   color_temperature: 6500 K
+
+  - platform: template
+    id: "brightness"
+    name: "Brightness"
+    optimistic: true
+    min_value: 0
+    max_value: 100
+    restore_value: true
+    step: 1
+    on_value:
+      then:
+        - if:
+            condition:
+              - lambda: return (1.0 == x);
+            then:
+              - light.turn_on:
+                  id: "${id}_rgbct_light"
+                  color_mode: "BRIGHTNESS"
+                  brightness: !lambda 'return x/100;'
