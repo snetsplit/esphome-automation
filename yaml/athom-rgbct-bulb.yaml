@@ -211,7 +211,7 @@ number:
       then:
         - light.turn_on:
             id: "${id}_rgbct_light"
-            color_mode: "RGB_COLOR_TEMPERATURE"
+            color_mode: "RGB_COLD_WARM_WHITE"
             color_brightness: !lambda 'return x/100.0;'
   - platform: template
     id: "white_brightness"
@@ -225,7 +225,7 @@ number:
       then:
         - light.turn_on:
             id: "${id}_rgbct_light"
-            color_mode: "RGB_COLOR_TEMPERATURE"
+            color_mode: "RGB_COLD_WARM_WHITE"
             brightness: !lambda 'return x/100.0;'
   - platform: template
     id: "color_tempreture"
@@ -239,7 +239,7 @@ number:
       then:
         - light.turn_on:
             id: "${id}_rgbct_light"
-            color_mode: "RGB_COLOR_TEMPERATURE"
+            color_mode: "RGB_COLD_WARM_WHITE"
             color_temperature: !lambda 'return x;'
   - platform: template
     id: "red"
@@ -253,7 +253,7 @@ number:
       then:
         - light.turn_on:
             id: "${id}_rgbct_light"
-            color_mode: "RGB_COLOR_TEMPERATURE"
+            color_mode: "RGB_COLD_WARM_WHITE"
             red: !lambda 'return x/100.0;'
   - platform: template
     id: "green"
@@ -267,7 +267,7 @@ number:
       then:
         - light.turn_on:
             id: "${id}_rgbct_light"
-            color_mode: "RGB_COLOR_TEMPERATURE"
+            color_mode: "RGB_COLD_WARM_WHITE"
             green: !lambda 'return x/100.0;'
   - platform: template
     id: "blue"
@@ -281,5 +281,5 @@ number:
       then:
         - light.turn_on:
             id: "${id}_rgbct_light"
-            color_mode: "RGB_COLOR_TEMPERATURE"
+            color_mode: "RGB_COLD_WARM_WHITE"
             blue: !lambda 'return x/100.0;'
