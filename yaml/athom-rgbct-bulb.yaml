@@ -217,4 +217,4 @@ number:
               - light.turn_on:
                   id: "${id}_rgbct_light"
                   color_mode: "BRIGHTNESS"
-                  brightness: !lambda 'return x\\100;'
+                  brightness: !lambda 'return x/100.0;'
