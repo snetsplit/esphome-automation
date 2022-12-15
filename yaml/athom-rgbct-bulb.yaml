@@ -199,10 +199,9 @@ number:
                   color_mode: "COLOR_TEMPERATURE"
                   brightness: 100%
                   color_temperature: 6500 K
-
   - platform: template
-    id: "brightness"
-    name: "${friendly_name} Brightness"
+    id: "color_brightness"
+    name: "${friendly_name} Color Brightness"
     optimistic: true
     min_value: 0
     max_value: 100
@@ -212,5 +211,75 @@ number:
       then:
         - light.turn_on:
             id: "${id}_rgbct_light"
-            color_mode: "BRIGHTNESS"
+            color_mode: "RGB_COLOR_TEMPERATURE"
+            color_brightness: !lambda 'return x/100.0;'
+  - platform: template
+    id: "white_brightness"
+    name: "${friendly_name} White Brightness"
+    optimistic: true
+    min_value: 0
+    max_value: 100
+    restore_value: true
+    step: 1
+    on_value:
+      then:
+        - light.turn_on:
+            id: "${id}_rgbct_light"
+            color_mode: "RGB_COLOR_TEMPERATURE"
             brightness: !lambda 'return x/100.0;'
+  - platform: template
+    id: "color_tempreture"
+    name: "${friendly_name} Color Tempreture"
+    optimistic: true
+    min_value: 2000
+    max_value: 6500
+    restore_value: true
+    step: 1
+    on_value:
+      then:
+        - light.turn_on:
+            id: "${id}_rgbct_light"
+            color_mode: "RGB_COLOR_TEMPERATURE"
+            color_temperature: !lambda 'return x;'
+  - platform: template
+    id: "red"
+    name: "${friendly_name} Red"
+    optimistic: true
+    min_value: 0
+    max_value: 100
+    restore_value: true
+    step: 1
+    on_value:
+      then:
+        - light.turn_on:
+            id: "${id}_rgbct_light"
+            color_mode: "RGB_COLOR_TEMPERATURE"
+            red: !lambda 'return x/100.0;'
+  - platform: template
+    id: "green"
+    name: "${friendly_name} Green"
+    optimistic: true
+    min_value: 0
+    max_value: 100
+    restore_value: true
+    step: 1
+    on_value:
+      then:
+        - light.turn_on:
+            id: "${id}_rgbct_light"
+            color_mode: "RGB_COLOR_TEMPERATURE"
+            green: !lambda 'return x/100.0;'
+  - platform: template
+    id: "blue"
+    name: "${friendly_name} Blue"
+    optimistic: true
+    min_value: 0
+    max_value: 100
+    restore_value: true
+    step: 1
+    on_value:
+      then:
+        - light.turn_on:
+            id: "${id}_rgbct_light"
+            color_mode: "RGB_COLOR_TEMPERATURE"
+            blue: !lambda 'return x/100.0;'
