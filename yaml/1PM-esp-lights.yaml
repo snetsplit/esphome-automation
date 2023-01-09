@@ -21,7 +21,7 @@ substitutions:
   nice_name: "1PM Shelly"
   sys_name: "1pm"
   scene_id: "${device_name}_scene"
-  device_name: ${sysname}_switch
+  device_name: ${sysname}-switch
   name: ${sysname}-switch
   max_temp_1: "80.0"
   max_power_1: "1600.0"
