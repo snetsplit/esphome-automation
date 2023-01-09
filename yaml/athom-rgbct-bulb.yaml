@@ -19,6 +19,7 @@ substitutions:
 esphome:
   name: ${name}
   name_add_mac_suffix: false
+  comment: "${name} Athom RGBCT Bulb"
   project:
     name: "${project_name}"
     version: "${project_version}"
