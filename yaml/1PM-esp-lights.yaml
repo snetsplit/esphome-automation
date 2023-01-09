@@ -21,7 +21,7 @@ substitutions:
   nice_name: "1PM Shelly"
   sys_name: "1pm"
   scene_id: "${device_name}_scene"
-  device_name: ${sysname}-switch
+  device_name: ${sysname}_switch
   name: ${sysname}-switch
   max_temp_1: "80.0"
   max_power_1: "1600.0"
@@ -70,7 +70,7 @@ ota:
 logger:
 
 esphome:
-  name: ${device_name}
+  name: ${name}
   platform: ESP8266
   board: esp01_1m
   comment: ${friendly_name}
