@@ -8,7 +8,7 @@ substitutions:
   project_version: "1.0"
   light_restore_mode: ALWAYS_ON
   color_interlock: 'true'
-  address: "${name}-light.lan"
+  domain: ".local"
   web_server_port: "80"
   ssid: "IP freely"
   password: "ewwwwwwwww"
@@ -64,6 +64,7 @@ wifi:
   ap:
     ssid: "${friendly_name} Fallback"
     password: ${password}
+  domain: ${domain}
   networks:
    - ssid: ${ssid}
      password: ${password}
@@ -74,7 +75,6 @@ wifi:
       subnet: 255.255.255.0
       gateway: 192.168.4.1
       dns1: 192.168.4.1
-  use_address: ${address}
   power_save_mode: HIGH # for ESP8266 LOW/HIGH are mixed up, esphome/issues/issues/1532
   
 captive_portal:
