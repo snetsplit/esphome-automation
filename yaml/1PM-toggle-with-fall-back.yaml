@@ -23,8 +23,9 @@ globals:
      
 substitutions:
   nice_name: "1PM Shelly"
-  device_name: "shelly1pm"
-  name: ${device_name}-switch
+  sys_name: "1pm"
+  device_name: ${sys_name}_switch
+  name: ${sys_name}-switch
   max_temp: "80.0"
   max_power: "1600.0"
   friendly_name: "${nice_name} Shelly"
@@ -69,7 +70,7 @@ ota:
 logger:
 
 esphome:
-  name: ${device_name}
+  name: ${name}
   platform: ESP8266
   board: esp01_1m
   comment: ${friendly_name}
