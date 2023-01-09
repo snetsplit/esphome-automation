@@ -36,7 +36,7 @@ substitutions:
   friendly_name: "Shelly 2.5"
   max_temp: "80.0"
   
-  address: "${device_name}-switch.lan"
+  domain: ".local"
   home_assistant_host: "home.lan"
   ping_rate: "16sec"
   web_server_port: "80"
@@ -92,8 +92,7 @@ substitutions:
 wifi:
   ssid: ${ssid}
   password: ${password}
-  use_address: ${address}
-  output_power: 19db
+  domain: ${domain}
   ap:
     ssid: "${friendly_name} Fallback"
     password: ${password}
