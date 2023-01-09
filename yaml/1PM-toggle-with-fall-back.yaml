@@ -41,7 +41,7 @@ substitutions:
   
   home_assistant_host: "home.lan"
   ping_rate: 16sec
-  address: "${device_name}-switch.lan"
+  domain: ".local"
   web_server_port: "80"
   ssid: "IP freely"
   password: "ewwwwwwwww"
@@ -96,7 +96,7 @@ time:
 wifi:
   ssid: ${ssid}
   password: ${password}
-  use_address: ${address}
+  domain: ${domain}
   ap:
     ssid: "${nice_name} Fallback"
     password: ${password}
