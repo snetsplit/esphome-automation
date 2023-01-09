@@ -2,6 +2,7 @@ substitutions:
   name: "athom-bulb"
   id: "athom_bulb"
   friendly_name: "Athom Bulb"
+  device_name: ${name}
   light_automation_1_input_number_min: "0"
   light_automation_1_input_number_max: "3"
   project_name: "athom.rgbct-light"
