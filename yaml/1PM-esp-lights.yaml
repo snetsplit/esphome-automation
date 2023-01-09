@@ -35,10 +35,10 @@ substitutions:
   delay_time_1: "1min"
   scene_light_host_string_1: ""
   
-  address: "${device_name}.local"
   web_server_port: "80"
   ssid: "IP freely"
   password: "ewwwwwwwww"
+  domain: ".local"
   
   sunrise_enabled_1: "true"
   sunset_enabled_1: "true"
@@ -103,7 +103,7 @@ time:
 wifi:
   ssid: ${ssid}
   password: ${password}
-  use_address: ${address}
+  domain: ${domain}
   ap:
     ssid: "${nice_name} Fallback"
     password: ${password}
