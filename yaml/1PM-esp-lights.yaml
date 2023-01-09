@@ -19,9 +19,10 @@ globals:
      
 substitutions:
   nice_name: "1PM Shelly"
-  device_name: "shelly1pm"
+  sys_name: "1pm"
   scene_id: "${device_name}_scene"
-  name: ${device_name}
+  device_name: ${sysname}_switch
+  name: ${sysname}-switch
   max_temp_1: "80.0"
   max_power_1: "1600.0"
   friendly_name: "${nice_name} Shelly"
