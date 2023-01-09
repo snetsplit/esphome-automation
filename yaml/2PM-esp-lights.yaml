@@ -27,7 +27,7 @@ substitutions:
   friendly_name: "Shelly 2.5"
   max_temp: "80.0"
   
-  address: "${device_name}-switch.lan"
+  domain: ".local"
 
   switch_1_name: "switch_1"
   switch_1_friendly_name: "Switch 1"
@@ -82,8 +82,7 @@ substitutions:
 wifi:
   ssid: ${ssid}
   password: ${password}
-  use_address: ${address}
-  output_power: 19db
+  domain: ${domain}
   ap:
     ssid: "${friendly_name} Fallback"
     password: ${password}
