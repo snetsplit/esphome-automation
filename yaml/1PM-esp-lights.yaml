@@ -87,7 +87,7 @@ esphome:
             else:
               - switch.turn_off: shelly_relay_1
       - http_request.get:
-          url: "http://${scene_master_host_1}/number/scene"
+          url: "${scene_master_host_1}"
           on_response:
             then:
              - lambda: |-
