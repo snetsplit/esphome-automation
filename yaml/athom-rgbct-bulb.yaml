@@ -14,6 +14,7 @@ substitutions:
   ssid: "IP freely"
   password: "ewwwwwwwww"
   switch_ssid: "Switch Shelly Fallback"
+  scene_master_host: "http://woo"
 
 
 esphome:
@@ -32,7 +33,7 @@ esphome:
     - priority: 200
       then:
       - http_request.get:
-          url: http://bathroom-switch.lan/number/scene
+          url: ${scene_master_host}
           on_response:
             then:
              - lambda: |-
