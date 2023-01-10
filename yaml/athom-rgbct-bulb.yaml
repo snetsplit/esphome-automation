@@ -110,6 +110,20 @@ button:
   - platform: restart
     id: restart_button
     name: "${friendly_name} Restart"
+  - platform: template
+    id: test
+    name: "${friendly_name} Test"
+    on_press:
+      then:
+      - http_request.get:
+          url: ${scene_master_host}
+          on_response:
+            then:
+             - lambda: |-
+                  json::parse_json(id(http_request_data).get_string(), [](JsonObject root) {
+                      id(scene).publish_state(root["state"]);
+                  });
+  
 
 output:
   - platform: esp8266_pwm
