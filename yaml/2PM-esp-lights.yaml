@@ -93,7 +93,7 @@ esphome:
   platform: ESP8266
   board: esp01_1m
   name_add_mac_suffix: false
-  comment: ${friendly_name}
+  comment: "${friendly_name} 2.5 ESPHome"
   libraries:
     - ESP8266WiFi
   on_boot:
