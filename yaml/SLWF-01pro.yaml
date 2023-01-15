@@ -1,0 +1,140 @@
+# Example configuration entry
+substitutions:
+  node_name: slwf-01pro-heatpump # Use a unique name.
+  node_id: slwf_01pro_heatpump    # Use a unique id.
+  friendly_node_name: "SLWF-01pro Heatpump"
+  web_server_port: "80"
+  ssid: "IP freely"
+  password: "ewwwwwwwww"
+  domain: ".local"
+  time_server1: "0.pool.ntp.org"
+  time_server2: "1.pool.ntp.org"
+  time_server3: "2.pool.ntp.org"
+  
+esphome:
+  name: ${node_name}
+  comment: ${friendly_node_name}
+  platform: ESP8266
+  board: esp01_1m
+  on_boot:
+    priority: 600
+    then:
+      lambda: id(${node_id}_beeper).turn_on();
+
+
+time:
+  - platform: sntp
+    id: sntp_time
+    servers: 
+      - ${time_server1}
+      - ${time_server2}
+      - ${time_server3}
+
+wifi:
+  ssid: ${ssid}
+  password: ${password}
+  domain: ${domain}
+  ap:
+    ssid: "${friendly_node_name} Fallback"
+    password: ${password}
+  power_save_mode: HIGH # for ESP8266 LOW/HIGH are mixed up, esphome/issues/issues/1532
+
+web_server:
+  port: ${web_server_port}
+  local: true
+
+
+captive_portal:
+
+# Enable Home Assistant API
+api:
+
+# Enable Over The Air updates
+ota:
+
+logger:
+
+
+# Binary Sensors.
+binary_sensor:
+  - platform: status
+    name: ${friendly_node_name} Connection Status
+    id: ${node_id}_connection_status
+
+# Sensors.
+sensor:
+  - platform: uptime
+    name: Uptime Sensor
+    id: ${node_id}_uptime_sensor
+    icon: mdi:clock-start
+    update_interval: 60s
+  - platform: wifi_signal
+    name: ${friendly_node_name} WiFi Signal
+    id: ${node_id}_wifi_signal
+    update_interval: 60s
+
+
+time:
+  - platform: sntp
+    id: sntp_time
+    servers: 
+      - "lan.lan"
+
+# Text Sensors.
+text_sensor:
+  - platform: version
+    name: ${friendly_node_name} ESPHome Version
+    id: ${node_id}_esphome_version    
+  - platform: wifi_info
+    ip_address:
+      name: ${friendly_node_name} IP Address
+      id: ${node_id}_ip_address
+      icon: mdi:ip-network
+
+switch:
+  - platform: template
+    name: ${friendly_node_name} Beeper
+    id: ${node_id}_beeper
+    icon: mdi:volume-source
+    optimistic: true
+    turn_on_action:
+      midea_ac.beeper_on:
+    turn_off_action:
+      midea_ac.beeper_off:
+  - platform: template
+    name: ${friendly_node_name} Boost
+    id: ${node_id}_boost
+    icon: mdi:car-turbocharger
+    optimistic: true
+    lambda: return (id(${node_id}_my_climate).preset == ClimatePreset::CLIMATE_PRESET_BOOST);
+    turn_on_action:
+        - lambda: |-
+            auto call = id(${node_id}_my_climate).make_call();
+            call.set_preset(ClimatePreset::CLIMATE_PRESET_BOOST);
+            call.perform();
+    turn_off_action:
+        - lambda: |-
+            auto call = id(${node_id}_my_climate).make_call();
+            call.set_preset(ClimatePreset::CLIMATE_PRESET_NONE);
+            call.perform();
+
+
+
+button:
+  - platform: restart
+    id: restart_button
+    name: "Restart"  
+
+uart:
+  tx_pin: GPIO1
+  rx_pin: GPIO3
+  baud_rate: 9600
+
+climate:
+  - platform: midea
+    id: ${node_id}_my_climate   # Use a unique id
+    name: ${friendly_node_name}          # Use a unique name
+    autoconf: true
+    outdoor_temperature:
+      id: ${node_id}_outside_tempreture   # Use a unique id
+      name: ${friendly_node_name} Outside Tempreture
