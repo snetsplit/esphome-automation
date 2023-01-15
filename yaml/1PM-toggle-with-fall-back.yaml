@@ -28,7 +28,7 @@ substitutions:
   name: ${sys_name}-switch
   max_temp: "80.0"
   max_power: "1600.0"
-  friendly_name: "${nice_name} Shelly"
+  friendly_name: "${nice_name} Shelly 1PM scenes"
   restore_mode: RESTORE_DEFAULT_ON
   light_automation_input_number_min: '0'
   light_automation_input_number_max: '2'
