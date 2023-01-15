@@ -73,13 +73,6 @@ sensor:
     id: ${node_id}_wifi_signal
     update_interval: 60s
 
-
-time:
-  - platform: sntp
-    id: sntp_time
-    servers: 
-      - "lan.lan"
-
 # Text Sensors.
 text_sensor:
   - platform: version
