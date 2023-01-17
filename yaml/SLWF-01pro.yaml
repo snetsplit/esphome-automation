@@ -105,6 +105,12 @@ switch:
     icon: mdi:car-turbocharger
     optimistic: true
     lambda: return id(auto_mode);  
+    turn_on_action:
+        - lambda: |-
+            id(auto_mode) = true;
+    turn_off_action:
+        - lambda: |-
+            id(auto_mode) = false;
   - platform: template
     name: ${friendly_node_name} Boost
     id: ${node_id}_boost
@@ -144,17 +150,25 @@ climate:
       name: ${friendly_node_name} Outside Tempreture
     on_state:
     - lambda: |-
-        ClimateMode climateMode = id(${node_id}_my_climate).mode;
-        if(id(${node_id}_my_climate).current_temperature < id(${node_id}_my_climate).target_temperature - 5) {
-          ClimateMode climateMode = ClimateMode::CLIMATE_MODE_HEAT;
-        } else if(id(${node_id}_my_climate).current_temperature > id(${node_id}_my_climate).target_temperature + 5) {
-          ClimateMode climateMode = ClimateMode::CLIMATE_MODE_COOL;
-        } 
-        
-        if (climateMode != id(${node_id}_my_climate).mode) {
-          auto call = id(${node_id}_my_climate).make_call();
-          call.set_preset(ClimatePreset::CLIMATE_PRESET_NONE);
-          call.perform();
+        if (id(auto_mode)) {
+           ClimateMode climateMode = id(${node_id}_my_climate).mode;
+           if (id(${node_id}_my_climate).current_temperature < id(${node_id}_my_climate).target_temperature - 5) {
+             climateMode = ClimateMode::CLIMATE_MODE_HEAT;
+           } else if(id(${node_id}_my_climate).current_temperature > id(${node_id}_my_climate).target_temperature + 5) {
+             climateMode = ClimateMode::CLIMATE_MODE_COOL;
+           } 
+
+           if (climateMode != id(${node_id}_my_climate).mode) {
+             auto call = id(${node_id}_my_climate).make_call();
+             call.set_mode(climateMode);
+             call.perform();
+           }
+           
+           if ((id(${node_id}_my_climate).current_temperature < id(${node_id}_my_climate).target_temperature - 5) || (id(${node_id}_my_climate).current_temperature > id(${node_id}_my_climate).target_temperature + 5)) {
+            auto call = id(${node_id}_my_climate).make_call();
+            call.set_preset(ClimatePreset::CLIMATE_PRESET_BOOST);
+            call.perform();
+           }
         }
     - if:
         condition:
