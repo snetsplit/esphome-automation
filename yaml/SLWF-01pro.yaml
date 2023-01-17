@@ -1,4 +1,9 @@
-# Example configuration entry
+globals:
+   - id: auto_mode
+     type: bool
+     restore_value: true
+     initial_value: 'false'
+
 substitutions:
   node_name: slwf-01pro-heatpump # Use a unique name.
   node_id: slwf_01pro_heatpump    # Use a unique id.
@@ -83,10 +88,6 @@ text_sensor:
       name: ${friendly_node_name} IP Address
       id: ${node_id}_ip_address
       icon: mdi:ip-network
-text_sensor:
-  - platform: template
-    name: "mode text"
-    id: mode_text
 
 switch:
   - platform: template
@@ -98,6 +99,12 @@ switch:
       midea_ac.beeper_on:
     turn_off_action:
       midea_ac.beeper_off:
+  - platform: template
+    name: ${friendly_node_name} Auto Mode
+    id: ${node_id}_auto_mode
+    icon: mdi:car-turbocharger
+    optimistic: true
+    lambda: return id(auto_mode);  
   - platform: template
     name: ${friendly_node_name} Boost
     id: ${node_id}_boost
@@ -135,3 +142,25 @@ climate:
     outdoor_temperature:
       id: ${node_id}_outside_tempreture   # Use a unique id
       name: ${friendly_node_name} Outside Tempreture
+    on_state:
+    - lambda: |-
+        ClimateMode climateMode = id(${node_id}_my_climate).mode;
+        if(id(${node_id}_my_climate).current_temperature < id(${node_id}_my_climate).target_temperature - 5) {
+          ClimateMode climateMode = ClimateMode::CLIMATE_MODE_HEAT;
+        } else if(id(${node_id}_my_climate).current_temperature > id(${node_id}_my_climate).target_temperature + 5) {
+          ClimateMode climateMode = ClimateMode::CLIMATE_MODE_COOL;
+        } 
+        
+        if (climateMode != id(${node_id}_my_climate).mode) {
+          auto call = id(${node_id}_my_climate).make_call();
+          call.set_preset(ClimatePreset::CLIMATE_PRESET_NONE);
+          call.perform();
+        }
+    - if:
+        condition:
+          and:
+            - switch.is_on: auto_mode
+            - binary_sensor.is_on: esp32_local_switch
+        then:
+          - output.turn_on: yellow_led
+#            - output.turn_on: esp32_blue_led
