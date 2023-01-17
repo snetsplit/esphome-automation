@@ -131,3 +131,5 @@ climate:
     outdoor_temperature:
       id: ${node_id}_outside_tempreture   # Use a unique id
       name: ${friendly_node_name} Outside Tempreture
+    on_state:
+    - logger.log: "State updated!"
