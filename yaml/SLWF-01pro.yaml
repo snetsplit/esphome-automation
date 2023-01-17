@@ -83,6 +83,10 @@ text_sensor:
       name: ${friendly_node_name} IP Address
       id: ${node_id}_ip_address
       icon: mdi:ip-network
+text_sensor:
+  - platform: template
+    name: "mode text"
+    id: mode_text
 
 switch:
   - platform: template
@@ -131,5 +135,3 @@ climate:
     outdoor_temperature:
       id: ${node_id}_outside_tempreture   # Use a unique id
       name: ${friendly_node_name} Outside Tempreture
-    on_state:
-    - logger.log: "State updated!"
