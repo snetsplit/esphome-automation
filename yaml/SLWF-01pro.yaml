@@ -170,11 +170,3 @@ climate:
             call.perform();
            }
         }
-    - if:
-        condition:
-          and:
-            - switch.is_on: auto_mode
-            - binary_sensor.is_on: esp32_local_switch
-        then:
-          - output.turn_on: yellow_led
-#            - output.turn_on: esp32_blue_led
