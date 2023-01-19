@@ -150,7 +150,7 @@ climate:
       name: ${friendly_node_name} Outside Tempreture
     on_state:
     - lambda: |-
-        if (id(auto_mode)) {
+        if (id(auto_mode).state) {
            ClimateMode climateMode = id(${node_id}_my_climate).mode;
            ClimatePreset climatePreset = id(${node_id}_my_climate).preset.value();
            
