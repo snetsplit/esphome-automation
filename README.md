@@ -1,4 +1,4 @@
-# shelly-esphome
+# ESPHome Automation
 ESPHome Shelly Yaml configs
 
 NOT COMPLETE. NOT WARRENTIED. USE AT OWN RISK.
