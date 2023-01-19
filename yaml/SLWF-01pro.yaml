@@ -149,8 +149,8 @@ climate:
       id: ${node_id}_outside_tempreture   # Use a unique id
       name: ${friendly_node_name} Outside Tempreture
     on_state:
+    - logger.log: "State updated!"
     - lambda: |-
-        ESP_LOGI("climate_auto", "auto mode: [%b]", id(auto_mode));
         if (id(auto_mode)) {
            ESP_LOGI("climate_auto", "applying mode: [%b]", "");
            ClimateMode climateMode = id(${node_id}_my_climate).mode;
