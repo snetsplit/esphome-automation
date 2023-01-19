@@ -152,6 +152,7 @@ climate:
     - lambda: |-
         if (id(auto_mode)) {
            ClimateMode climateMode = id(${node_id}_my_climate).mode;
+           ClimatePreset climatePreset = id(${node_id}_my_climate).preset;
            if (id(${node_id}_my_climate).current_temperature < id(${node_id}_my_climate).target_temperature - 5) {
              climateMode = ClimateMode::CLIMATE_MODE_HEAT;
            } else if(id(${node_id}_my_climate).current_temperature > id(${node_id}_my_climate).target_temperature + 5) {
@@ -164,9 +165,16 @@ climate:
              call.perform();
            }
            
-           if ((id(${node_id}_my_climate).current_temperature < id(${node_id}_my_climate).target_temperature - 5) || (id(${node_id}_my_climate).current_temperature > id(${node_id}_my_climate).target_temperature + 5)) {
+           if ((id(${node_id}_my_climate).current_temperature < id(${node_id}_my_climate).target_temperature - 8) || (id(${node_id}_my_climate).current_temperature > id(${node_id}_my_climate).target_temperature + 8)) {
+             climatePreset = ClimatePreset::CLIMATE_PRESET_BOOST;
+           } else {
+             climatePreset = ClimatePreset::CLIMATE_PRESET_NONE;
+           }      
+           
+           if (climateMode != id(${node_id}_my_climate).mode) {
             auto call = id(${node_id}_my_climate).make_call();
-            call.set_preset(ClimatePreset::CLIMATE_PRESET_BOOST);
+            call.set_preset(climatePreset);
             call.perform();
+           } else {
            }
         }
