@@ -177,7 +177,7 @@ climate:
            }  
 
            
-           ESP_LOGW("climate_mode", "applying mode: %d %d", static_cast<int>(climateMode), static_cast<int>(id(${node_id}_my_climate).mode);
+           ESP_LOGW("climate_mode", "applying mode: %d %d", static_cast<int>(climateMode), static_cast<int>(id(${node_id}_my_climate).mode));
            if (climateMode != id(${node_id}_my_climate).mode) {
              ESP_LOGW("climate_mode", "applying mode: [%s]", "");
              auto call = id(${node_id}_my_climate).make_call();
