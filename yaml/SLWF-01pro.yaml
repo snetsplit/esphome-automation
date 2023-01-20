@@ -58,6 +58,7 @@ api:
 ota:
 
 logger:
+  level: WARN
 
 
 # Binary Sensors.
@@ -152,35 +153,35 @@ climate:
     - logger.log: "State updated!"
     - lambda: |-
         if (id(auto_mode)) {
-           ESP_LOGI("climate_auto", "applying mode: [%b]", "");
+           ESP_LOGW("climate_auto", "applying mode: [%b]", "");
            ClimateMode climateMode = id(${node_id}_my_climate).mode;
            ClimatePreset climatePreset = id(${node_id}_my_climate).preset.value();
            
            if (id(${node_id}_my_climate).current_temperature < id(${node_id}_my_climate).target_temperature - 5) {
              climateMode = ClimateMode::CLIMATE_MODE_HEAT;
-             ESP_LOGI("climate_mode", "Mode: [%s]", "heat");
+             ESP_LOGW("climate_mode", "Mode: [%s]", "heat");
            } else if(id(${node_id}_my_climate).current_temperature > id(${node_id}_my_climate).target_temperature + 5) {
              climateMode = ClimateMode::CLIMATE_MODE_COOL;
-             ESP_LOGI("climate_mode", "Mode: [%s]", "cool");
+             ESP_LOGW("climate_mode", "Mode: [%s]", "cool");
            } 
            
            if ((id(${node_id}_my_climate).current_temperature < id(${node_id}_my_climate).target_temperature - 8) || (id(${node_id}_my_climate).current_temperature > id(${node_id}_my_climate).target_temperature + 8)) {
              climatePreset = ClimatePreset::CLIMATE_PRESET_BOOST;
-             ESP_LOGI("climate_preset", "Preset: [%s]", "boost");
+             ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
            } else {
              climatePreset = ClimatePreset::CLIMATE_PRESET_NONE;
-             ESP_LOGI("climate_preset", "Preset: [%s]", "none");
+             ESP_LOGW("climate_preset", "Preset: [%s]", "none");
            }  
 
            if (climateMode != id(${node_id}_my_climate).mode) {
-             ESP_LOGI("climate_mode", "applying mode: [%s]", "");
+             ESP_LOGW("climate_mode", "applying mode: [%s]", "");
              auto call = id(${node_id}_my_climate).make_call();
              call.set_mode(climateMode);
              call.perform();
            }    
            
            if (static_cast<int>(climateMode) != static_cast<int>(id(${node_id}_my_climate).preset.value())) {
-             ESP_LOGI("climate_mode", "applying preset: [%s]", "");
+             ESP_LOGW("climate_mode", "applying preset: [%s]", "");
             auto call = id(${node_id}_my_climate).make_call();
             call.set_preset(climatePreset);
             call.perform();
