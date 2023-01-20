@@ -176,6 +176,8 @@ climate:
              ESP_LOGW("climate_preset", "Preset: [%s]", "none");
            }  
 
+           
+           ESP_LOGW("climate_mode", "applying mode: %d %d", static_cast<int>(climateMode), static_cast<int>(id(${node_id}_my_climate).mode);
            if (climateMode != id(${node_id}_my_climate).mode) {
              ESP_LOGW("climate_mode", "applying mode: [%s]", "");
              auto call = id(${node_id}_my_climate).make_call();
@@ -183,8 +185,9 @@ climate:
              call.perform();
            }    
            
-           if (static_cast<int>(climateMode) != static_cast<int>(id(${node_id}_my_climate).preset.value())) {
-             ESP_LOGW("climate_mode", "applying preset: [%s]", "");
+           ESP_LOGW("climate_preset", "applying preset: %d %d", static_cast<int>(climatePreset), static_cast<int>(id(${node_id}_my_climate).preset.value()));
+           if (static_cast<int>(climatePreset) != static_cast<int>(id(${node_id}_my_climate).preset.value())) {
+             ESP_LOGW("climate_preset", "applying preset: [%s]", "");
             auto call = id(${node_id}_my_climate).make_call();
             call.set_preset(climatePreset);
             call.perform();
