@@ -153,7 +153,7 @@ climate:
     - logger.log: "State updated!"
     - lambda: |-
         if (id(auto_mode)) {
-           ESP_LOGW("climate_auto", "applying mode: [%b]", "");
+           ESP_LOGW("climate_auto", "applying mode%s", "");
            ClimateMode climateMode = id(${node_id}_my_climate).mode;
            ClimatePreset climatePreset = id(${node_id}_my_climate).preset.value();
            
@@ -163,6 +163,9 @@ climate:
            } else if(id(${node_id}_my_climate).current_temperature > id(${node_id}_my_climate).target_temperature + 5) {
              climateMode = ClimateMode::CLIMATE_MODE_COOL;
              ESP_LOGW("climate_mode", "Mode: [%s]", "cool");
+           } else {
+             climateMode = ClimateMode::CLIMATE_MODE_OFF;
+             ESP_LOGW("climate_mode", "Mode: [%s]", "off");
            } 
            
            if ((id(${node_id}_my_climate).current_temperature < id(${node_id}_my_climate).target_temperature - 8) || (id(${node_id}_my_climate).current_temperature > id(${node_id}_my_climate).target_temperature + 8)) {
