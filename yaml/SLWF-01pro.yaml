@@ -58,6 +58,7 @@ api:
 ota:
 
 logger:
+  level: WARN
 
 
 # Binary 
@@ -81,6 +82,7 @@ sensor:
     name: ${friendly_node_name} Room Tempreture C
     id: ${node_id}_room_temperature_c
     entity_id: sensor.rm4_mini_temperature
+    exported: true
   - platform: template
     name: ${friendly_node_name} Room Tempreture
     id: ${node_id}_room_temperature
