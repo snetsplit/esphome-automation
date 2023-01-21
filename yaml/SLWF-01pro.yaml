@@ -163,17 +163,20 @@ climate:
            } else if(id(${node_id}_my_climate).current_temperature > id(${node_id}_my_climate).target_temperature + 3) {
              climateMode = ClimateMode::CLIMATE_MODE_COOL;
              ESP_LOGW("climate_mode", "Mode: [%s]", "cool");
-           } else {
-             climateMode = ClimateMode::CLIMATE_MODE_OFF;
-             ESP_LOGW("climate_mode", "Mode: [%s]", "off");
            } 
            
-           if ((id(${node_id}_my_climate).current_temperature < id(${node_id}_my_climate).target_temperature - 5) || (id(${node_id}_my_climate).current_temperature > id(${node_id}_my_climate).target_temperature + 5)) {
+           if ((id(${node_id}_my_climate).current_temperature < id(${node_id}_my_climate).target_temperature - 5) && (climateMode == ClimateMode::CLIMATE_MODE_HEAT)) {
              climatePreset = ClimatePreset::CLIMATE_PRESET_BOOST;
              ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
-           } else {
+           } else if ((id(${node_id}_my_climate).current_temperature > id(${node_id}_my_climate).target_temperature + 5) && (climateMode == ClimateMode::CLIMATE_MODE_COOL)) {
+             climatePreset = ClimatePreset::CLIMATE_PRESET_BOOST;
+             ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
+           } else if ((id(${node_id}_my_climate).current_temperature > id(${node_id}_my_climate).target_temperature + 5) && (climateMode == ClimateMode::CLIMATE_MODE_HEAT)) {
              climatePreset = ClimatePreset::CLIMATE_PRESET_NONE;
-             ESP_LOGW("climate_preset", "Preset: [%s]", "none");
+             ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
+           } else if ((id(${node_id}_my_climate).current_temperature < id(${node_id}_my_climate).target_temperature - 5) && (climateMode == ClimateMode::CLIMATE_MODE_COOL)) {
+             climatePreset = ClimatePreset::CLIMATE_PRESET_NONE;
+             ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
            }  
 
            
