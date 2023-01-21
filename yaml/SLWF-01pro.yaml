@@ -82,7 +82,6 @@ sensor:
   - platform: homeassistant
     id: current_temperature
     entity_id: sensor.rm4_mini_temperature
-    attribute: current_temperature
 
 # Text Sensors.
 text_sensor:
