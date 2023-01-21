@@ -62,7 +62,6 @@ logger:
 
 
 # Binary 
-s.
 binary_sensor:
   - platform: status
     name: ${friendly_node_name} Connection Status
