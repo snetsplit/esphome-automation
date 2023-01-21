@@ -58,6 +58,7 @@ api:
 ota:
 
 logger:
+  level: WARN
 
 # Binary 
 binary_sensor:
