@@ -61,7 +61,8 @@ logger:
   level: WARN
 
 
-# Binary Sensors.
+# Binary 
+s.
 binary_sensor:
   - platform: status
     name: ${friendly_node_name} Connection Status
@@ -78,6 +79,10 @@ sensor:
     name: ${friendly_node_name} WiFi Signal
     id: ${node_id}_wifi_signal
     update_interval: 60s
+  - platform: homeassistant
+    id: current_temperature
+    entity_id: sensor.rm4_mini_temperature
+    attribute: current_temperature
 
 # Text Sensors.
 text_sensor:
