@@ -85,7 +85,7 @@ sensor:
   - platform: template
     name: ${friendly_node_name} Room Tempreture
     id: ${node_id}_room_temperature
-    lambda: return (id(${node_id}_room_temperature) - 32.0) *  .5556;
+    lambda: return (id(${node_id}_room_temperature).state - 32.0) *  .5556;
     unit_of_measurement: C
     update_interval: 60s
 
@@ -163,14 +163,14 @@ climate:
     - logger.log: "State updated!"
     - lambda: |-
         if (id(auto_mode)) {
-           ESP_LOGW("climate_temp", "applying mode: %f %f", id(${node_id}_my_climate).target_temperature, ${node_id}_room_temperature;
+           ESP_LOGW("climate_temp", "applying mode: %f %f", id(${node_id}_my_climate).target_temperature, id(${node_id}_room_temperature).state;
            ClimateMode climateMode = id(${node_id}_my_climate).mode;
            ClimatePreset climatePreset = id(${node_id}_my_climate).preset.value();
            
-           if(id(${node_id}_room_temperature) < id(${node_id}_my_climate).target_temperature - 3) {
+           if(id(${node_id}_room_temperature).state < id(${node_id}_my_climate).target_temperature - 3) {
              climateMode = ClimateMode::CLIMATE_MODE_HEAT;
              ESP_LOGW("climate_mode", "Mode: [%s]", "heat");
-           } else if(id(${node_id}_room_temperature)  > id(${node_id}_my_climate).target_temperature + 3) {
+           } else if(id(${node_id}_room_temperature).state  > id(${node_id}_my_climate).target_temperature + 3) {
              climateMode = ClimateMode::CLIMATE_MODE_COOL;
              ESP_LOGW("climate_mode", "Mode: [%s]", "cool");
            } 
@@ -178,13 +178,13 @@ climate:
            if((id(${node_id}_room_temperature) < id(${node_id}_my_climate).target_temperature - 5) && (climateMode == ClimateMode::CLIMATE_MODE_HEAT)) {
              climatePreset = ClimatePreset::CLIMATE_PRESET_BOOST;
              ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
-           } else if((id(${node_id}_room_temperature) > id(${node_id}_my_climate).target_temperature + 5) && (climateMode == ClimateMode::CLIMATE_MODE_COOL)) {
+           } else if((id(${node_id}_room_temperature).state > id(${node_id}_my_climate).target_temperature + 5) && (climateMode == ClimateMode::CLIMATE_MODE_COOL)) {
              climatePreset = ClimatePreset::CLIMATE_PRESET_BOOST;
              ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
-           } else if((id(${node_id}_room_temperature) > id(${node_id}_my_climate).target_temperature + 5) && (climateMode == ClimateMode::CLIMATE_MODE_HEAT)) {
+           } else if((id(${node_id}_room_temperature).state > id(${node_id}_my_climate).target_temperature + 5) && (climateMode == ClimateMode::CLIMATE_MODE_HEAT)) {
              climatePreset = ClimatePreset::CLIMATE_PRESET_NONE;
              ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
-           } else if((id(${node_id}_room_temperature) < id(${node_id}_my_climate).target_temperature - 5) && (climateMode == ClimateMode::CLIMATE_MODE_COOL)) {
+           } else if((id(${node_id}_room_temperature).state < id(${node_id}_my_climate).target_temperature - 5) && (climateMode == ClimateMode::CLIMATE_MODE_COOL)) {
              climatePreset = ClimatePreset::CLIMATE_PRESET_NONE;
              ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
            }  
