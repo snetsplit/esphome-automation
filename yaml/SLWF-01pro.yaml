@@ -163,7 +163,7 @@ climate:
     - logger.log: "State updated!"
     - lambda: |-
         if (id(auto_mode)) {
-           ESP_LOGW("climate_temp", "applying mode: %f %f", id(${node_id}_my_climate).target_temperature, id(${node_id}_room_temperature).state;
+           ESP_LOGW("climate_temp", "applying mode: %f %f", id(${node_id}_my_climate).target_temperature, id(${node_id}_room_temperature).state);
            ClimateMode climateMode = id(${node_id}_my_climate).mode;
            ClimatePreset climatePreset = id(${node_id}_my_climate).preset.value();
            
@@ -175,7 +175,7 @@ climate:
              ESP_LOGW("climate_mode", "Mode: [%s]", "cool");
            } 
            
-           if((id(${node_id}_room_temperature) < id(${node_id}_my_climate).target_temperature - 5) && (climateMode == ClimateMode::CLIMATE_MODE_HEAT)) {
+           if((id(${node_id}_room_temperature).state < id(${node_id}_my_climate).target_temperature - 5) && (climateMode == ClimateMode::CLIMATE_MODE_HEAT)) {
              climatePreset = ClimatePreset::CLIMATE_PRESET_BOOST;
              ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
            } else if((id(${node_id}_room_temperature).state > id(${node_id}_my_climate).target_temperature + 5) && (climateMode == ClimateMode::CLIMATE_MODE_COOL)) {
