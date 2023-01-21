@@ -77,15 +77,15 @@ sensor:
     id: ${node_id}_wifi_signal
     update_interval: 60s
   - platform: homeassistant
-    name: ${friendly_node_name} Room Tempreture C
-    id: ${node_id}_room_temperature_c
+    name: ${friendly_node_name} Room Tempreture F
+    id: ${node_id}_room_temperature_f
     entity_id: sensor.rm4_mini_temperature
     internal: false
   - platform: template
     name: ${friendly_node_name} Room Tempreture
     id: ${node_id}_room_temperature
-    lambda: return 20.0;
-    unit_of_measurement: C
+    lambda: return id(${node_id}_room_temperature_f).state;
+    unit_of_measurement: °C
     update_interval: 15s
 
 # Text Sensors.
