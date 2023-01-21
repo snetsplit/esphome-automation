@@ -84,7 +84,7 @@ sensor:
   - platform: template
     name: ${friendly_node_name} Room Tempreture
     id: ${node_id}_room_temperature
-    lambda: 20;
+    lambda: return 20.0;
     unit_of_measurement: C
     update_interval: 15s
 
