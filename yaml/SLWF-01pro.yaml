@@ -27,13 +27,16 @@ esphome:
   comment: ${friendly_node_name}
   platform: ESP8266
   board: esp01_1m
-  includes:
-    - https://github.com/snetsplit/esphome-automation/includes/SLWF-01pro.h
   on_boot:
     priority: 600
     then:
       lambda: id(${node_id}_beeper).turn_on();
 
+external_components:
+  # use rtttl and dfplayer from ESPHome's dev branch in GitHub
+  - source:
+      type: git
+      url: https://github.com/snetsplit/esphome-automation-includes
 
 time:
   - platform: sntp
