@@ -28,7 +28,7 @@ esphome:
   platform: ESP8266
   board: esp01_1m
   includes:
-    - ./SLWF-01pro.h
+    - https://github.com/snetsplit/esphome-automation/includes/SLWF-01pro.h
   on_boot:
     priority: 600
     then:
