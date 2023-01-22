@@ -194,7 +194,7 @@ switch:
                   call.set_preset(climatePreset);
                   call.perform();
                  }
-              }
+                }
   
   
 button:
