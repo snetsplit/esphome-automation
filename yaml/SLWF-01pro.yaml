@@ -130,7 +130,6 @@ switch:
   - platform: template
     name: ${friendly_node_name} Boost
     id: ${node_id}_boost
-    id: ${node_id}_automation_lambda
     icon: mdi:car-turbocharger
     optimistic: true
     lambda: return (id(${node_id}_my_climate).preset == ClimatePreset::CLIMATE_PRESET_BOOST);
@@ -147,7 +146,6 @@ switch:
   - platform: template
     name: ${node_id}_automation_lambda
     id: ${node_id}_automation_lambda
-    internal: true
     turn_off_action:
         - lambda: |-
             id(${node_id}_automation_lambda).publish_state(true);
