@@ -27,6 +27,8 @@ esphome:
   comment: ${friendly_node_name}
   platform: ESP8266
   board: esp01_1m
+  includes:
+    - SLWF-01pro.h
   on_boot:
     priority: 600
     then:
@@ -124,16 +126,7 @@ switch:
     lambda: return id(auto_mode);  
     turn_on_action:
         - lambda: |-
-            id(auto_mode) = true;
-            //trigger the automation when turned on
-            float target_tempreture = id(${node_id}_my_climate).target_temperature;
-            auto call = id(${node_id}_my_climate).make_call();
-            call.set_target_temperature(target_tempreture + 1);
-            call.perform();
-            delay(250);
-            auto call2 = id(${node_id}_my_climate).make_call();
-            call2.set_target_temperature(target_tempreture);
-            call2.perform();
+            set_climate();
     turn_off_action:
         - lambda: |-
             id(auto_mode) = false;
