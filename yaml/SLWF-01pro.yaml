@@ -146,10 +146,10 @@ switch:
   - platform: template
     name: ${node_id}_automation_lambda
     id: ${node_id}_automation_lambda
-    turn_off_action:
-        - lambda: |-
-            id(${node_id}_automation_lambda).publish_state(true);
     turn_on_action:
+        - lambda: |-
+            id(${node_id}_automation_lambda).publish_state(false);
+    turn_off_action:
         - lambda: |-
                 if (id(auto_mode)) {
                  ESP_LOGW("climate_temp", "applying mode: %f %f", id(${node_id}_my_climate).target_temperature, id(${node_id}_room_temperature).state);
