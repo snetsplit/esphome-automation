@@ -125,7 +125,10 @@ switch:
     turn_on_action:
         - lambda: |-
             id(auto_mode) = true;
-            id(${node_id}_room_temperature).set_target_temperature(${node_id}_room_temperature).target_temperature);
+            //trigger the automation when turned on
+             auto call = id(${node_id}_my_climate).make_call();
+             call.set_target_temperature(${node_id}_room_temperature).target_temperature);
+             call.perform();
     turn_off_action:
         - lambda: |-
             id(auto_mode) = false;
