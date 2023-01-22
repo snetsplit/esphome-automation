@@ -126,9 +126,12 @@ switch:
         - lambda: |-
             id(auto_mode) = true;
             //trigger the automation when turned on
-             auto call = id(${node_id}_my_climate).make_call();
-             call.set_target_temperature(id(${node_id}_my_climate).target_temperature);
-             call.perform();
+            float target_tempreture = id(${node_id}_my_climate).target_temperature;
+            auto call = id(${node_id}_my_climate).make_call();
+            call.set_target_temperature(target_tempreture + 1);
+            call.perform();
+            call.set_target_temperature(target_tempreture);
+            call.perform();
     turn_off_action:
         - lambda: |-
             id(auto_mode) = false;
