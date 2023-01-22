@@ -131,8 +131,9 @@ switch:
             call.set_target_temperature(target_tempreture + 1);
             call.perform();
             delay(250);
-            call.set_target_temperature(target_tempreture);
-            call.perform();
+            auto call2 = id(${node_id}_my_climate).make_call();
+            call2.set_target_temperature(target_tempreture);
+            call2.perform();
     turn_off_action:
         - lambda: |-
             id(auto_mode) = false;
