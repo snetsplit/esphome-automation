@@ -173,24 +173,24 @@ climate:
            ClimateMode climateMode = id(${node_id}_my_climate).mode;
            ClimatePreset climatePreset = id(${node_id}_my_climate).preset.value();
            
-           if(id(${node_id}_room_temperature).state < $heat_on) {
+           if(id(${node_id}_room_temperature).state < id(${node_id}_my_climate).target_temperature - $heat_on) {
              climateMode = ClimateMode::CLIMATE_MODE_HEAT;
              ESP_LOGW("climate_mode", "Mode: [%s]", "heat");
-           } else if(id(${node_id}_room_temperature).state  > $cool_on) {
+           } else if(id(${node_id}_room_temperature).state  > id(${node_id}_my_climate).target_temperature + $cool_on) {
              climateMode = ClimateMode::CLIMATE_MODE_COOL;
              ESP_LOGW("climate_mode", "Mode: [%s]", "cool");
            } 
            
-           if((id(${node_id}_room_temperature).state < $heat_turbo_on) && (climateMode == ClimateMode::CLIMATE_MODE_HEAT)) {
+           if((id(${node_id}_room_temperature).state < id(${node_id}_my_climate).target_temperature - $heat_turbo_on) && (climateMode == ClimateMode::CLIMATE_MODE_HEAT)) {
              climatePreset = ClimatePreset::CLIMATE_PRESET_BOOST;
              ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
-           } else if((id(${node_id}_room_temperature).state > $cool_turbo_on) && (climateMode == ClimateMode::CLIMATE_MODE_COOL)) {
+           } else if((id(${node_id}_room_temperature).state > id(${node_id}_my_climate).target_temperature + $cool_turbo_on) && (climateMode == ClimateMode::CLIMATE_MODE_COOL)) {
              climatePreset = ClimatePreset::CLIMATE_PRESET_BOOST;
              ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
-           } else if((id(${node_id}_room_temperature).state > $heat_turbo_off) && (climateMode == ClimateMode::CLIMATE_MODE_HEAT)) {
+           } else if((id(${node_id}_room_temperature).state > id(${node_id}_my_climate).target_temperature + $heat_turbo_off) && (climateMode == ClimateMode::CLIMATE_MODE_HEAT)) {
              climatePreset = ClimatePreset::CLIMATE_PRESET_NONE;
              ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
-           } else if((id(${node_id}_room_temperature).state < $cool_turbo_off) && (climateMode == ClimateMode::CLIMATE_MODE_COOL)) {
+           } else if((id(${node_id}_room_temperature).state < id(${node_id}_my_climate).target_temperature - $cool_turbo_off) && (climateMode == ClimateMode::CLIMATE_MODE_COOL)) {
              climatePreset = ClimatePreset::CLIMATE_PRESET_NONE;
              ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
            }  
