@@ -130,7 +130,7 @@ switch:
             auto call = id(${node_id}_my_climate).make_call();
             call.set_target_temperature(target_tempreture + 1);
             call.perform();
-            sleep(250);
+            delay(250);
             call.set_target_temperature(target_tempreture);
             call.perform();
     turn_off_action:
