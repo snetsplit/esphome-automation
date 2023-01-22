@@ -17,10 +17,10 @@ substitutions:
   time_server3: "2.pool.ntp.org"
   heat_on_below_set_temp: "3"
   cool_on_above_set_temp: "4"
-  heat_turbo_on_below_set_temp: $heat_on
-  cool_turbo_on_above_set_temp: $cool_on
+  heat_turbo_on_below_set_temp: $heat_on_below_set_temp
+  cool_turbo_on_above_set_temp: $cool_on_above_set_temp
   heat_turbo_off_above_set_temp: "2"
-  cool_turbo_off_below_set_temp: $heat_turbo_off
+  cool_turbo_off_below_set_temp: $heat_turbo_off_above_set_temp
   
 esphome:
   name: ${node_name}
