@@ -33,9 +33,10 @@ esphome:
       lambda: id(${node_id}_beeper).turn_on();
 
 external_components:
-  - source:
+ - source:
       type: git
       url: https://github.com/snetsplit/esphome-automation-includes
+      refresh: 0s
    refresh: 0s
 
 time:
