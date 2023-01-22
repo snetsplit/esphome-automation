@@ -125,7 +125,7 @@ switch:
     turn_on_action:
         - lambda: |-
             id(auto_mode) = true;
-            ${node_id}_room_temperature).set_target_temperature(${node_id}_room_temperature).target_temperature);
+            id(${node_id}_room_temperature).set_target_temperature(${node_id}_room_temperature).target_temperature);
     turn_off_action:
         - lambda: |-
             id(auto_mode) = false;
