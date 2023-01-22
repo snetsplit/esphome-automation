@@ -27,6 +27,8 @@ esphome:
   comment: ${friendly_node_name}
   platform: ESP8266
   board: esp01_1m
+  includes:
+    - SLWF-01pro.h
   on_boot:
     priority: 600
     then:
@@ -35,7 +37,7 @@ esphome:
 external_components:
  - source:
       type: git
-      url: https://github.com/snetsplit/esphome-automation-includes
+      url: https://github.com/snetsplit/esphome-automation
    refresh: 0s
 
 time:
