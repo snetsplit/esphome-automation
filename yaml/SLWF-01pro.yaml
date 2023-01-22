@@ -19,7 +19,7 @@ substitutions:
   cool_on_above_set_temp: "4"
   heat_turbo_on_below_set_temp: $heat_on_below_set_temp
   cool_turbo_on_above_set_temp: $cool_on_above_set_temp
-  heat_turbo_off_above_set_temp: "2"
+  heat_turbo_off_above_set_temp: "1"
   cool_turbo_off_below_set_temp: $heat_turbo_off_above_set_temp
   
 esphome:
