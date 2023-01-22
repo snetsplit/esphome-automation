@@ -146,9 +146,6 @@ switch:
   - platform: template
     name: ${node_id}_automation_lambda
     id: ${node_id}_automation_lambda
-    turn_on_action:
-        - lambda: |-
-            id(${node_id}_automation_lambda).publish_state(false);
     turn_off_action:
         - lambda: |-
                 if (id(auto_mode)) {
