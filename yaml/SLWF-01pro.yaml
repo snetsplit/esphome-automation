@@ -21,6 +21,7 @@ substitutions:
   cool_turbo_on_above_set_temp: $cool_on_above_set_temp
   heat_turbo_off_above_set_temp: "1"
   cool_turbo_off_below_set_temp: $heat_turbo_off_above_set_temp
+  external_thermometer_entity: sensor.rm4_mini_temperature
   
 esphome:
   name: ${node_name}
@@ -85,7 +86,7 @@ sensor:
   - platform: homeassistant
     name: ${friendly_node_name} Room Tempreture F
     id: ${node_id}_room_temperature_f
-    entity_id: sensor.bedroom_thermometer
+    entity_id: ${external_thermometer_entity}
     internal: false
   - platform: template
     name: ${friendly_node_name} Room Tempreture
