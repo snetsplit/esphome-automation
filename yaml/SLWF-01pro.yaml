@@ -206,6 +206,11 @@ button:
                  }
                 }
 
+remote_transmitter:
+  pin: GPIO13                       # For iot-uni-stick.
+  carrier_duty_percent: 100%        # 50% for IR LED, 100% for direct connect to TSOP IR receiver output.
+
+
 uart:
   tx_pin: GPIO1
   rx_pin: GPIO3
