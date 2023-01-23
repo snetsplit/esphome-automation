@@ -85,7 +85,7 @@ sensor:
   - platform: homeassistant
     name: ${friendly_node_name} Room Tempreture F
     id: ${node_id}_room_temperature_f
-    entity_id: sensor.rm4_mini_temperature
+    entity_id: sensor.bedroom_thermometer
     internal: false
   - platform: template
     name: ${friendly_node_name} Room Tempreture
