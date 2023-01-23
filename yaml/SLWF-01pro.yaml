@@ -148,8 +148,14 @@ switch:
 
 button:
   - platform: restart
-    id: restart_button
-    name: "Restart"              
+    id: ${node_id}_restart_button
+    name: "${friendly_node_name} Restart"
+  - platform: template
+    name: "${friendly_node_name} Display Toggle"
+    id: ${node_id}_display_toggle
+    icon: mdi:theme-light-dark
+    on_press:
+      midea_ac.display_toggle:
   - platform: template
     internal: true
     id: ${node_id}_automation_lambda
