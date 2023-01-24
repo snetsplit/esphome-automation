@@ -98,9 +98,9 @@ sensor:
     name: ${friendly_node_name} Room Tempreture
     id: ${node_id}_room_temperature
     lambda: |-
-         float coolest_temp = (id(${node_id}_room_temperature_1_f).state;
-         if (coolest_temp < (id(${node_id}_room_temperature_2_f).state) {
-            coolest_temp = (id(${node_id}_room_temperature_2_f).state;
+         float coolest_temp = id(${node_id}_room_temperature_1_f).state;
+         if (coolest_temp < id(${node_id}_room_temperature_2_f).state) {
+            coolest_temp = id(${node_id}_room_temperature_2_f).state;
          }
          return (coolest_temp - 32.0) * 0.5556);
     unit_of_measurement: °C
