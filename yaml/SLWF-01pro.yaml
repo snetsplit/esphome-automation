@@ -102,7 +102,7 @@ sensor:
          if (coolest_temp < id(${node_id}_room_temperature_2_f).state) {
             coolest_temp = id(${node_id}_room_temperature_2_f).state;
          }
-         return (coolest_temp - 32.0) * 0.5556);
+         return ((coolest_temp - 32.0) * 0.5556);
     unit_of_measurement: °C
     update_interval: 15s
 
