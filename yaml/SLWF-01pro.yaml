@@ -21,7 +21,8 @@ substitutions:
   cool_turbo_on_above_set_temp: $cool_on_above_set_temp
   heat_turbo_off_above_set_temp: "1"
   cool_turbo_off_below_set_temp: $heat_turbo_off_above_set_temp
-  external_thermometer_entity: sensor.rm4_mini_temperature
+  external_thermometer_entity_1: sensor.rm4_mini_temperature
+  external_thermometer_entity_2: sensor.bedroom_thermometer
   
 esphome:
   name: ${node_name}
@@ -85,13 +86,23 @@ sensor:
     update_interval: 60s
   - platform: homeassistant
     name: ${friendly_node_name} Room Tempreture F
-    id: ${node_id}_room_temperature_f
-    entity_id: ${external_thermometer_entity}
+    id: ${node_id}_room_temperature_1_f
+    entity_id: ${external_thermometer_entity_1}
+    internal: false
+  - platform: homeassistant
+    name: ${friendly_node_name} Room Tempreture F
+    id: ${node_id}_room_temperature_2_f
+    entity_id: ${external_thermometer_entity_2}
     internal: false
   - platform: template
     name: ${friendly_node_name} Room Tempreture
     id: ${node_id}_room_temperature
-    lambda: return ((id(${node_id}_room_temperature_f).state - 32.0) * 0.5556);
+    lambda: |-
+         float coolest_temp = (id(${node_id}_room_temperature_1_f).state;
+         if (coolest_temp < (id(${node_id}_room_temperature_2_f).state) {
+            coolest_temp = (id(${node_id}_room_temperature_2_f).state;
+         }
+         return (coolest_temp - 32.0) * 0.5556);
     unit_of_measurement: °C
     update_interval: 15s
 
