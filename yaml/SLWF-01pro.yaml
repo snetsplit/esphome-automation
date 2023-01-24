@@ -85,12 +85,12 @@ sensor:
     id: ${node_id}_wifi_signal
     update_interval: 60s
   - platform: homeassistant
-    name: ${friendly_node_name} Room Tempreture F
+    name: ${friendly_node_name} Room Tempreture 1 F
     id: ${node_id}_room_temperature_1_f
     entity_id: ${external_thermometer_entity_1}
     internal: false
   - platform: homeassistant
-    name: ${friendly_node_name} Room Tempreture F
+    name: ${friendly_node_name} Room Tempreture 2 F
     id: ${node_id}_room_temperature_2_f
     entity_id: ${external_thermometer_entity_2}
     internal: false
