@@ -98,9 +98,7 @@ sensor:
     name: ${friendly_node_name} Room Tempreture
     id: ${node_id}_room_temperature
     lambda: |-
-         float coolest_temp = (id(${node_id}_room_temperature_1_f).state < id(${node_id}_room_temperature_2_f).state)?id(${node_id}_room_temperature_1_f).state:id(${node_id}_room_temperature_2_f).state;
-                 ESP_LOGW("climate_temp", "coolest temp: %f", coolest_temp);
-         return ((coolest_temp - 32.0) * 0.5556);
+         return ((((id(${node_id}_room_temperature_1_f).state < id(${node_id}_room_temperature_2_f).state)?id(${node_id}_room_temperature_1_f).state:id(${node_id}_room_temperature_2_f).state) - 32.0) * 0.5556);
     unit_of_measurement: °C
     update_interval: 15s
 
@@ -171,7 +169,7 @@ button:
     on_press:
         - lambda: |-
                 if (id(auto_mode)) {
-                 ESP_LOGW("climate_temp", "applying mode: %f %f", id(${node_id}_my_climate).target_temperature, id(${node_id}_room_temperature).state);
+                 ESP_LOGW("climate_temp", "applying mode: %f %f", id(${node_id}_my_climate).target_temperature, id(${node_id}_my_climate).target_temperature - ${node_id}_room_temperature).state - $heat_turbo_on_below_set_temp);
                  ClimateMode climateMode = id(${node_id}_my_climate).mode;
                  ClimatePreset climatePreset = id(${node_id}_my_climate).preset.value();
 
