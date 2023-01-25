@@ -108,39 +108,18 @@ sensor:
     id: ${node_id}_room_temperature_1_f
     entity_id: ${external_thermometer_entity_1}
     unit_of_measurement: °F
-    internal: false
+    internal: true
   - platform: homeassistant
     name: ${friendly_node_name} Room Tempreture 2 F
     id: ${node_id}_room_temperature_2_f
     unit_of_measurement: °F
     entity_id: ${external_thermometer_entity_2}
-    internal: false
+    internal: true
   - platform: template
-    name: ${friendly_node_name} Room Tempreture F
-    id: ${node_id}_room_temperature_f
-    lambda: |-
-         return (id(${node_id}_room_temperature_1_f).state < id(${node_id}_room_temperature_2_f).state)?id(${node_id}_room_temperature_1_f).state:id(${node_id}_room_temperature_2_f).state;
-    unit_of_measurement: °F
-    update_interval: 15s
-  - platform: template
-    name: ${friendly_node_name} Room Tempreture C
+    name: ${friendly_node_name} Room Tempreture °C
     id: ${node_id}_room_temperature_c
     lambda: |-
-         return ((id(${node_id}_room_temperature_f).state - 32.0) * 0.5556);
-    unit_of_measurement: °C
-    update_interval: 15s
-  - platform: template
-    name: ${friendly_node_name} Target Tempreture F
-    id: ${node_id}_target_temperature_f
-    lambda: |-
-         return ((id(${node_id}_my_climate).target_temperature  * 1.8) + 32);
-    unit_of_measurement: °F
-    update_interval: 15s
-  - platform: template
-    name: ${friendly_node_name} Current Tempreture F
-    id: ${node_id}_current_temperature_f
-    lambda: |-
-         return ((id(${node_id}_my_climate).current_temperature  * 1.8) + 32);
+         return ((((id(${node_id}_room_temperature_1_f).state < id(${node_id}_room_temperature_2_f).state)?id(${node_id}_room_temperature_1_f).state:id(${node_id}_room_temperature_2_f).state) - 32.0) * 0.5556);;
     unit_of_measurement: °F
     update_interval: 15s
 
@@ -211,28 +190,28 @@ button:
     on_press:
         - lambda: |-
                 if (id(auto_mode)) {
-                 ESP_LOGW("climate_temp", "applying mode: %f %f", id(${node_id}_target_temperature_f).state, ((id(${node_id}_my_climate).target_temperature - id(${node_id}_room_temperature_c).state - $heat_turbo_on_below_set_temp) * 1.8) + 32));
+                 ESP_LOGW("climate_temp", "target: %f°F, room: %f°F, difference: %f°F", (id(${node_id}_my_climate).target_temperature * 1.8 + 32), (id(${node_id}_room_temperature_c).state * 1.8 + 32), ((id(${node_id}_my_climate).target_temperature - id(${node_id}_room_temperature_c).state - $heat_turbo_on_below_set_temp) * 1.8) + 32));
                  ClimateMode climateMode = id(${node_id}_my_climate).mode;
                  ClimatePreset climatePreset = id(${node_id}_my_climate).preset.value();
 
-                 if(id(${node_id}_room_temperature).state < id(${node_id}_my_climate).target_temperature_c - $heat_on_below_set_temp) {
+                 if(id(${node_id}_room_temperature_c).state < id(${node_id}_my_climate).target_temperature - $heat_on_below_set_temp) {
                    climateMode = ClimateMode::CLIMATE_MODE_HEAT;
                    ESP_LOGW("climate_mode", "Mode: [%s]", "heat");
-                 } else if(id(${node_id}_room_temperature).state  > id(${node_id}_my_climate).target_temperature_c + $cool_on_above_set_temp) {
+                 } else if(id(${node_id}_room_temperature_c).state  > id(${node_id}_my_climate).target_temperature + $cool_on_above_set_temp) {
                    climateMode = ClimateMode::CLIMATE_MODE_COOL;
                    ESP_LOGW("climate_mode", "Mode: [%s]", "cool");
                  } 
 
-                 if((id(${node_id}_room_temperature).state < id(${node_id}_my_climate).target_temperature_c - $heat_turbo_on_below_set_temp) && (climateMode == ClimateMode::CLIMATE_MODE_HEAT)) {
+                 if((id(${node_id}_room_temperature_c).state < id(${node_id}_my_climate).target_temperature - $heat_turbo_on_below_set_temp) && (climateMode == ClimateMode::CLIMATE_MODE_HEAT)) {
                    climatePreset = ClimatePreset::CLIMATE_PRESET_BOOST;
                    ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
-                 } else if((id(${node_id}_room_temperature).state > id(${node_id}_my_climate).target_temperature_c + $cool_turbo_on_above_set_temp) && (climateMode == ClimateMode::CLIMATE_MODE_COOL)) {
+                 } else if((id(${node_id}_room_temperature_c).state > id(${node_id}_my_climate).target_temperature + $cool_turbo_on_above_set_temp) && (climateMode == ClimateMode::CLIMATE_MODE_COOL)) {
                    climatePreset = ClimatePreset::CLIMATE_PRESET_BOOST;
                    ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
-                 } else if((id(${node_id}_room_temperature).state > id(${node_id}_my_climate).target_temperature_c + $heat_turbo_off_above_set_temp) && (climateMode == ClimateMode::CLIMATE_MODE_HEAT)) {
+                 } else if((id(${node_id}_room_temperature_c).state > id(${node_id}_my_climate).target_temperature + $heat_turbo_off_above_set_temp) && (climateMode == ClimateMode::CLIMATE_MODE_HEAT)) {
                    climatePreset = ClimatePreset::CLIMATE_PRESET_NONE;
                    ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
-                 } else if((id(${node_id}_room_temperature).state < id(${node_id}_my_climate).target_temperature_c - $cool_turbo_off_below_set_temp) && (climateMode == ClimateMode::CLIMATE_MODE_COOL)) {
+                 } else if((id(${node_id}_room_temperature_c).state < id(${node_id}_my_climate).target_temperature- $cool_turbo_off_below_set_temp) && (climateMode == ClimateMode::CLIMATE_MODE_COOL)) {
                    climatePreset = ClimatePreset::CLIMATE_PRESET_NONE;
                    ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
                  }  
