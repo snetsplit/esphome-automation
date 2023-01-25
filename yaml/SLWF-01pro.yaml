@@ -49,7 +49,7 @@ wifi:
   ap:
     ssid: "${friendly_node_name} Fallback"
     password: ${password}
-  power_save_mode: light
+  power_save_mode: high
 
 web_server:
   port: ${web_server_port}
@@ -107,18 +107,41 @@ sensor:
     name: ${friendly_node_name} Room Tempreture 1 F
     id: ${node_id}_room_temperature_1_f
     entity_id: ${external_thermometer_entity_1}
+    unit_of_measurement: °F
     internal: false
   - platform: homeassistant
     name: ${friendly_node_name} Room Tempreture 2 F
     id: ${node_id}_room_temperature_2_f
+    unit_of_measurement: °F
     entity_id: ${external_thermometer_entity_2}
     internal: false
   - platform: template
-    name: ${friendly_node_name} Room Tempreture
-    id: ${node_id}_room_temperature
+    name: ${friendly_node_name} Room Tempreture F
+    id: ${node_id}_room_temperature_f
     lambda: |-
-         return ((((id(${node_id}_room_temperature_1_f).state < id(${node_id}_room_temperature_2_f).state)?id(${node_id}_room_temperature_1_f).state:id(${node_id}_room_temperature_2_f).state) - 32.0) * 0.5556);
+         return (id(${node_id}_room_temperature_1_f).state < id(${node_id}_room_temperature_2_f).state)?id(${node_id}_room_temperature_1_f).state:id(${node_id}_room_temperature_2_f).state;
+    unit_of_measurement: °F
+    update_interval: 15s
+  - platform: template
+    name: ${friendly_node_name} Room Tempreture C
+    id: ${node_id}_room_temperature_c
+    lambda: |-
+         return ((id(${node_id}_room_temperature_f).state - 32.0) * 0.5556);
     unit_of_measurement: °C
+    update_interval: 15s
+  - platform: template
+    name: ${friendly_node_name} Target Tempreture F
+    id: ${node_id}_target_temperature_f
+    lambda: |-
+         return ((id(${node_id}_my_climate).target_temperature  * 1.8) + 32);
+    unit_of_measurement: °F
+    update_interval: 15s
+  - platform: template
+    name: ${friendly_node_name} Current Tempreture F
+    id: ${node_id}_current_temperature_f
+    lambda: |-
+         return ((id(${node_id}_my_climate).current_temperature  * 1.8) + 32);
+    unit_of_measurement: °F
     update_interval: 15s
 
 # Text Sensors.
@@ -188,7 +211,7 @@ button:
     on_press:
         - lambda: |-
                 if (id(auto_mode)) {
-                 ESP_LOGW("climate_temp", "applying mode: %f %f", id(${node_id}_my_climate).target_temperature, id(${node_id}_my_climate).target_temperature - id(${node_id}_room_temperature).state - $heat_turbo_on_below_set_temp);
+                 ESP_LOGW("climate_temp", "applying mode: %f %f", id(${node_id}_target_temperature_f).state, ((id(${node_id}_my_climate).target_temperature - id(${node_id}_room_temperature).state - $heat_turbo_on_below_set_temp) * 1.8) + 32));
                  ClimateMode climateMode = id(${node_id}_my_climate).mode;
                  ClimatePreset climatePreset = id(${node_id}_my_climate).preset.value();
 
