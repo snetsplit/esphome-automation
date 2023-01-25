@@ -190,7 +190,7 @@ button:
     on_press:
         - lambda: |-
                 if (id(auto_mode)) {
-                 ESP_LOGW("climate_temp", "target: %f°F, room: %f°F, difference: %f°F", (id(${node_id}_my_climate).target_temperature * 1.8 + 32), (id(${node_id}_room_temperature_c).state * 1.8 + 32), ((id(${node_id}_my_climate).target_temperature - id(${node_id}_room_temperature_c).state - $heat_turbo_on_below_set_temp) * 1.8) + 32));
+                 ESP_LOGW("climate_temp", "target: %f°F, room: %f°F, difference: %f°F", (id(${node_id}_my_climate).target_temperature * 1.8 + 32), (id(${node_id}_room_temperature_c).state * 1.8 + 32), ((id(${node_id}_my_climate).target_temperature - id(${node_id}_room_temperature_c).state - $heat_turbo_on_below_set_temp) * 1.8) + 32);
                  ClimateMode climateMode = id(${node_id}_my_climate).mode;
                  ClimatePreset climatePreset = id(${node_id}_my_climate).preset.value();
 
