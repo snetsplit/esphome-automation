@@ -49,7 +49,7 @@ wifi:
   ap:
     ssid: "${friendly_node_name} Fallback"
     password: ${password}
-  power_save_mode: HIGH # for ESP8266 LOW/HIGH are mixed up, esphome/issues/issues/1532
+  power_save_mode: none
 
 web_server:
   port: ${web_server_port}
