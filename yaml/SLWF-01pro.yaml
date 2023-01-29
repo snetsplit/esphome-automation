@@ -254,6 +254,7 @@ button:
                               ESP_LOGW("climate_mode", "Mode: [%s]","setting mode heat");
                               id(${node_id}_my_climate).make_call().set_mode(ClimateMode::CLIMATE_MODE_HEAT).perform();
                            }
+                           delay(500);
                            if(tempDifference > $heat_turbo_on_below_set_temp) {
                               ESP_LOGW("climate_preset",    "Preset: [%s]", "boost");
                                if (ClimatePreset::CLIMATE_PRESET_BOOST !=  id(${node_id}_my_climate).preset.value()) {
@@ -273,6 +274,7 @@ button:
                               ESP_LOGW("climate_mode", "Mode: [%s]", "setting mode cool");
                               id(${node_id}_my_climate).make_call().set_mode(ClimateMode::CLIMATE_MODE_COOL).perform();
                            }
+                           delay(500);
                            if (tempDifference < -$cool_turbo_on_above_set_temp) {
                               ESP_LOGW("climate_preset",    "Preset: [%s]", "boost");
                                if (ClimatePreset::CLIMATE_PRESET_BOOST !=  id(${node_id}_my_climate).preset.value()) {
