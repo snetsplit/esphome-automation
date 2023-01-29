@@ -186,7 +186,7 @@ button:
       midea_ac.display_toggle:
   - platform: template
     internal: true
-    id: ${node_id}_automation_lambda
+    id: ${node_id}_automation_lambda_old
     on_press:
         - lambda: |-
                 if (id(auto_mode)) {
@@ -233,6 +233,44 @@ button:
                   call.perform();
                  }
                 }
+  - platform: template
+    internal: true
+    id: ${node_id}_automation_lambda
+    on_press:
+        - lambda: |-
+                  if (id(auto_mode)) {
+                    ClimateMode mode = id(${node_id}_my_climate).mode;
+                    ClimatePreset preset = id(${node_id}_my_climate).preset.value();
+                    float roomTemp = id(${node_id}_room_temperature_c).state;
+                    float targetTemp = id(${node_id}_my_climate).target_temperature;
+
+                  ESP_LOGW("climate_temp", "difference: %f°F, target: %f°F, room: %f°F", ((id(${node_id}_my_climate).target_temperature - id(${node_id}_room_temperature_c).state) * 1.8), (id(${node_id}_my_climate).target_temperature * 1.8 + 32), (id(${node_id}_room_temperature_c).state * 1.8 + 32));
+
+                    if(roomTemp < targetTemp - $heat_on_below_set_temp) {
+                      mode = ClimateMode::CLIMATE_MODE_HEAT;
+                     ESP_LOGW("climate_mode", "Mode: [%s]", "heat");
+                    } else if(roomTemp > targetTemp + $cool_on_above_set_temp) {
+                      mode = ClimateMode::CLIMATE_MODE_COOL;
+                     ESP_LOGW("climate_mode", "Mode: [%s]", "cool");
+                    } 
+
+                    if (mode != id(${node_id}_my_climate).mode) {
+                      id(${node_id}_my_climate).make_call().set_mode(mode).perform();
+                    }    
+                    
+                    delay(500);
+                    if(((roomTemp < targetTemp - $heat_turbo_on_below_set_temp) && (mode == ClimateMode::CLIMATE_MODE_HEAT)) || ((roomTemp > targetTemp + $cool_turbo_on_above_set_temp) && (mode == ClimateMode::CLIMATE_MODE_COOL))) {
+                      preset = ClimatePreset::CLIMATE_PRESET_BOOST;
+                     ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
+                    } else if(((roomTemp > targetTemp + $heat_turbo_off_above_set_temp) && (mode == ClimateMode::CLIMATE_MODE_HEAT))  || ((roomTemp < targetTemp - $cool_turbo_off_below_set_temp) && (mode == ClimateMode::CLIMATE_MODE_COOL))) {
+                      preset = ClimatePreset::CLIMATE_PRESET_NONE;
+                     ESP_LOGW("climate_preset", "Preset: [%s]", "none");
+                    }
+
+                    if (preset != id(${node_id}_my_climate).preset.value()) {
+                      id(${node_id}_my_climate).make_call().set_preset(preset).perform();
+                    }
+                  }
 
 remote_transmitter:
   pin: GPIO13                       # For iot-uni-stick.
