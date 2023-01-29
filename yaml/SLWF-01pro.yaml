@@ -244,7 +244,7 @@ button:
                     float roomTemp = id(${node_id}_room_temperature_c).state;
                     float targetTemp = id(${node_id}_my_climate).target_temperature;
 
-                  ESP_LOGW("climate_temp", "difference: %f°F, target: %f°F, room: %f°F", ((id(${node_id}_my_climate).target_temperature - id(${node_id}_room_temperature_c).state) * 1.8), (id(${node_id}_my_climate).target_temperature * 1.8 + 32), (id(${node_id}_room_temperature_c).state * 1.8 + 32));
+                  ESP_LOGW("climate_temp", "difference: %f°F, target: %f°F, room: %f°F", (targetTemp - roomTemp) * 1.8), (targetTemp * 1.8 + 32), roomTemp) * 1.8 + 32));
 
                     if(roomTemp < targetTemp - $heat_on_below_set_temp) {
                       mode = ClimateMode::CLIMATE_MODE_HEAT;
