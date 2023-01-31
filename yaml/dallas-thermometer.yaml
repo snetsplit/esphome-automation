@@ -1,12 +1,13 @@
 substitutions:
-  device_type: "device"
+  device_type: "thermometer"
+  dallas_address: "sensor address"
 
 dallas:
   - pin: GPIO5
 
 sensor:
   - platform: dallas
-    address: 0xcb87660f1e64ff28
+    address: $dallas_address
     name: ${friendly_name}
 
 packages:
