@@ -19,7 +19,7 @@ sensor:
     on_value:
       then:
       - http_request.post: !lambda |- 
-              return "http://bedroom-heatpump.lan/number/bedroom_heatpump_room_tempreture_c/set?value=" + std::to_string(int(x));
+              return "http://bedroom-heatpump.lan/number/bedroom_heatpump_room_tempreture_c/set?value=" + std::to_string(x);
 
 packages:
   device-base: 
