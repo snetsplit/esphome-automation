@@ -6,12 +6,15 @@ substitutions:
 
 dallas:
   - pin: ${dallas_pin}
+      id: ${device_name}_pin
+      update_interval: 30s
 
 sensor:
   - platform: dallas
     address: ${dallas_address}
     name: ${friendly_name}
     id: ${device_name}
+    dallas_id: ${device_name}_pin
 
 packages:
   device-base: 
