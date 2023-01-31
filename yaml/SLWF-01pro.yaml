@@ -237,7 +237,8 @@ number:
       then:
         - lambda: |-
             id(${node_id}_automation_lambda).press();
-
+        - midea_ac.follow_me:
+            temperature: !lambda "return x;"
 
 uart:
   tx_pin: GPIO1
