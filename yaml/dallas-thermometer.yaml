@@ -1,14 +1,15 @@
 substitutions:
   device_type: "thermometer"
   device_type_nice: "Thermometer"
-  dallas_address: "sensor address"
+  dallas_address: "0X0000 whatever"
+  dallas_pin: "GPI0 whatever"
 
 dallas:
-  - pin: GPIO5
+  - pin: ${dallas_pin}
 
 sensor:
   - platform: dallas
-    address: $dallas_address
+    address: ${dallas_address}
     name: ${friendly_name}
     id: ${device_name}
 
