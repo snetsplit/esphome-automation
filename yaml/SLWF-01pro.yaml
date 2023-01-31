@@ -116,8 +116,8 @@ sensor:
     entity_id: ${external_thermometer_entity_2}
     internal: true
   - platform: template
-    name: ${friendly_node_name} Room Tempreture °C
-    id: ${node_id}_room_temperature_c
+    name: ${friendly_node_name} Room Tempreture °C Old
+    id: ${node_id}_room_temperature_c_old
     lambda: |-
          return ((((id(${node_id}_room_temperature_1_f).state < id(${node_id}_room_temperature_2_f).state)?id(${node_id}_room_temperature_1_f).state:id(${node_id}_room_temperature_2_f).state) - 32.0) * 0.5556);;
     unit_of_measurement: °C
@@ -186,55 +186,6 @@ button:
       midea_ac.display_toggle:
   - platform: template
     internal: true
-    id: ${node_id}_automation_lambda_old
-    on_press:
-        - lambda: |-
-                if (id(auto_mode)) {
-                 ESP_LOGW("climate_temp", "difference: %f°F, target: %f°F, room: %f°F", ((id(${node_id}_my_climate).target_temperature - id(${node_id}_room_temperature_c).state) * 1.8), (id(${node_id}_my_climate).target_temperature * 1.8 + 32), (id(${node_id}_room_temperature_c).state * 1.8 + 32));
-                 ClimateMode climateMode = id(${node_id}_my_climate).mode;
-                 ClimatePreset climatePreset = id(${node_id}_my_climate).preset.value();
-
-                 if(id(${node_id}_room_temperature_c).state < id(${node_id}_my_climate).target_temperature - $heat_on_below_set_temp) {
-                   climateMode = ClimateMode::CLIMATE_MODE_HEAT;
-                   ESP_LOGW("climate_mode", "Mode: [%s]", "heat");
-                 } else if(id(${node_id}_room_temperature_c).state  > id(${node_id}_my_climate).target_temperature + $cool_on_above_set_temp) {
-                   climateMode = ClimateMode::CLIMATE_MODE_COOL;
-                   ESP_LOGW("climate_mode", "Mode: [%s]", "cool");
-                 } 
-
-                 if((id(${node_id}_room_temperature_c).state < id(${node_id}_my_climate).target_temperature - $heat_turbo_on_below_set_temp) && (climateMode == ClimateMode::CLIMATE_MODE_HEAT)) {
-                   climatePreset = ClimatePreset::CLIMATE_PRESET_BOOST;
-                   ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
-                 } else if((id(${node_id}_room_temperature_c).state > id(${node_id}_my_climate).target_temperature + $cool_turbo_on_above_set_temp) && (climateMode == ClimateMode::CLIMATE_MODE_COOL)) {
-                   climatePreset = ClimatePreset::CLIMATE_PRESET_BOOST;
-                   ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
-                 } else if((id(${node_id}_room_temperature_c).state > id(${node_id}_my_climate).target_temperature + $heat_turbo_off_above_set_temp) && (climateMode == ClimateMode::CLIMATE_MODE_HEAT)) {
-                   climatePreset = ClimatePreset::CLIMATE_PRESET_NONE;
-                   ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
-                 } else if((id(${node_id}_room_temperature_c).state < id(${node_id}_my_climate).target_temperature- $cool_turbo_off_below_set_temp) && (climateMode == ClimateMode::CLIMATE_MODE_COOL)) {
-                   climatePreset = ClimatePreset::CLIMATE_PRESET_NONE;
-                   ESP_LOGW("climate_preset", "Preset: [%s]", "boost");
-                 }  
-
-
-                 ESP_LOGW("climate_mode", "applying mode: %d %d", static_cast<int>(climateMode), static_cast<int>(id(${node_id}_my_climate).mode));
-                 if (climateMode != id(${node_id}_my_climate).mode) {
-                   ESP_LOGW("climate_mode", "applying mode: [%s]", "");
-                   auto call = id(${node_id}_my_climate).make_call();
-                   call.set_mode(climateMode);
-                   call.perform();
-                 }    
-
-                 ESP_LOGW("climate_preset", "applying preset: %d %d", static_cast<int>(climatePreset), static_cast<int>(id(${node_id}_my_climate).preset.value()));
-                 if (static_cast<int>(climatePreset) != static_cast<int>(id(${node_id}_my_climate).preset.value())) {
-                   ESP_LOGW("climate_preset", "applying preset: [%s]", "");
-                  auto call = id(${node_id}_my_climate).make_call();
-                  call.set_preset(climatePreset);
-                  call.perform();
-                 }
-                }
-  - platform: template
-    internal: true
     id: ${node_id}_automation_lambda
     on_press:
         - lambda: |-
@@ -292,6 +243,19 @@ button:
                   }
 
 
+number:
+  - platform: template
+    name: ${friendly_node_name} Room Tempreture °C
+    id: ${node_id}_room_temperature_c
+    optimistic: true
+    min_value: -40
+    max_value: 100
+    restore_value: false
+    step: 1
+    on_value:
+      then:
+        - lambda: |-
+            id(${node_id}_automation_lambda).press();
 
 remote_transmitter:
   pin: GPIO13                       # For iot-uni-stick.
