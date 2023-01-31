@@ -251,7 +251,7 @@ number:
     min_value: -40
     max_value: 100
     restore_value: false
-    step: 1
+    step: 2
     on_value:
       then:
         - lambda: |-
