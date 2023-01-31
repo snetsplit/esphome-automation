@@ -1,9 +1,13 @@
+#NOT COMPLETE. NOT WARRENTIED. USE AT OWN RISK.
+#provided as is, but feel free to learn, copy, and use, but at own risk.
+#this file has stuff used in pretty much every ESP8266 yaml file I have.
 substitutions:
   nice_name: "ESPHome"
   sys_name: "esphome"
-  device_name: ${sys_name}_esphome
-  name: ${sys_name}-esphome
-  friendly_name: "${nice_name} device"
+  device_type: "device"
+  name: ${sys_name}-${device_type}
+  device_name: ${sys_name}_${device_type}
+  friendly_name: "${nice_name} ${device_type}"
   web_server_port: "80"
   ssid: "IP freely"
   password: "ewwwwwwwww"
