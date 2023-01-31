@@ -295,7 +295,7 @@ text_sensor:
            char clock24[3] = "  ";
            clock24[0] = x[0];
            clock24[1] = x[1];
-           return clock24.c_str();
+           return std::string(clock24);
 
 button:
   - platform: restart
