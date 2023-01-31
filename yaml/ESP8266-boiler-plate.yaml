@@ -42,6 +42,14 @@ web_server:
   port: ${web_server_port}
   local: true
 
+time:
+  - platform: sntp
+    id: sntp_time
+    servers: 
+      - ${time_server1}
+      - ${time_server2}
+      - ${time_server3}
+
 http_request:
   id: http_request_data
   useragent: esphome/device
