@@ -292,7 +292,7 @@ text_sensor:
     type: sunset
     filters:
       - lambda: |-  
-           char clock24[2] = "  ";
+           char clock24[3] = "  ";
            clock24[0] = x[0];
            clock24[1] = x[1];
            return clock24[0].c_str();
