@@ -46,7 +46,7 @@ http_request:
   esp8266_disable_ssl_support: true
 
 esphome:
-  name: ${id}
+  name: ${sys_name}_${device}
   comment: ${friendly_name}
   platform: ESP8266
   board: esp01_1m
@@ -82,23 +82,23 @@ sensor:
     pin: A0
   - platform: uptime
     name: Uptime Sensor
-    id: ${node_id}_uptime_sensor
+    id: ${sys_name}_${device}_uptime_sensor
     icon: mdi:clock-start
     update_interval: 60s
   - platform: wifi_signal
     name: ${friendly_name} WiFi Signal
-    id: ${node_id}_wifi_signal
+    id: ${sys_name}_${device}_wifi_signal
     update_interval: 60s
 
 
 text_sensor:
   - platform: version
     name: ${friendly_name} ESPHome Version
-    id: ${node_id}_esphome_version    
+    id: ${sys_name}_${device}_esphome_version    
   - platform: wifi_info
     ip_address:
       name: ${friendly_name} IP Address
-      id: ${node_id}_ip_address
+      id: ${sys_name}_${device}_ip_address
       icon: mdi:ip-network
   - platform: template
     name: "Current time"
@@ -117,7 +117,7 @@ text_sensor:
 
 button:
   - platform: restart
-    id: ${node_id}_restart_button
+    id: ${sys_name}_${device}_restart_button
     name: "${friendly_name} Restart"
     
 sun:
