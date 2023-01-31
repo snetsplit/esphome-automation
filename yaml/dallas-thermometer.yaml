@@ -10,6 +10,7 @@ sensor:
   - platform: dallas
     address: $dallas_address
     name: ${friendly_name}
+    id: $name
 
 packages:
   device-base: 
