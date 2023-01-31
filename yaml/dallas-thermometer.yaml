@@ -1,1 +1,16 @@
+substitutions:
+  device_type: "device"
 
+dallas:
+  - pin: GPIO5
+
+sensor:
+  - platform: dallas
+    address: 0xcb87660f1e64ff28
+    name: ${friendly_name}
+
+packages:
+  device-base: 
+    url: https://github.com/snetsplit/esphome-automation
+    file: yaml/ESP8266-boiler-plate.yaml
+    refresh: 0s
