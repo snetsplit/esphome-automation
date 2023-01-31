@@ -3,6 +3,7 @@ substitutions:
   device_type_nice: "Thermometer"
   dallas_address: "0X0000 whatever"
   dallas_pin: "GPI0 whatever"
+  dallas_temp_update_url: "http://whatever"
 
 dallas:
   - pin: ${dallas_pin}
@@ -15,6 +16,10 @@ sensor:
     name: ${friendly_name}
     id: ${device_name}
     dallas_id: ${device_name}_pin
+    on_value:
+      then:
+      - http_request.post: !lambda |- 
+              return "http://bedroom-heatpump.lan/number/bedroom_heatpump_room_tempreture_c/set?value=" + std::to_string(int(x));
 
 packages:
   device-base: 
