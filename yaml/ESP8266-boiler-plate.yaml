@@ -1,0 +1,126 @@
+substitutions:
+  nice_name: "ESPHome"
+  sys_name: "esphome"
+  device_name: ${sys_name}_esphome
+  name: ${sys_name}-esphome
+  friendly_name: "${nice_name} device"
+  web_server_port: "80"
+  ssid: "IP freely"
+  password: "ewwwwwwwww"
+  domain: ".local"
+  time_server1: "0.pool.ntp.org"
+  time_server2: "1.pool.ntp.org"
+  time_server3: "2.pool.ntp.org"
+  ota_password: "wouldn't you like to know?"
+
+logger:
+
+api:
+
+ota:
+  password:  ${ota_password}
+
+captive_portal:
+
+wifi:
+  ssid: ${ssid}
+  password: ${password}
+  domain: ${domain}
+  ap:
+    ssid: "${friendly_node_name} Fallback"
+    password: ${password}
+  power_save_mode: high
+
+web_server:
+  port: ${web_server_port}
+  local: true
+
+http_request:
+  id: http_request_data
+  useragent: esphome/device
+  timeout: 10s
+  esp8266_disable_ssl_support: true
+
+esphome:
+  name: ${id}
+  comment: ${friendly_name}
+  platform: ESP8266
+  board: esp01_1m
+
+button:
+  - platform: restart
+    id: restart_button
+    name: "${friendly_name} Restart"  
+
+dallas:
+  - pin: GPIO5
+
+
+sensor:
+  - platform: sun
+    name: Sun Elevation
+    type: elevation
+  - platform: sun
+    name: Sun Azimuth
+    type: azimuth
+  - platform: ntc
+    sensor: temp_resistance_reading
+    name: ${friendly_node_name} Temperature
+    unit_of_measurement: "°C"
+    accuracy_decimals: 1
+    icon: "mdi:thermometer"
+    calibration:
+      b_constant: 3350
+      reference_resistance: 10kOhm
+      reference_temperature: 298.15K
+  - platform: resistance
+    id: temp_resistance_reading
+    sensor: temp_analog_reading
+    configuration: DOWNSTREAM
+    resistor: 32kOhm
+  - platform: adc
+    id: temp_analog_reading
+    pin: A0
+  - platform: uptime
+    name: Uptime Sensor
+    id: ${node_id}_uptime_sensor
+    icon: mdi:clock-start
+    update_interval: 60s
+  - platform: wifi_signal
+    name: ${friendly_node_name} WiFi Signal
+    id: ${node_id}_wifi_signal
+    update_interval: 60s
+
+
+text_sensor:
+  - platform: version
+    name: ${friendly_node_name} ESPHome Version
+    id: ${node_id}_esphome_version    
+  - platform: wifi_info
+    ip_address:
+      name: ${friendly_node_name} IP Address
+      id: ${node_id}_ip_address
+      icon: mdi:ip-network
+  - platform: template
+    name: "Current time"
+    lambda: |-
+      char str[17];
+      time_t currTime = id(sntp_time).now().timestamp;
+      strftime(str, sizeof(str), "%Y-%m-%d %H:%M", localtime(&currTime));
+      return  { str };
+    update_interval: 60s
+  - platform: sun
+    name: Sunrise
+    type: sunrise
+  - platform: sun
+    name: Sunset
+    type: sunset      
+
+button:
+  - platform: restart
+    id: ${node_id}_restart_button
+    name: "${friendly_node_name} Restart"
+    
+sun:
+  latitude: ${latitude}
+  longitude: ${longitude}
