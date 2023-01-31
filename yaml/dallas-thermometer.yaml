@@ -1,5 +1,6 @@
 substitutions:
   device_type: "thermometer"
+  device_type_nice: "Thermometer"
   dallas_address: "sensor address"
 
 dallas:
