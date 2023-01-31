@@ -289,7 +289,13 @@ text_sensor:
     type: sunrise
   - platform: sun
     name: Sunset
-    type: sunset    
+    type: sunset
+    filters:
+      - lambda: |-  
+           char 24hourClock[2];
+           24hourClock[0] = x[0];
+           24hourClock[1] = x[1];
+           return 24hourClock[0].c_str();
 
 button:
   - platform: restart
