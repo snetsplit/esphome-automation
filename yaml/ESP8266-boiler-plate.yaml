@@ -62,35 +62,7 @@ esphome:
   platform: ESP8266
   board: esp01_1m
 
-dallas:
-  - pin: GPIO5
-
-
 sensor:
-  - platform: sun
-    name: Sun Elevation
-    type: elevation
-  - platform: sun
-    name: Sun Azimuth
-    type: azimuth
-  - platform: ntc
-    sensor: temp_resistance_reading
-    name: ${friendly_name} Temperature
-    unit_of_measurement: "°C"
-    accuracy_decimals: 1
-    icon: "mdi:thermometer"
-    calibration:
-      b_constant: 3350
-      reference_resistance: 10kOhm
-      reference_temperature: 298.15K
-  - platform: resistance
-    id: temp_resistance_reading
-    sensor: temp_analog_reading
-    configuration: DOWNSTREAM
-    resistor: 32kOhm
-  - platform: adc
-    id: temp_analog_reading
-    pin: A0
   - platform: uptime
     name: Uptime Sensor
     id: ${sys_name}_${device_type}_uptime_sensor
@@ -119,18 +91,8 @@ text_sensor:
       strftime(str, sizeof(str), "%Y-%m-%d %H:%M", localtime(&currTime));
       return  { str };
     update_interval: 60s
-  - platform: sun
-    name: Sunrise
-    type: sunrise
-  - platform: sun
-    name: Sunset
-    type: sunset      
 
 button:
   - platform: restart
     id: ${sys_name}_${device_type}_restart_button
     name: "${friendly_name} Restart"
-    
-sun:
-  latitude: ${latitude}
-  longitude: ${longitude}
