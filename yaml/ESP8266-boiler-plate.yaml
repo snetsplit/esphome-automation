@@ -31,7 +31,7 @@ wifi:
   password: ${password}
   domain: ${domain}
   ap:
-    ssid: "${friendly_node_name} Fallback"
+    ssid: "${friendly_name} Fallback"
     password: ${password}
   power_save_mode: high
 
@@ -64,7 +64,7 @@ sensor:
     type: azimuth
   - platform: ntc
     sensor: temp_resistance_reading
-    name: ${friendly_node_name} Temperature
+    name: ${friendly_name} Temperature
     unit_of_measurement: "°C"
     accuracy_decimals: 1
     icon: "mdi:thermometer"
@@ -86,18 +86,18 @@ sensor:
     icon: mdi:clock-start
     update_interval: 60s
   - platform: wifi_signal
-    name: ${friendly_node_name} WiFi Signal
+    name: ${friendly_name} WiFi Signal
     id: ${node_id}_wifi_signal
     update_interval: 60s
 
 
 text_sensor:
   - platform: version
-    name: ${friendly_node_name} ESPHome Version
+    name: ${friendly_name} ESPHome Version
     id: ${node_id}_esphome_version    
   - platform: wifi_info
     ip_address:
-      name: ${friendly_node_name} IP Address
+      name: ${friendly_name} IP Address
       id: ${node_id}_ip_address
       icon: mdi:ip-network
   - platform: template
@@ -118,7 +118,7 @@ text_sensor:
 button:
   - platform: restart
     id: ${node_id}_restart_button
-    name: "${friendly_node_name} Restart"
+    name: "${friendly_name} Restart"
     
 sun:
   latitude: ${latitude}
