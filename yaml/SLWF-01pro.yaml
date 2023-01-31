@@ -255,6 +255,3 @@ climate:
     - logger.log: "State updated!"
     - lambda: |-
          id(${node_id}_automation_lambda).press();
-    custom_fan_modes:
-      - SILENT
-      - TURBO
