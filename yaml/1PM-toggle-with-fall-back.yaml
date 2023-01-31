@@ -292,10 +292,10 @@ text_sensor:
     type: sunset
     filters:
       - lambda: |-  
-           char 24hourClock[2];
-           24hourClock[0] = x[0];
-           24hourClock[1] = x[1];
-           return 24hourClock[0].c_str();
+           char clock24[2];
+           Clock24[0] = x[0];
+           clock24[1] = x[1];
+           return clock24[0].c_str();
 
 button:
   - platform: restart
