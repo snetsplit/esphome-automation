@@ -103,25 +103,6 @@ sensor:
     name: ${friendly_node_name} WiFi Signal
     id: ${node_id}_wifi_signal
     update_interval: 60s
-  - platform: homeassistant
-    name: ${friendly_node_name} Room Tempreture 1 F
-    id: ${node_id}_room_temperature_1_f
-    entity_id: ${external_thermometer_entity_1}
-    unit_of_measurement: °F
-    internal: true
-  - platform: homeassistant
-    name: ${friendly_node_name} Room Tempreture 2 F
-    id: ${node_id}_room_temperature_2_f
-    unit_of_measurement: °F
-    entity_id: ${external_thermometer_entity_2}
-    internal: true
-  - platform: template
-    name: ${friendly_node_name} Room Tempreture °C Old
-    id: ${node_id}_room_temperature_c_old
-    lambda: |-
-         return ((((id(${node_id}_room_temperature_1_f).state < id(${node_id}_room_temperature_2_f).state)?id(${node_id}_room_temperature_1_f).state:id(${node_id}_room_temperature_2_f).state) - 32.0) * 0.5556);;
-    unit_of_measurement: °C
-    update_interval: 15s
 
 # Text Sensors.
 text_sensor:
