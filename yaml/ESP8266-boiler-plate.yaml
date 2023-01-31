@@ -16,7 +16,9 @@ substitutions:
   time_server2: "1.pool.ntp.org"
   time_server3: "2.pool.ntp.org"
   ota_password: "wouldn't you like to know?"
-
+  latitude: 48.8584°
+  longitude: 2.2945°
+  
 logger:
 
 api:
@@ -46,7 +48,7 @@ http_request:
   esp8266_disable_ssl_support: true
 
 esphome:
-  name: ${sys_name}_${device}
+  name: ${sys_name}_${device_type_type}
   comment: ${friendly_name}
   platform: ESP8266
   board: esp01_1m
@@ -82,23 +84,23 @@ sensor:
     pin: A0
   - platform: uptime
     name: Uptime Sensor
-    id: ${sys_name}_${device}_uptime_sensor
+    id: ${sys_name}_${device_type}_uptime_sensor
     icon: mdi:clock-start
     update_interval: 60s
   - platform: wifi_signal
     name: ${friendly_name} WiFi Signal
-    id: ${sys_name}_${device}_wifi_signal
+    id: ${sys_name}_${device_type}_wifi_signal
     update_interval: 60s
 
 
 text_sensor:
   - platform: version
     name: ${friendly_name} ESPHome Version
-    id: ${sys_name}_${device}_esphome_version    
+    id: ${sys_name}_${device_type}_esphome_version    
   - platform: wifi_info
     ip_address:
       name: ${friendly_name} IP Address
-      id: ${sys_name}_${device}_ip_address
+      id: ${sys_name}_${device_type}_ip_address
       icon: mdi:ip-network
   - platform: template
     name: "Current time"
@@ -117,7 +119,7 @@ text_sensor:
 
 button:
   - platform: restart
-    id: ${sys_name}_${device}_restart_button
+    id: ${sys_name}_${device_type}_restart_button
     name: "${friendly_name} Restart"
     
 sun:
