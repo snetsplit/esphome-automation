@@ -258,5 +258,3 @@ climate:
     custom_fan_modes:
       - SILENT
       - TURBO
-    custom_presets:             # All capabilities in this section detected by autoconf.
-      - AUTO
