@@ -48,7 +48,7 @@ http_request:
   esp8266_disable_ssl_support: true
 
 esphome:
-  name: ${sys_name}_${device_type_type}
+  name: ${sys_name}_${device_type}
   comment: ${friendly_name}
   platform: ESP8266
   board: esp01_1m
