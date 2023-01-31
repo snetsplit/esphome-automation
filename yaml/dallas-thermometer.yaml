@@ -8,7 +8,7 @@ substitutions:
 dallas:
   - pin: ${dallas_pin}
     id: ${device_name}_pin
-    update_interval: 30s
+    update_interval: ${dallas_update}
 
 sensor:
   - platform: dallas
