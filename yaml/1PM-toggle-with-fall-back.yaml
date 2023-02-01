@@ -287,6 +287,22 @@ text_sensor:
   - platform: sun
     name: Sunrise
     type: sunrise
+    filters:
+      - lambda: |-  
+           char hours[3] = "  ";
+           hours[0] = x[0];
+           hours[1] = x[1];
+           int hours24 = atoi(hours);
+           int hours12 = ((hours24 == 0) || (hours24 == 12))?12:(hours24 % 12);
+           itoa(hours12,hours,10); 
+           if(hours12 < 10) {
+              x[0] = ' ';
+              x[1] = hours[0];
+           } else {
+              x[0] = hours[0];
+              x[1] = hours[1];
+           }
+           return x + ((hours24 > 11)?" AM":" PM");
   - platform: sun
     name: Sunset
     type: sunset
