@@ -292,10 +292,15 @@ text_sensor:
     type: sunset
     filters:
       - lambda: |-  
-           char clock24[3] = "  ";
-           clock24[0] = x[0];
-           clock24[1] = x[1];
-           return std::string(clock24);
+           char hours[3] = "  ";
+           hours[0] = x[0];
+           hours[1] = x[1];
+           int hours24 = atoi(hours);
+           int hours12 = ((hours24 == 0) || (hours24 == 12))?12:(hours24 % 12);
+           itoa(hours12,hours,10); 
+           x[0] = hours[0];
+           x[1] = hours[1];
+           return x;
 
 button:
   - platform: restart
