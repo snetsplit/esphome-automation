@@ -302,7 +302,7 @@ text_sensor:
               x[0] = hours[0];
               x[1] = hours[1];
            }
-           return x + ((hours24 > 11)?" AM":" PM");
+           return x + ((hours24 < 12)?" AM":" PM");
   - platform: sun
     name: Sunset
     type: sunset
@@ -321,7 +321,7 @@ text_sensor:
               x[0] = hours[0];
               x[1] = hours[1];
            }
-           return x + ((hours24 > 11)?" AM":" PM");
+           return x + ((hours24 < 12)?" AM":" PM");
 
 button:
   - platform: restart
