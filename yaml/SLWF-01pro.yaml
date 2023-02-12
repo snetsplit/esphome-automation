@@ -261,11 +261,9 @@ climate:
     outdoor_temperature:
       id: ${node_id}_outside_tempreture   # Use a unique id
       name: ${friendly_node_name} Outside Tempreture
-      on_state:
-      - logger.log: "State updated!"
+      on_value:
       - lambda: |-
             id(${node_id}_automation_lambda).press();
     on_state:
-    - logger.log: "State updated!"
     - lambda: |-
          id(${node_id}_automation_lambda).press();
