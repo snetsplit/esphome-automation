@@ -184,7 +184,7 @@ button:
                               (id(${node_id}_room_temperature_c).state * 1.8 + 32)
                       );
 
-                       if ( ((${node_id}_outside_tempreture - minimumOutsideTempretureForOff) | (maximumOutsideTempretureForOff - ${node_id}_outside_tempreture)) >= 0) {
+                       if ((${node_id}_outside_tempreture > minimumOutsideTempretureForOff) && (maximumOutsideTempretureForOff > ${node_id}_outside_tempreture)) {
                           ESP_LOGW("climate_mode", "Mode: [%s]","Off");
                            if (ClimateMode::CLIMATE_MODE_OFF != id(${node_id}_my_climate).mode) {
                               ESP_LOGW("climate_mode", "Mode: [%s]","setting mode Off");
