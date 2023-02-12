@@ -1,7 +1,7 @@
 globals:
    - id: auto_mode
      type: bool
-     restore_value: false
+     restore_value: true
      initial_value: 'false'
 
 substitutions:
@@ -21,6 +21,8 @@ substitutions:
   cool_turbo_on_above_set_temp: $cool_on_above_set_temp
   heat_turbo_off_above_set_temp: "1"
   cool_turbo_off_below_set_temp: $heat_turbo_off_above_set_temp
+  minimum_outside_tempreture_difference_for_set_temp_off: "20"
+  maximum_outside_tempreture_difference_for_set_temp_off: "20"
   external_thermometer_entity_1: sensor.rm4_mini_temperature
   external_thermometer_entity_2: sensor.bedroom_thermometer
   
@@ -172,6 +174,8 @@ button:
         - lambda: |-
                   if (id(auto_mode)) {
                        float tempDifference = id(${node_id}_my_climate).target_temperature - id(${node_id}_room_temperature_c).state;
+                       float maximumOutsideTempretureForOff = id(${node_id}_my_climate).target_temperature + ${maximum_outside_tempreture_difference_for_set_temp_off};
+                       float minimumOutsideTempretureForOff = id(${node_id}_my_climate).target_temperature - ${minimum_outside_tempreture_difference_for_set_temp_off};
 
                       ESP_LOGW(
                               "climate_temp", "difference: %f°F,  target: %f°F, room: %f°F", 
@@ -180,7 +184,13 @@ button:
                               (id(${node_id}_room_temperature_c).state * 1.8 + 32)
                       );
 
-                       if(tempDifference > $heat_on_below_set_temp) {
+                       if ( ((${node_id}_outside_tempreture - minimumOutsideTempretureForOff) | (maximumOutsideTempretureForOff - ${node_id}_outside_tempreture)) >= 0) {
+                          ESP_LOGW("climate_mode", "Mode: [%s]","Off");
+                           if (ClimateMode::CLIMATE_MODE_OFF != id(${node_id}_my_climate).mode) {
+                              ESP_LOGW("climate_mode", "Mode: [%s]","setting mode Off");
+                              id(${node_id}_my_climate).make_call().set_mode(ClimateMode::CLIMATE_MODE_HEAT).perform();
+                           }                           
+                       } else if(tempDifference > $heat_on_below_set_temp) {
                           ESP_LOGW("climate_mode", "Mode: [%s]","heat");
                            if (ClimateMode::CLIMATE_MODE_HEAT != id(${node_id}_my_climate).mode) {
                               ESP_LOGW("climate_mode", "Mode: [%s]","setting mode heat");
@@ -251,6 +261,10 @@ climate:
     outdoor_temperature:
       id: ${node_id}_outside_tempreture   # Use a unique id
       name: ${friendly_node_name} Outside Tempreture
+      on_state:
+      - logger.log: "State updated!"
+      - lambda: |-
+            id(${node_id}_automation_lambda).press();
     on_state:
     - logger.log: "State updated!"
     - lambda: |-
