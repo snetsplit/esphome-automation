@@ -184,7 +184,7 @@ button:
                               (id(${node_id}_room_temperature_c).state * 1.8 + 32)
                       );
 
-                       ESP_LOGW("climate_mode", "Test Mode: [%s]", climate.climate_mode_to_string(id(${node_id}_my_climate).mode));
+                       ESP_LOGW("climate_mode", "Test Mode: [%s]", climate::climate_mode_to_string(id(${node_id}_my_climate).mode));
                        if ((id(${node_id}_outside_tempreture).state > minimumOutsideTempretureForOff) && (maximumOutsideTempretureForOff > id(${node_id}_outside_tempreture).state)) {
                           ESP_LOGW("climate_mode", "Mode: [%s]","Off");
                            if (ClimateMode::CLIMATE_MODE_OFF != id(${node_id}_my_climate).mode) {
