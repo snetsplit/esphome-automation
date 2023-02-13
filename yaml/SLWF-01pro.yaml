@@ -295,7 +295,7 @@ number:
     max_value: 100
     unit_of_measurement: °F
     mode: box
-    lambda: return id(outside_temp_minimum) * 1.8 + 32;
+    lambda: return id(outside_temp_minimum) * 1.8;
     step: 0.1
     set_action:
     - lambda: return;
@@ -306,7 +306,7 @@ number:
     max_value: 100
     unit_of_measurement: °F
     mode: box
-    lambda: return id(outside_temp_maximum) * 1.8 + 32;
+    lambda: return id(outside_temp_maximum) * 1.8;
     step: 0.1
     set_action:
     - lambda: return;
