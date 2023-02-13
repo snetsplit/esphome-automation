@@ -265,7 +265,7 @@ number:
     min_value: 0
     max_value: 10
     unit_of_measurement: "-°F"
-    lambda: return id(outside_temp_difference_minimum) * 1.8;
+    lambda: return id(outside_temp_difference_minimum) * 180 / 1 / 100.0;
     step: 0.1
     set_action:
      - lambda: |-
@@ -277,8 +277,7 @@ number:
     min_value: 0
     max_value: 10
     unit_of_measurement: "+°F"
-    mode: box
-    lambda: return id(outside_temp_difference_maximum) * 1.8;
+    lambda: return id(outside_temp_difference_maximum) * 180 / 1 / 100.0;
     step: 0.1
     set_action:
      - lambda: |-
@@ -291,7 +290,7 @@ number:
     max_value: 100
     unit_of_measurement: °F
     mode: box
-    lambda: return id(outside_temp_minimum) * 1.8;
+    lambda: return id(outside_temp_minimum) * 180 / 1 / 100.0;
     step: 0.1
     set_action:
     - lambda: return;
@@ -302,7 +301,7 @@ number:
     max_value: 100
     unit_of_measurement: °F
     mode: box
-    lambda: return id(outside_temp_maximum) * 1.8;
+    lambda: return id(outside_temp_maximum) * 180 / 1 / 100.0;
     step: 0.1
     set_action:
     - lambda: return;
