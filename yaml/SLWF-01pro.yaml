@@ -21,7 +21,7 @@ substitutions:
   cool_turbo_on_above_set_temp: $cool_on_above_set_temp
   heat_turbo_off_above_set_temp: "1"
   cool_turbo_off_below_set_temp: $heat_turbo_off_above_set_temp
-  minimum_outside_tempreture_difference_for_set_temp_off: "11"
+  minimum_outside_tempreture_difference_for_set_temp_off: "3"
   maximum_outside_tempreture_difference_for_set_temp_off: "3"
   external_thermometer_entity_1: sensor.rm4_mini_temperature
   external_thermometer_entity_2: sensor.bedroom_thermometer
