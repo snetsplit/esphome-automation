@@ -19,6 +19,10 @@ globals:
      type: float
      restore_value: true
      initial_value: '3'
+   - id: previous_target_temp
+     type: float
+     restore_value: false
+     initial_value: '3'
 
 substitutions:
   node_name: slwf-01pro-heatpump # Use a unique name.
@@ -319,3 +323,9 @@ climate:
     on_state:
     - lambda: |-
          id(${node_id}_automation_lambda).press();
+         if(id(${node_id}_my_climate).target_temperature != id(previous_target_temp)) {
+             id(previous_target_temp) == id(${node_id}_my_climate).target_temperature;
+             id(outside_temp_maximum) = id(${node_id}_my_climate).target_temperature + (id(outside_temp_difference_maximum) * 0.555555);
+             id(outside_temp_minimum) = id(${node_id}_my_climate).target_temperature - (id(outside_temp_difference_minimum) * 0.555555);
+          }
+             
