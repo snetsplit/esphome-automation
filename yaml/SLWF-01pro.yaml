@@ -126,7 +126,7 @@ sensor:
     name: ${friendly_node_name} Outside Tempreture Turn on Minimum 
     id: ${node_id}_outside_temp_minimum
     unit_of_measurement: °F
-    lambda: return floor(id(outside_temp_minimum);
+    lambda: return id(outside_temp_minimum);
     filters:
      - lambda: return x * 1.8 + 32.0;
     update_interval: 60s
@@ -134,7 +134,7 @@ sensor:
     name: ${friendly_node_name} Outside Tempreture Turn on Maximum 
     id: ${node_id}_outside_temp_maximum
     unit_of_measurement: °F
-    lambda: return floor(id(outside_temp_maximum);
+    lambda: return id(outside_temp_maximum);
     filters:
      - lambda: return x * 1.8 + 32.0;
     update_interval: 60s
@@ -294,7 +294,7 @@ number:
     min_value: 0
     max_value: 10
     unit_of_measurement: "+°F"
-    lambda: return floor(id(outside_temp_difference_maximum);
+    lambda: return id(outside_temp_difference_maximum);
     step: 0.1
     set_action:
      - lambda: |-
