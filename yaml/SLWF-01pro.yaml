@@ -299,6 +299,7 @@ number:
     lambda: return id(outside_temp_minimum)×(9/5)+32
     step: 0.1
     set_action:
+    - lambda: return;
   - platform: template
     name: ${friendly_node_name} Outside Tempreture Turn on Maximum 
     id: ${node_id}_outside_temp_maximum
@@ -309,6 +310,7 @@ number:
     lambda: return id(outside_temp_maximum)×(9/5)+32
     step: 0.1
     set_action:
+    - lambda: return;
 
 uart:
   tx_pin: GPIO1
