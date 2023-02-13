@@ -271,7 +271,7 @@ number:
     step: 0.1
     set_action:
      - lambda: |-
-         id(outside_temp_difference_minimum) = 5.55555 * x;
+         id(outside_temp_difference_minimum) = 0.555555 * x;
          id(outside_temp_minimum) = id(${node_id}_my_climate).target_temperature - id(outside_temp_difference_minimum);
          id(${node_id}_automation_lambda).press();
   - platform: template
@@ -285,7 +285,7 @@ number:
     step: 0.1
     set_action:
      - lambda: |-
-         id(outside_temp_difference_maximum) = 5.55555 * x;
+         id(outside_temp_difference_maximum) = 0.555555 * x;
          id(outside_temp_maximum) = id(${node_id}_my_climate).target_temperature + id(outside_temp_difference_maximum);
          id(${node_id}_automation_lambda).press();
   - platform: template
