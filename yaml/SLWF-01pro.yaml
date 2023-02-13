@@ -50,8 +50,8 @@ esphome:
     then:
       lambda: |-
          id(${node_id}_beeper).turn_on();
-         id(outside_temp_maximum) = id(${node_id}_my_climate).target_temperature + id(outside_temp_difference_maximum);
-         id(outside_temp_minimum) = id(${node_id}_my_climate).target_temperature - id(outside_temp_difference_minimum);
+         id(outside_temp_minimum) = id(${node_id}_my_climate).target_temperature - (id(outside_temp_difference_minimum) * 0.555555);
+         id(outside_temp_maximum) = id(${node_id}_my_climate).target_temperature + (id(outside_temp_difference_maximum) + 0.555555);
 
 time:
   - platform: sntp
@@ -122,6 +122,23 @@ sensor:
     name: ${friendly_node_name} WiFi Signal
     id: ${node_id}_wifi_signal
     update_interval: 60s
+  - platform: template
+    name: ${friendly_node_name} Outside Tempreture Turn on Minimum 
+    id: ${node_id}_outside_temp_minimum
+    unit_of_measurement: °F
+    lambda: return floor(id(outside_temp_minimum);
+    filters:
+     - lambda: return x * 1.8 + 32.0;
+    update_interval: 60s
+  - platform: template
+    name: ${friendly_node_name} Outside Tempreture Turn on Maximum 
+    id: ${node_id}_outside_temp_maximum
+    unit_of_measurement: °F
+    lambda: return floor(id(outside_temp_maximum);
+    filters:
+     - lambda: return x * 1.8 + 32.0;
+    update_interval: 60s
+
 
 # Text Sensors.
 text_sensor:
@@ -265,47 +282,26 @@ number:
     min_value: 0
     max_value: 10
     unit_of_measurement: "-°F"
-    lambda: return floor(id(outside_temp_difference_minimum) * (9.0/5.0) * 10) /10;
+    lambda: return id(outside_temp_difference_minimum);
     step: 0.1
     set_action:
      - lambda: |-
-         id(outside_temp_difference_minimum) = floor(5.0 * (x - 32) / 9.0) / 10;
-         id(outside_temp_minimum) = id(${node_id}_my_climate).target_temperature - id(outside_temp_difference_minimum);
+         id(outside_temp_difference_minimum) = x;
+         id(outside_temp_minimum) = id(${node_id}_my_climate).target_temperature - (id(outside_temp_difference_minimum) * 0.555555);
   - platform: template
     name: ${friendly_node_name} Outside Tempreture Turn on Difference Maximum 
     id: ${node_id}_outside_temp_difference_maximum
     min_value: 0
     max_value: 10
     unit_of_measurement: "+°F"
-    lambda: return floor(id(outside_temp_difference_maximum) * (9.0/5.0) * 10) /10;
+    lambda: return floor(id(outside_temp_difference_maximum);
     step: 0.1
     set_action:
      - lambda: |-
-         id(outside_temp_difference_maximum) = floor(5.0 * (x - 32) / 9.0) / 10;
-         id(outside_temp_maximum) = id(${node_id}_my_climate).target_temperature + id(outside_temp_difference_maximum);
-  - platform: template
-    name: ${friendly_node_name} Outside Tempreture Turn on Minimum 
-    id: ${node_id}_outside_temp_minimum
-    min_value: -40
-    max_value: 100
-    unit_of_measurement: °F
-    mode: box
-    lambda: return floor(id(outside_temp_minimum) * (9.0/5.0) * 10) /10;
-    step: 0.1
-    set_action:
-    - lambda: return;
-  - platform: template
-    name: ${friendly_node_name} Outside Tempreture Turn on Maximum 
-    id: ${node_id}_outside_temp_maximum
-    min_value: -40
-    max_value: 100
-    unit_of_measurement: °F
-    mode: box
-    lambda: return floor(id(outside_temp_maximum) * (9.0/5.0) * 10) /10;
-    step: 0.1
-    set_action:
-    - lambda: return;
-
+         id(outside_temp_difference_maximum) = x;
+         id(outside_temp_maximum) = id(${node_id}_my_climate).target_temperature + (id(outside_temp_difference_maximum) + 0.555555);
+         
+         
 uart:
   tx_pin: GPIO1
   rx_pin: GPIO3
