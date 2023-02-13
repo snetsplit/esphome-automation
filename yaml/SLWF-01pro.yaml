@@ -5,15 +5,15 @@ globals:
      initial_value: 'false'
    - id: outside_temp_minimum
      type: float
-     restore_value: true
+     restore_value: false
      initial_value: '11'
    - id: outside_temp_difference_minimum
      type: float
-     restore_value: false
+     restore_value: true
      initial_value: '11'
    - id: outside_temp_maximum
      type: float
-     restore_value: true
+     restore_value: false
      initial_value: '3'
    - id: outside_temp_difference_maximum
      type: float
@@ -48,7 +48,10 @@ esphome:
   on_boot:
     priority: 600
     then:
-      lambda: id(${node_id}_beeper).turn_on();
+      lambda: |-
+         id(${node_id}_beeper).turn_on();
+         id(outside_temp_maximum) = id(${node_id}_my_climate).target_temperature + id(outside_temp_difference_maximum);
+         id(outside_temp_minimum) = id(${node_id}_my_climate).target_temperature - id(outside_temp_difference_minimum);
 
 time:
   - platform: sntp
