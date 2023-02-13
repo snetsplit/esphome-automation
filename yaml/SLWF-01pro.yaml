@@ -3,6 +3,22 @@ globals:
      type: bool
      restore_value: true
      initial_value: 'false'
+   - id: outside_temp_minimum
+     type: float
+     restore_value: true
+     initial_value: '11'
+   - id: outside_temp_difference_minimum
+     type: float
+     restore_value: false
+     initial_value: '11'
+   - id: outside_temp_maximum
+     type: float
+     restore_value: true
+     initial_value: '3'
+   - id: outside_temp_difference_maximum
+     type: float
+     restore_value: false
+     initial_value: '3'
 
 substitutions:
   node_name: slwf-01pro-heatpump # Use a unique name.
@@ -174,8 +190,6 @@ button:
         - lambda: |-
                   if (id(auto_mode)) {
                        float tempDifference = id(${node_id}_my_climate).target_temperature - id(${node_id}_room_temperature_c).state;
-                       float maximumOutsideTempretureForOff = id(${node_id}_my_climate).target_temperature + ${maximum_outside_tempreture_difference_for_set_temp_off};
-                       float minimumOutsideTempretureForOff = id(${node_id}_my_climate).target_temperature - ${minimum_outside_tempreture_difference_for_set_temp_off};
 
                       ESP_LOGW(
                               "climate_temp", "difference: %f°F,  target: %f°F, room: %f°F", 
@@ -184,7 +198,7 @@ button:
                               (id(${node_id}_room_temperature_c).state * 1.8 + 32)
                       );
 
-                       if ((id(${node_id}_outside_tempreture).state > minimumOutsideTempretureForOff) && (maximumOutsideTempretureForOff > id(${node_id}_outside_tempreture).state)) {
+                       if ((id(${node_id}_outside_tempreture).state > ${node_id}_outside_temp_minimum) && (maximumOutsideTempretureForOff > ${node_id}_outside_temp_maximum) {
                            if (ClimateMode::CLIMATE_MODE_OFF != id(${node_id}_my_climate).mode) {
                               ESP_LOGW("climate_mode", "Setting preset: [%s]", climate::climate_preset_to_string(ClimatePreset::CLIMATE_PRESET_NONE));
                               id(${node_id}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_NONE).perform();
@@ -239,11 +253,64 @@ number:
     min_value: -40
     max_value: 100
     restore_value: true
+    mode: box
     step: 0.1
     on_value:
       then:
         - lambda: |-
             id(${node_id}_automation_lambda).press();
+  - platform: template
+    name: ${friendly_node_name} Outside Tempreture Turn on Difference Minimum
+    id: ${node_id}_outside_difference_temp_minimum
+    optimistic: true
+    min_value: -40
+    max_value: 100
+    unit_of_measurement: °F
+    mode: box
+    lambda: return id(outside_difference_temp_minimum)×(9/5)+32
+    step: 0.1
+    on_value:
+      then:
+        - lambda: |-
+            id(outside_difference_temp_minimum) = 5/9 * (x-32);
+            id(outside_temp_minimum) = id(${node_id}_my_climate).target_temperature - id(outside_difference_temp_minimum);
+            id(${node_id}_automation_lambda).press();
+  - platform: template
+    name: ${friendly_node_name} Outside Tempreture Turn on Difference Maximum 
+    id: ${node_id}_outside_difference_temp_maximum
+    optimistic: true
+    min_value: -40
+    max_value: 100
+    unit_of_measurement: °F
+    mode: box
+    lambda: return id(outside_difference_temp_maximum)×(9/5)+32
+    step: 0.1
+    on_value:
+      then:
+        - lambda: |-
+            id(outside_difference_temp_maximum) = 5/9 * (x-32);
+            id(outside_temp_maximum) = id(${node_id}_my_climate).target_temperature + id(outside_difference_temp_maximum);
+            id(${node_id}_automation_lambda).press();
+  - platform: template
+    name: ${friendly_node_name} Outside Tempreture Turn on Minimum 
+    id: ${node_id}_outside_temp_minimum
+    optimistic: true
+    min_value: -40
+    max_value: 100
+    unit_of_measurement: °F
+    mode: box
+    lambda: return id(outside_temp_minimum)×(9/5)+32
+    step: 0.1
+  - platform: template
+    name: ${friendly_node_name} Outside Tempreture Turn on Maximum 
+    id: ${node_id}_outside_temp_maximum
+    optimistic: true
+    min_value: -40
+    max_value: 100
+    unit_of_measurement: °F
+    mode: box
+    lambda: return id(outside_temp_maximum)×(9/5)+32
+    step: 0.1
 
 uart:
   tx_pin: GPIO1
