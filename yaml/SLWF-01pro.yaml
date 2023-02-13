@@ -51,7 +51,7 @@ esphome:
       lambda: |-
          id(${node_id}_beeper).turn_on();
          id(outside_temp_minimum) = id(${node_id}_my_climate).target_temperature - (id(outside_temp_difference_minimum) * 0.555555);
-         id(outside_temp_maximum) = id(${node_id}_my_climate).target_temperature + (id(outside_temp_difference_maximum) + 0.555555);
+         id(outside_temp_maximum) = id(${node_id}_my_climate).target_temperature + (id(outside_temp_difference_maximum) * 0.555555);
 
 time:
   - platform: sntp
@@ -299,7 +299,7 @@ number:
     set_action:
      - lambda: |-
          id(outside_temp_difference_maximum) = x;
-         id(outside_temp_maximum) = id(${node_id}_my_climate).target_temperature + (id(outside_temp_difference_maximum) + 0.555555);
+         id(outside_temp_maximum) = id(${node_id}_my_climate).target_temperature + (id(outside_temp_difference_maximum) * 0.555555);
          
          
 uart:
