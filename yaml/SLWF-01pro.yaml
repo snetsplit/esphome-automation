@@ -254,7 +254,6 @@ number:
     min_value: -40
     max_value: 100
     restore_value: true
-    mode: box
     step: 0.1
     on_value:
       then:
@@ -265,21 +264,19 @@ number:
     id: ${node_id}_outside_temp_difference_minimum
     min_value: 0
     max_value: 10
-    unit_of_measurement: °F
-    mode: box
+    unit_of_measurement: "-°F"
     lambda: return id(outside_temp_difference_minimum) * 1.8;
     step: 0.1
     set_action:
      - lambda: |-
          id(outside_temp_difference_minimum) = 0.555555 * x;
          id(outside_temp_minimum) = id(${node_id}_my_climate).target_temperature - id(outside_temp_difference_minimum);
-         id(${node_id}_automation_lambda).press();
   - platform: template
     name: ${friendly_node_name} Outside Tempreture Turn on Difference Maximum 
     id: ${node_id}_outside_temp_difference_maximum
     min_value: 0
     max_value: 10
-    unit_of_measurement: °F
+    unit_of_measurement: "+°F"
     mode: box
     lambda: return id(outside_temp_difference_maximum) * 1.8;
     step: 0.1
@@ -287,7 +284,6 @@ number:
      - lambda: |-
          id(outside_temp_difference_maximum) = 0.555555 * x;
          id(outside_temp_maximum) = id(${node_id}_my_climate).target_temperature + id(outside_temp_difference_maximum);
-         id(${node_id}_automation_lambda).press();
   - platform: template
     name: ${friendly_node_name} Outside Tempreture Turn on Minimum 
     id: ${node_id}_outside_temp_minimum
