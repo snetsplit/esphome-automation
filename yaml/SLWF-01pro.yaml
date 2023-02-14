@@ -210,8 +210,8 @@ button:
         - lambda: |-
              id(outside_temp_maximum) = id(${node_id}_my_climate).target_temperature + 3;
              id(outside_temp_minimum) = id(${node_id}_my_climate).target_temperature - 5;
-             id(${node_id}_temp_off_low) = id(outside_temp_minimum);
-             id(${node_id}_temp_off_high) = id(outside_temp_maximum);
+             id(${node_id}_temp_off_low).publish_state(id(outside_temp_minimum));
+             id(${node_id}_temp_off_high).publish_state(id(outside_temp_maximum));
              
   - platform: template
     internal: true
@@ -310,7 +310,7 @@ climate:
     - lambda: |-
          id(${node_id}_automation_lambda).press();
          if(id(${node_id}_my_climate).target_temperature != id(previous_target_temp)) {
-            id(previous_target_temp = id(${node_id}_my_climate).target_temperature;
+            id(previous_target_temp) = id(${node_id}_my_climate).target_temperature;
             id(${node_id}_static_settings_lambda).press();
             id(${node_id}_target_temp).publish_state(id(${node_id}_my_climate).target_temperature);
           }
