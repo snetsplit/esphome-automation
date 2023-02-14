@@ -288,31 +288,6 @@ number:
       then:
         - lambda: |-
             id(${node_id}_automation_lambda).press();
-  - platform: template
-    name: ${friendly_node_name} Outside Tempreture Turn on Difference Minimum
-    id: ${node_id}_outside_temp_difference_minimum
-    min_value: 0
-    max_value: 20
-    unit_of_measurement: "-°F"
-    lambda: return id(outside_temp_difference_minimum);
-    step: 0.1
-    set_action:
-     - lambda: |-
-         id(outside_temp_difference_minimum) = x;
-         id(${node_id}_static_settings_lambda).press();
-         
-  - platform: template
-    name: ${friendly_node_name} Outside Tempreture Turn on Difference Maximum 
-    id: ${node_id}_outside_temp_difference_maximum
-    min_value: 0
-    max_value: 20
-    unit_of_measurement: "+°F"
-    lambda: return id(outside_temp_difference_maximum);
-    step: 0.1
-    set_action:
-     - lambda: |-
-         id(outside_temp_difference_maximum) = x;
-         id(${node_id}_static_settings_lambda).press();
          
          
 uart:
