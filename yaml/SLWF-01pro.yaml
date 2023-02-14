@@ -116,7 +116,6 @@ sensor:
     name: ${friendly_node_name} WiFi Signal
     id: ${node_id}_wifi_signal
     update_interval: 60s
-    update_interval: 60s
   - platform: template
     name: ${friendly_node_name} Current Temp
     id: ${node_id}_current_temp
