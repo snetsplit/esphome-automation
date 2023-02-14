@@ -7,15 +7,7 @@ globals:
      type: float
      restore_value: false
      initial_value: '11'
-   - id: outside_temp_difference_minimum
-     type: float
-     restore_value: true
-     initial_value: '11'
    - id: outside_temp_maximum
-     type: float
-     restore_value: true
-     initial_value: '3'
-   - id: outside_temp_difference_maximum
      type: float
      restore_value: true
      initial_value: '3'
@@ -124,39 +116,32 @@ sensor:
     name: ${friendly_node_name} WiFi Signal
     id: ${node_id}_wifi_signal
     update_interval: 60s
-  - platform: template
-    name: ${friendly_node_name} Outside Tempreture Turn on Minimum 
-    id: ${node_id}_outside_temp_minimum
-    unit_of_measurement: °F
-    lambda: return id(outside_temp_minimum);
-    filters:
-     - lambda: return x * 1.8 + 32.0;
-    update_interval: 60s
-  - platform: template
-    name: ${friendly_node_name} Outside Tempreture Turn on Maximum 
-    id: ${node_id}_outside_temp_maximum
-    unit_of_measurement: °F
-    lambda: return id(outside_temp_maximum);
-    filters:
-     - lambda: return x * 1.8 + 32.0;
     update_interval: 60s
   - platform: template
     name: ${friendly_node_name} Current Temp
     id: ${node_id}_current_temp
     unit_of_measurement: °F
-    lambda: return id(${node_id}_my_climate).current_temperature;
     filters:
      - lambda: return x * 1.8 + 32.0;
-    update_interval: 60s
   - platform: template
     name: ${friendly_node_name} Target Temp
     id: ${node_id}_target_temp
     unit_of_measurement: °F
-    lambda: return id(${node_id}_my_climate).target_temperature;
     filters:
      - lambda: return x * 1.8 + 32.0;
-    update_interval: 60s
-
+  - platform: template
+    name: ${friendly_node_name} Outside off low
+    id: ${node_id}_temp_off_low
+    unit_of_measurement: °F
+    filters:
+     - lambda: return x * 1.8 + 32.0;
+  - platform: template
+    name: ${friendly_node_name} Outside off high
+    id: ${node_id}_temp_off_high
+    unit_of_measurement: °F
+    filters:
+     - lambda: return x * 1.8 + 32.0;
+     
 
 # Text Sensors.
 text_sensor:
@@ -219,6 +204,16 @@ button:
     icon: mdi:theme-light-dark
     on_press:
       midea_ac.display_toggle:
+  - platform: template
+    internal: true
+    id: ${node_id}_static_settings_lambda
+    on_press:
+        - lambda: |-
+             id(outside_temp_maximum) = id(${node_id}_my_climate).target_temperature + 3;
+             id(outside_temp_minimum) = id(${node_id}_my_climate).target_temperature - 5;
+             id(${node_id}_temp_off_low) = id(outside_temp_minimum);
+             id(${node_id}_temp_off_high) = id(outside_temp_maximum);
+             
   - platform: template
     internal: true
     id: ${node_id}_automation_lambda
@@ -305,7 +300,8 @@ number:
     set_action:
      - lambda: |-
          id(outside_temp_difference_minimum) = x;
-         id(outside_temp_minimum) = id(${node_id}_my_climate).target_temperature - (id(outside_temp_difference_minimum) * 0.555555);
+         id(${node_id}_static_settings_lambda).press();
+         
   - platform: template
     name: ${friendly_node_name} Outside Tempreture Turn on Difference Maximum 
     id: ${node_id}_outside_temp_difference_maximum
@@ -317,7 +313,7 @@ number:
     set_action:
      - lambda: |-
          id(outside_temp_difference_maximum) = x;
-         id(outside_temp_maximum) = id(${node_id}_my_climate).target_temperature + (id(outside_temp_difference_maximum) * 0.5555555);
+         id(${node_id}_static_settings_lambda).press();
          
          
 uart:
@@ -340,7 +336,9 @@ climate:
     - lambda: |-
          id(${node_id}_automation_lambda).press();
          if(id(${node_id}_my_climate).target_temperature != id(previous_target_temp)) {
-             id(outside_temp_maximum) = id(${node_id}_my_climate).target_temperature + (id(outside_temp_difference_maximum) * 0.5555555);
-             id(outside_temp_minimum) = id(${node_id}_my_climate).target_temperature - (id(outside_temp_difference_minimum) * 0.5555555);
+            id(previous_target_temp = id(${node_id}_my_climate).target_temperature;
+            id(${node_id}_static_settings_lambda).press();
+            id(${node_id}_target_temp).publish_state(id(${node_id}_my_climate).target_temperature);
           }
+            id(${node_id}_current_temp).publish_state(id(${node_id}_my_climate).current_temperature);
              
