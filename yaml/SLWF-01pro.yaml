@@ -56,7 +56,7 @@ substitutions:
   heat_turbo_on: $heat_on
   cool_turbo_on: $cool_on
   heat_turbo_off: "1"
-  cool_turbo_off: $heat_turbo_off_above_set_temp
+  cool_turbo_off: $heat_turbo_off
   external_thermometer_entity_1: sensor.rm4_mini_temperature
   external_thermometer_entity_2: sensor.bedroom_thermometer
   
@@ -167,14 +167,12 @@ sensor:
   - platform: template
     name: ${friendly_node_name} E Cool temp
     id: ${node_id}_temp_cool
-    value: ${heat_on_above_set_temp}
     unit_of_measurement: °F
     filters:
      - lambda: return x * 1.8 + 32.0;
   - platform: template
     name: ${friendly_node_name} B heat temp
     id: ${node_id}_temp_heat
-    value: ${heat_on_below_set_temp}
     unit_of_measurement: °F
     filters:
      - lambda: return x * 1.8 + 32.0;
