@@ -15,6 +15,30 @@ globals:
      type: float
      restore_value: false
      initial_value: '3'
+   - id: cool_on_temp
+     type: float
+     restore_value: false
+     initial_value: '3'
+   - id: heat_on_temp
+     type: float
+     restore_value: false
+     initial_value: '3'
+   - id: turbo_cool_on_temp
+     type: float
+     restore_value: false
+     initial_value: '3'
+   - id: turbo_heat_on_temp
+     type: float
+     restore_value: false
+     initial_value: '3'
+   - id: turbo_cool_off_temp
+     type: float
+     restore_value: false
+     initial_value: '3'
+   - id: turbo_heat_off_temp
+     type: float
+     restore_value: false
+     initial_value: '3'
 
 substitutions:
   node_name: slwf-01pro-heatpump # Use a unique name.
@@ -27,12 +51,12 @@ substitutions:
   time_server1: "0.pool.ntp.org"
   time_server2: "1.pool.ntp.org"
   time_server3: "2.pool.ntp.org"
-  heat_on_below_set_temp: "3"
-  cool_on_above_set_temp: "4"
-  heat_turbo_on_below_set_temp: $heat_on_below_set_temp
-  cool_turbo_on_above_set_temp: $cool_on_above_set_temp
-  heat_turbo_off_above_set_temp: "1"
-  cool_turbo_off_below_set_temp: $heat_turbo_off_above_set_temp
+  heat_on: "3"
+  cool_on: "4"
+  heat_turbo_on: $heat_on
+  cool_turbo_on: $cool_on
+  heat_turbo_off: "1"
+  cool_turbo_off: $heat_turbo_off_above_set_temp
   external_thermometer_entity_1: sensor.rm4_mini_temperature
   external_thermometer_entity_2: sensor.bedroom_thermometer
   
@@ -140,8 +164,46 @@ sensor:
     unit_of_measurement: °F
     filters:
      - lambda: return x * 1.8 + 32.0;
+  - platform: template
+    name: ${friendly_node_name} Cool temp
+    id: ${node_id}_temp_cool
+    value: ${heat_on_above_set_temp}
+    unit_of_measurement: °F
+    filters:
+     - lambda: return x * 1.8 + 32.0;
+  - platform: template
+    name: ${friendly_node_name} heat temp
+    id: ${node_id}_temp_heat
+    value: ${heat_on_below_set_temp}
+    unit_of_measurement: °F
+    filters:
+     - lambda: return x * 1.8 + 32.0;
+  - platform: template
+    name: ${friendly_node_name} turbo cool on above set temp
+    id: ${node_id}_temp_cool_turbo_on
+    unit_of_measurement: °F
+    filters:
+     - lambda: return x * 1.8 + 32.0;
+  - platform: template
+    name: ${friendly_node_name} turbo heat on below set temp
+    id: ${node_id}_temp_heat_turbo_on
+    unit_of_measurement: °F
+    filters:
+     - lambda: return x * 1.8 + 32.0;
+  - platform: template
+    name: ${friendly_node_name} turbo heat off above set temp
+    id: ${node_id}_temp_heat_turbo_off
+    unit_of_measurement: °F
+    filters:
+     - lambda: return x * 1.8 + 32.0;
+  - platform: template
+    name: ${friendly_node_name} turbo cool below set temp
+    id: ${node_id}_temp_cool_turbo_off
+    unit_of_measurement: °F
+    filters:
+     - lambda: return x * 1.8 + 32.0;
      
-
+  
 # Text Sensors.
 text_sensor:
   - platform: version
@@ -219,15 +281,13 @@ button:
     on_press:
         - lambda: |-
                   if (id(auto_mode)) {
-                       float tempDifference = id(${node_id}_my_climate).target_temperature - id(${node_id}_room_temperature_c).state;
 
                       ESP_LOGW(
-                              "climate_temp", "difference: %f°F,  target: %f°F, room: %f°F", 
-                              (tempDifference * 1.8), 
+                              "climate_temp", "target: %f°F, room: %f°F", 
                               (id(${node_id}_my_climate).target_temperature * 1.8 + 32),
                               (id(${node_id}_room_temperature_c).state * 1.8 + 32)
                       );
-
+   
                        if ((id(${node_id}_outside_tempreture).state > id(outside_temp_minimum)) && (id(${node_id}_outside_tempreture).state < id(outside_temp_maximum))) {
                            if (ClimateMode::CLIMATE_MODE_OFF != id(${node_id}_my_climate).mode) {
                               ESP_LOGW("climate_mode", "Setting preset: [%s]", climate::climate_preset_to_string(ClimatePreset::CLIMATE_PRESET_NONE));
@@ -236,35 +296,35 @@ button:
                               ESP_LOGW("climate_mode", "Setting mode: [%s]", climate::climate_mode_to_string(ClimateMode::CLIMATE_MODE_OFF));
                               id(${node_id}_my_climate).make_call().set_mode(ClimateMode::CLIMATE_MODE_OFF).perform();
                            }                           
-                       } else if(tempDifference > $heat_on_below_set_temp) {
+                       } else if(id(${node_id}_my_climate).target_temperature < id(heat_on_temp) ) {
                            if (ClimateMode::CLIMATE_MODE_HEAT != id(${node_id}_my_climate).mode) {
                               ESP_LOGW("climate_mode", "Setting mode: [%s]", climate::climate_mode_to_string(ClimateMode::CLIMATE_MODE_HEAT));
                               id(${node_id}_my_climate).make_call().set_mode(ClimateMode::CLIMATE_MODE_HEAT).perform();
                            }
                            delay(2000);
-                           if(tempDifference > $heat_turbo_on_below_set_temp) {
+                           if(id(${node_id}_my_climate).target_temperature < id(turbo_heat_on_temp)) {
                                if (ClimatePreset::CLIMATE_PRESET_BOOST !=  id(${node_id}_my_climate).preset.value()) {
                               ESP_LOGW("climate_mode", "Setting preset: [%s]", climate::climate_preset_to_string(ClimatePreset::CLIMATE_PRESET_BOOST));
                                   id(${node_id}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_BOOST).perform();
-                               } else if (tempDifference < -$heat_turbo_off_above_set_temp) {
+                               } else if (id(${node_id}_my_climate).target_temperature > id(turbo_heat_off_temp)) {
                                if (ClimatePreset::CLIMATE_PRESET_NONE !=   id(${node_id}_my_climate).preset.value()) {
                               ESP_LOGW("climate_mode", "Setting preset: [%s]", climate::climate_preset_to_string(ClimatePreset::CLIMATE_PRESET_NONE));
                                   id(${node_id}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_NONE).perform();
                                }
                               }
                            }
-                      } else if(tempDifference < -$cool_on_above_set_temp) {
+                      } else if(id(${node_id}_my_climate).target_temperature > id(cool_on_temp) ) {
                            if (ClimateMode::CLIMATE_MODE_COOL != id(${node_id}_my_climate).mode) {
                               ESP_LOGW("climate_mode", "Setting mode: [%s]", climate::climate_mode_to_string(ClimateMode::CLIMATE_MODE_COOL));
                               id(${node_id}_my_climate).make_call().set_mode(ClimateMode::CLIMATE_MODE_COOL).perform();
                            }
                            delay(2000);
-                           if (tempDifference < -$cool_turbo_on_above_set_temp) {
+                           if (id(${node_id}_my_climate).target_temperature > id(turbo_cool_on_temp)) {
                               ESP_LOGW("climate_preset",    "Preset: [%s]", "boost");
                                if (ClimatePreset::CLIMATE_PRESET_BOOST !=  id(${node_id}_my_climate).preset.value()) {
                               ESP_LOGW("climate_mode", "Setting preset: [%s]", climate::climate_preset_to_string(ClimatePreset::CLIMATE_PRESET_BOOST));
                                   id(${node_id}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_BOOST).perform();
-                               } else if  (tempDifference > $cool_turbo_off_below_set_temp) {
+                               } else if  (id(${node_id}_my_climate).target_temperature < id(turbo_cool_off_temp)) {
                                if (ClimatePreset::CLIMATE_PRESET_NONE !=   id(${node_id}_my_climate).preset.value()) {
                               ESP_LOGW("climate_mode", "Setting preset: [%s]", climate::climate_preset_to_string(ClimatePreset::CLIMATE_PRESET_NONE));
                                   id(${node_id}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_NONE).perform();
@@ -281,7 +341,7 @@ number:
     id: ${node_id}_room_temperature_c
     optimistic: true
     min_value: -40
-    max_value: 100
+    max_value: 140
     restore_value: true
     step: 0.1
     on_value:
@@ -312,7 +372,19 @@ climate:
          if(id(${node_id}_my_climate).target_temperature != id(previous_target_temp)) {
             id(previous_target_temp) = id(${node_id}_my_climate).target_temperature;
             id(${node_id}_static_settings_lambda).press();
+            id(cool_on_temp) = id(${node_id}_my_climate).target_temperature + $cool_on;
+            id(heat_on_temp) = id(${node_id}_my_climate).target_temperature - $heat_on;
+            id(turbo_cool_on_temp) = id(${node_id}_my_climate).target_temperature - $heat_turbo_on;
+            id(turbo_heat_on_temp) = id(${node_id}_my_climate).target_temperature + $heat_turbo_off;
+            id(turbo_cool_off_temp) = id(${node_id}_my_climate).target_temperature + $cool_turbo_on;
+            id(turbo_heat_off_temp) = id(${node_id}_my_climate).target_temperature - $cool_turbo_off;
             id(${node_id}_target_temp).publish_state(id(${node_id}_my_climate).target_temperature);
+            id(${node_id}_temp_cool).publish_state(id(cool_on_temp));
+            id(${node_id}_temp_heat).publish_state(id(heat_on_temp));
+            id(${node_id}_temp_cool_turbo_on).publish_state(id(turbo_cool_on_temp));
+            id(${node_id}_temp_heat_turbo_on).publish_state(id(turbo_heat_on_temp));
+            id(${node_id}_temp_heat_turbo_off).publish_state(id(turbo_heat_off_temp));
+            id(${node_id}_temp_cool_turbo_off).publish_state(id(turbo_cool_off_temp));
           }
             id(${node_id}_current_temp).publish_state(id(${node_id}_my_climate).current_temperature);
              
