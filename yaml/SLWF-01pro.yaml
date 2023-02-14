@@ -165,39 +165,39 @@ sensor:
     filters:
      - lambda: return x * 1.8 + 32.0;
   - platform: template
-    name: ${friendly_node_name} Cool temp
+    name: ${friendly_node_name} E Cool temp
     id: ${node_id}_temp_cool
     value: ${heat_on_above_set_temp}
     unit_of_measurement: °F
     filters:
      - lambda: return x * 1.8 + 32.0;
   - platform: template
-    name: ${friendly_node_name} heat temp
+    name: ${friendly_node_name} B heat temp
     id: ${node_id}_temp_heat
     value: ${heat_on_below_set_temp}
     unit_of_measurement: °F
     filters:
      - lambda: return x * 1.8 + 32.0;
   - platform: template
-    name: ${friendly_node_name} turbo cool on above set temp
+    name: ${friendly_node_name} F turbo cool on above set temp
     id: ${node_id}_temp_cool_turbo_on
     unit_of_measurement: °F
     filters:
      - lambda: return x * 1.8 + 32.0;
   - platform: template
-    name: ${friendly_node_name} turbo heat on below set temp
+    name: ${friendly_node_name} A turbo heat on below set temp
     id: ${node_id}_temp_heat_turbo_on
     unit_of_measurement: °F
     filters:
      - lambda: return x * 1.8 + 32.0;
   - platform: template
-    name: ${friendly_node_name} turbo heat off above set temp
+    name: ${friendly_node_name} C turbo heat off above set temp
     id: ${node_id}_temp_heat_turbo_off
     unit_of_measurement: °F
     filters:
      - lambda: return x * 1.8 + 32.0;
   - platform: template
-    name: ${friendly_node_name} turbo cool below set temp
+    name: ${friendly_node_name} D turbo cool below set temp
     id: ${node_id}_temp_cool_turbo_off
     unit_of_measurement: °F
     filters:
