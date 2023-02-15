@@ -51,12 +51,12 @@ substitutions:
   time_server1: "0.pool.ntp.org"
   time_server2: "1.pool.ntp.org"
   time_server3: "2.pool.ntp.org"
-  heat_on: "-3"
+  heat_on: "-2"
   cool_on: "4"
-  heat_turbo_on: "-5"
-  cool_turbo_on: "6"
+  heat_turbo_on: "-4"
+  cool_turbo_on: "4"
   heat_turbo_off: "2"
-  cool_turbo_off: "-2"
+  cool_turbo_off: "0"
   
 esphome:
   name: ${node_name}
