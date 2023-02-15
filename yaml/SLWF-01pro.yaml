@@ -193,7 +193,7 @@ sensor:
     filters:
      - lambda: return x * 1.8 + 32.0;
   - platform: template
-    name: ${friendly_node_name} turbo cool below set temp
+    name: ${friendly_node_name} turbo cool off below set temp
     id: ${node_id}_temp_cool_turbo_off
     unit_of_measurement: °F
     filters:
