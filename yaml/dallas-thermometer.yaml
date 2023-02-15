@@ -29,7 +29,12 @@ sensor:
       then:
       - if:
             condition:
-              - lambda: return (x != id(previous_temp));
+              - lambda: |- 
+                  if (x != id(previous_temp)) {
+                     id(previous_temp) = x;
+                     return true;
+                  }
+                  return false;
             then:
               - http_request.post: !lambda |- 
                       return "http://bedroom-heatpump.lan/number/bedroom_heatpump_room_tempreture_c/set?value=" + std::to_string(x);
