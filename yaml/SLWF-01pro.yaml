@@ -290,6 +290,7 @@ button:
                               id(${node_id}_my_climate).make_call().set_mode(ClimateMode::CLIMATE_MODE_OFF).perform();
                            }                           
                        } else if(id(${node_id}_my_climate).target_temperature < id(heat_on_temp) ) {
+                              ESP_LOGW("climate_mode", "Setting mode: [%s]", climate::climate_mode_to_string(ClimateMode::CLIMATE_MODE_HEAT));
                            if (ClimateMode::CLIMATE_MODE_HEAT != id(${node_id}_my_climate).mode) {
                               ESP_LOGW("climate_mode", "Setting mode: [%s]", climate::climate_mode_to_string(ClimateMode::CLIMATE_MODE_HEAT));
                               id(${node_id}_my_climate).make_call().set_mode(ClimateMode::CLIMATE_MODE_HEAT).perform();
@@ -325,7 +326,9 @@ button:
                                }
                               }
                            }
-                       }
+                       } else {
+                              ESP_LOGW("climate_mode", "Setting mode: [%s]",  "none");
+							  }
                   }
 
 
