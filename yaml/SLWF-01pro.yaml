@@ -328,7 +328,7 @@ button:
                            }
                        } else {
                               ESP_LOGW("climate_mode", "Setting mode: [%s]",  "none");
-							  }
+                             }
                   }
 
 
