@@ -270,13 +270,17 @@ button:
                   if (id(auto_mode)) {
 
                       ESP_LOGW(
-                              "climate_temp", "target: %f°F, room: %f°F, 
+                              "climate_temp", "target: %f°F, room: %f°F", 
                               (id(${node_id}_my_climate).target_temperature * 1.8 + 32),
                               (id(${node_id}_room_temperature_c).state * 1.8 + 32)
                       );
    
                        if (
                               (id(${node_id}_room_temperature_c).state < id(cool_on_temp))
+                              && (
+                                    (ClimatePreset::CLIMATE_PRESET_BOOST != id(${node_id}_my_climate).preset.value())
+                                    && (id(${node_id}_room_temperature_c).state < id(cool_on_temp))
+                                 )
                               && (id(${node_id}_outside_tempreture).state > id(outside_temp_minimum)) 
                               && (id(${node_id}_outside_tempreture).state < id(outside_temp_maximum))
                           ) {
