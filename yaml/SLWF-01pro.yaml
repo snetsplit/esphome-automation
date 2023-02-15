@@ -370,10 +370,10 @@ climate:
             id(${node_id}_static_settings_lambda).press();
             id(cool_on_temp) = id(${node_id}_my_climate).target_temperature + $cool_on;
             id(heat_on_temp) = id(${node_id}_my_climate).target_temperature + $heat_on;
-            id(turbo_cool_on_temp) = id(${node_id}_my_climate).target_temperature + $heat_turbo_on;
-            id(turbo_heat_on_temp) = id(${node_id}_my_climate).target_temperature + $heat_turbo_off;
-            id(turbo_cool_off_temp) = id(${node_id}_my_climate).target_temperature + $cool_turbo_on;
-            id(turbo_heat_off_temp) = id(${node_id}_my_climate).target_temperature + $cool_turbo_off;
+            id(turbo_cool_on_temp) = id(${node_id}_my_climate).target_temperature + $cool_turbo_on;
+            id(turbo_heat_on_temp) = id(${node_id}_my_climate).target_temperature + $heat_turbo_on;
+            id(turbo_cool_off_temp) = id(${node_id}_my_climate).target_temperature + $cool_turbo_off;
+            id(turbo_heat_off_temp) = id(${node_id}_my_climate).target_temperature + $heat_turbo_off;
             id(${node_id}_target_temp).publish_state(id(${node_id}_my_climate).target_temperature);
             id(${node_id}_temp_cool).publish_state(id(cool_on_temp));
             id(${node_id}_temp_heat).publish_state(id(heat_on_temp));
