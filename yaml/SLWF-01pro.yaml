@@ -371,10 +371,10 @@ climate:
             id(cool_on_temp) = id(${node_id}_my_climate).target_temperature + $cool_on;
             id(heat_on_temp) = id(${node_id}_my_climate).target_temperature + $heat_on;
             id(turbo_cool_on_temp) = id(${node_id}_my_climate).target_temperature + $cool_turbo_on;
-            ESP_LOGW("climate_automation", "cool turbo on: %f°F, target: %f°F, ", 
+            ESP_LOGW("climate_automation", "cool turbo on: %f°F, target: %f°F, additive %f °F", 
                               (id(turbo_cool_on_temp) * 1.8 + 32),
                               (id(${node_id}_my_climate).target_temperature * 1.8 + 32),
-                              ($cool_turbo_on * 1.8 + 32),
+                              ($cool_turbo_on * 1.8 + 32)
                       );
             id(turbo_heat_on_temp) = id(${node_id}_my_climate).target_temperature + $heat_turbo_on;
             id(turbo_cool_off_temp) = id(${node_id}_my_climate).target_temperature + $cool_turbo_off;
@@ -383,10 +383,10 @@ climate:
             id(${node_id}_temp_cool).publish_state(id(cool_on_temp));
             id(${node_id}_temp_heat).publish_state(id(heat_on_temp));
             id(${node_id}_temp_cool_turbo_on).publish_state(id(turbo_cool_on_temp));
-            ESP_LOGW("climate_automation", "cool turbo on: %f°F, target: %f°F, ", 
+            ESP_LOGW("climate_automation", "cool turbo on: %f°F, target: %f°F,  additive %f °F", 
                               (id(${node_id}_temp_cool_turbo_on).state * 1.8 + 32),
                               (id(${node_id}_my_climate).target_temperature * 1.8 + 32),
-                              ($cool_turbo_on * 1.8 + 32),
+                              ($cool_turbo_on * 1.8 + 32)
                       );
             id(${node_id}_temp_heat_turbo_on).publish_state(id(turbo_heat_on_temp));
             id(${node_id}_temp_heat_turbo_off).publish_state(id(turbo_heat_off_temp));
