@@ -54,9 +54,9 @@ substitutions:
   heat_on: "-3"
   cool_on: "4"
   heat_turbo_on: "-5"
-  cool_turbo_on: "5"
+  cool_turbo_on: "6"
   heat_turbo_off: "2"
-  cool_turbo_off: $heat_turbo_off
+  cool_turbo_off: "-2"
   
 esphome:
   name: ${node_name}
