@@ -1,9 +1,18 @@
+globals:
+   - id: previous_temp
+     type: float
+     restore_value: false
+     initial_value: '3'
+
+
 substitutions:
   device_type: "thermometer"
   device_type_nice: "Thermometer"
   dallas_address: "0X0000 whatever"
   dallas_pin: "GPI0 whatever"
   dallas_temp_update_url: "http://whatever"
+  dallas_update: 15s
+
 
 dallas:
   - pin: ${dallas_pin}
@@ -18,8 +27,12 @@ sensor:
     dallas_id: ${device_name}_pin
     on_value:
       then:
-      - http_request.post: !lambda |- 
-              return "http://bedroom-heatpump.lan/number/bedroom_heatpump_room_tempreture_c/set?value=" + std::to_string(x);
+      - if:
+            condition:
+              - lambda: return (x != id(previous_temp))
+            then:
+              - http_request.post: !lambda |- 
+                      return "http://bedroom-heatpump.lan/number/bedroom_heatpump_room_tempreture_c/set?value=" + std::to_string(x);
 
 packages:
   device-base: 
