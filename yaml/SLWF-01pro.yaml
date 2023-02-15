@@ -384,7 +384,7 @@ climate:
             id(${node_id}_temp_heat).publish_state(id(heat_on_temp));
             id(${node_id}_temp_cool_turbo_on).publish_state(id(turbo_cool_on_temp));
             ESP_LOGW("climate_automation", "cool turbo on: %f°F, target: %f°F,  additive %f °F", 
-                              id(${node_id}_temp_cool_turbo_on).state),
+                              id(${node_id}_temp_cool_turbo_on).state,
                               (id(${node_id}_my_climate).target_temperature * 1.8 + 32),
                               ($cool_turbo_on * 1.8 + 32)
                       );
