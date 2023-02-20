@@ -278,7 +278,7 @@ button:
    
                       ESP_LOGW(
                               "climate_temp", "room cool %d  outside low %d  outside high %d",
-							  (id(${node_id}_room_temperature_c).state < id(cool_on_temp))
+                              (id(${node_id}_room_temperature_c).state < id(cool_on_temp))
                               && (id(${node_id}_outside_tempreture).state > id(outside_temp_minimum)) 
                               && (id(${node_id}_outside_tempreture).state < id(outside_temp_maximum))
                       );
