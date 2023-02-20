@@ -57,7 +57,8 @@ substitutions:
   cool_turbo_on: "4"
   heat_turbo_off: "2"
   cool_turbo_off: "0"
-  
+  outside_temp_minimum_difference: "5.4"
+  outside_temp_maximum_difference: "3"
 esphome:
   name: ${node_name}
   comment: ${friendly_node_name}
@@ -364,8 +365,8 @@ climate:
             id(turbo_heat_on_temp) = id(${node_id}_my_climate).target_temperature + $heat_turbo_on;
             id(turbo_cool_off_temp) = id(${node_id}_my_climate).target_temperature + $cool_turbo_off;
             id(turbo_heat_off_temp) = id(${node_id}_my_climate).target_temperature + $heat_turbo_off;
-            id(outside_temp_maximum) = id(${node_id}_my_climate).target_temperature + 3;
-            id(outside_temp_minimum) = id(${node_id}_my_climate).target_temperature - 5;
+            id(outside_temp_maximum) = id(${node_id}_my_climate).target_temperature + ${outside_temp_maximum_difference};
+            id(outside_temp_minimum) = id(${node_id}_my_climate).target_temperature - ${outside_temp_minimum_difference};
             id(${node_id}_temp_off_low).publish_state(id(outside_temp_minimum));
             id(${node_id}_temp_off_high).publish_state(id(outside_temp_maximum));
             id(${node_id}_target_temp).publish_state(id(${node_id}_my_climate).target_temperature);
@@ -377,6 +378,6 @@ climate:
             id(${node_id}_temp_cool_turbo_off).publish_state(id(turbo_cool_off_temp));
           } else {
             id(${node_id}_current_temp).publish_state(id(${node_id}_my_climate).current_temperature);
-            id(${node_id}_automation_lambda).press();
          }
+         id(${node_id}_automation_lambda).press();
              
