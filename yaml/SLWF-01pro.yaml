@@ -39,6 +39,10 @@ globals:
      type: float
      restore_value: false
      initial_value: '3'
+   - id: cooling_room
+     type: boolean
+     restore_value: false
+     initial_value: 'false'
 
 substitutions:
   node_name: slwf-01pro-heatpump # Use a unique name.
@@ -277,6 +281,7 @@ button:
                       );
                        if (
                               (id(${node_id}_room_temperature_c).state < id(cool_on_temp))
+                              && !id(cooling_room)
                               && (id(${node_id}_outside_tempreture).state > id(outside_temp_minimum)) 
                               && (id(${node_id}_outside_tempreture).state < id(outside_temp_maximum))
                           ) {
@@ -286,7 +291,9 @@ button:
                               id(${node_id}_my_climate).make_call().set_mode(ClimateMode::CLIMATE_MODE_OFF).perform();
                            }                           
                        } else if(id(${node_id}_room_temperature_c).state < id(heat_on_temp) ) {
-                           if (ClimateMode::CLIMATE_MODE_HEAT != id(${node_id}_my_climate).mode) {
+                           if (id(cooling_room)) {
+                                 id(cooling_room) = false;
+                           } else if (ClimateMode::CLIMATE_MODE_HEAT != id(${node_id}_my_climate).mode) {
                               id(${node_id}_my_climate).make_call().set_mode(ClimateMode::CLIMATE_MODE_HEAT).perform();
                            }
                            delay(2000);
