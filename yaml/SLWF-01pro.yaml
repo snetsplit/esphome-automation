@@ -350,8 +350,25 @@ climate:
   - platform: midea
     id: ${node_id}_my_climate   # Use a unique id
     name: ${friendly_node_name}          # Use a unique name
-    autoconf: true
-    outdoor_temperature:
+    autoconf: false
+    supported_modes:            # Optional. All capabilities in this section may be detected by autoconf.
+      - FAN_ONLY
+      - HEAT_COOL
+      - COOL
+      - HEAT
+      - DRY
+    custom_fan_modes:           # Optional
+      - SILENT
+      - TURBO
+    supported_presets:          # Optional. All capabilities in this section may be detected by autoconf.
+      - ECO
+      - BOOST
+      - SLEEP
+    custom_presets:             # Optional. All capabilities in this section may be detected by autoconf.
+      - FREEZE_PROTECTION
+   supported_swing_modes:      # Optional
+      - VERTICAL
+   outdoor_temperature:
       id: ${node_id}_outside_tempreture   # Use a unique id
       name: ${friendly_node_name} Outside Tempreture
       on_value:
