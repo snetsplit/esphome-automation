@@ -40,6 +40,8 @@ wifi:
 
 web_server:
   port: ${web_server_port}
+  version: 2
+  js_url: https://home.lan/local/_static/v2/www.js
   local: true
 
 time:
