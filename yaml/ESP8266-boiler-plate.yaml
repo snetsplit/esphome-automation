@@ -40,9 +40,6 @@ wifi:
 
 web_server:
   port: ${web_server_port}
-  version: 2
-  js_include: /config/www/_static/v2/www.js
-  js_url: ""
 
 time:
   - platform: sntp
