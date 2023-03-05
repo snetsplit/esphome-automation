@@ -350,6 +350,7 @@ climate:
   - platform: midea
     id: ${node_id}_my_climate   # Use a unique id
     name: ${friendly_node_name}          # Use a unique name
+    autoconf: true       
     supported_modes:            # Optional. All capabilities in this section may be detected by autoconf.
       - FAN_ONLY
       - HEAT_COOL
