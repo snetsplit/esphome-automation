@@ -374,7 +374,6 @@ climate:
       on_value:
       - lambda: |-
             id(${node_id}_automation_lambda).press();
-           // ESP_LOGW("woooo", "%s", x);
     on_state:
     - lambda: |-
          if(id(${node_id}_my_climate).target_temperature != id(previous_target_temp)) {
