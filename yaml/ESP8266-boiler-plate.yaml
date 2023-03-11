@@ -40,7 +40,6 @@ wifi:
 
 web_server:
   port: ${web_server_port}
-  local: true
 
 time:
   - platform: sntp
