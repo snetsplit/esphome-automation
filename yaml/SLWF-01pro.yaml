@@ -326,7 +326,6 @@ button:
                   }
 
 
-# Example configuration entry
 select:
   - platform: template
     id: ${id}_my_climate_preset
@@ -369,11 +368,7 @@ select:
     on_value:
       then:
       - lambda: |-
-           if(false) {
-              id(${id}_my_climate).make_call().set_fan_mode(x).perform();
-           } else {
-              id(${id}_my_climate).make_call().set_custom_fan_mode(x).perform();
-           }
+           id(${id}_my_climate).make_call().set_fan_mode(x).perform();
 
 number:
   - platform: template
