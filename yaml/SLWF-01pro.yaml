@@ -412,8 +412,6 @@ climate:
       - FREEZE_PROTECTION
     supported_swing_modes:      # Optional
       - VERTICAL
-      - HORIZONTAL
-      - BOTH
     outdoor_temperature:
       id: ${id}_outside_tempreture   # Use a unique id
       name: ${friendly_name} Outside Tempreture
