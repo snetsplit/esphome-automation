@@ -45,9 +45,9 @@ globals:
      initial_value: 'false'
 
 substitutions:
-  node_name: slwf-01pro-heatpump # Use a unique name.
-  node_id: slwf_01pro_heatpump    # Use a unique id.
-  friendly_node_name: "SLWF-01pro Heatpump"
+  name: slwf-01pro-heatpump # Use a unique name.
+  id: slwf_01pro_heatpump    # Use a unique id.
+  friendly_name: "SLWF-01pro Heatpump"
   web_server_port: "80"
   ssid: "IP freely"
   password: "ewwwwwwwww"
@@ -64,15 +64,15 @@ substitutions:
   outside_temp_minimum_difference: "5.4"
   outside_temp_maximum_difference: "3"
 esphome:
-  name: ${node_name}
-  comment: ${friendly_node_name}
+  name: ${name}
+  comment: ${friendly_name}
   platform: ESP8266
   board: esp01_1m
   on_boot:
     priority: 600
     then:
       lambda: |-
-         id(${node_id}_beeper).turn_on();
+         id(${id}_beeper).turn_on();
 
 time:
   - platform: sntp
@@ -87,7 +87,7 @@ wifi:
   password: ${password}
   domain: ${domain}
   ap:
-    ssid: "${friendly_node_name} Fallback"
+    ssid: "${friendly_name} Fallback"
     password: ${password}
   power_save_mode: high
 
@@ -110,15 +110,15 @@ logger:
 # Binary 
 binary_sensor:
   - platform: status
-    name: ${friendly_node_name} Connection Status
-    id: ${node_id}_connection_status
+    name: ${friendly_name} Connection Status
+    id: ${id}_connection_status
 
 # Sensors.
 sensor:
   # NTC Temperature
   - platform: ntc
     sensor: temp_resistance_reading
-    name: ${friendly_node_name} Temperature
+    name: ${friendly_name} Temperature
     unit_of_measurement: "°C"
     accuracy_decimals: 1
     icon: "mdi:thermometer"
@@ -136,70 +136,70 @@ sensor:
     pin: A0
   - platform: uptime
     name: Uptime Sensor
-    id: ${node_id}_uptime_sensor
+    id: ${id}_uptime_sensor
     icon: mdi:clock-start
     update_interval: 60s
   - platform: wifi_signal
-    name: ${friendly_node_name} WiFi Signal
-    id: ${node_id}_wifi_signal
+    name: ${friendly_name} WiFi Signal
+    id: ${id}_wifi_signal
     update_interval: 60s
   - platform: template
-    name: ${friendly_node_name} Current Temp
-    id: ${node_id}_current_temp
+    name: ${friendly_name} Current Temp
+    id: ${id}_current_temp
     unit_of_measurement: °F
     filters:
      - lambda: return x * 1.8 + 32.0;
   - platform: template
-    name: ${friendly_node_name} Target Temp
-    id: ${node_id}_target_temp
+    name: ${friendly_name} Target Temp
+    id: ${id}_target_temp
     unit_of_measurement: °F
     filters:
      - lambda: return x * 1.8 + 32.0;
   - platform: template
-    name: ${friendly_node_name} Outside off low
-    id: ${node_id}_temp_off_low
+    name: ${friendly_name} Outside off low
+    id: ${id}_temp_off_low
     unit_of_measurement: °F
     filters:
      - lambda: return x * 1.8 + 32.0;
   - platform: template
-    name: ${friendly_node_name} Outside off high
-    id: ${node_id}_temp_off_high
+    name: ${friendly_name} Outside off high
+    id: ${id}_temp_off_high
     unit_of_measurement: °F
     filters:
      - lambda: return x * 1.8 + 32.0;
   - platform: template
-    name: ${friendly_node_name} Cool temp
-    id: ${node_id}_temp_cool
+    name: ${friendly_name} Cool temp
+    id: ${id}_temp_cool
     unit_of_measurement: °F
     filters:
      - lambda: return x * 1.8 + 32.0;
   - platform: template
-    name: ${friendly_node_name} heat temp
-    id: ${node_id}_temp_heat
+    name: ${friendly_name} heat temp
+    id: ${id}_temp_heat
     unit_of_measurement: °F
     filters:
      - lambda: return x * 1.8 + 32.0;
   - platform: template
-    name: ${friendly_node_name} turbo cool on above set temp
-    id: ${node_id}_temp_cool_turbo_on
+    name: ${friendly_name} turbo cool on above set temp
+    id: ${id}_temp_cool_turbo_on
     unit_of_measurement: °F
     filters:
      - lambda: return x * 1.8 + 32.0;
   - platform: template
-    name: ${friendly_node_name} turbo heat on below set temp
-    id: ${node_id}_temp_heat_turbo_on
+    name: ${friendly_name} turbo heat on below set temp
+    id: ${id}_temp_heat_turbo_on
     unit_of_measurement: °F
     filters:
      - lambda: return x * 1.8 + 32.0;
   - platform: template
-    name: ${friendly_node_name} turbo heat off above set temp
-    id: ${node_id}_temp_heat_turbo_off
+    name: ${friendly_name} turbo heat off above set temp
+    id: ${id}_temp_heat_turbo_off
     unit_of_measurement: °F
     filters:
      - lambda: return x * 1.8 + 32.0;
   - platform: template
-    name: ${friendly_node_name} turbo cool off below set temp
-    id: ${node_id}_temp_cool_turbo_off
+    name: ${friendly_name} turbo cool off below set temp
+    id: ${id}_temp_cool_turbo_off
     unit_of_measurement: °F
     filters:
      - lambda: return x * 1.8 + 32.0;
@@ -208,18 +208,18 @@ sensor:
 # Text Sensors.
 text_sensor:
   - platform: version
-    name: ${friendly_node_name} ESPHome Version
-    id: ${node_id}_esphome_version    
+    name: ${friendly_name} ESPHome Version
+    id: ${id}_esphome_version    
   - platform: wifi_info
     ip_address:
-      name: ${friendly_node_name} IP Address
-      id: ${node_id}_ip_address
+      name: ${friendly_name} IP Address
+      id: ${id}_ip_address
       icon: mdi:ip-network
 
 switch:
   - platform: template
-    name: ${friendly_node_name} Beeper
-    id: ${node_id}_beeper
+    name: ${friendly_name} Beeper
+    id: ${id}_beeper
     icon: mdi:volume-source
     optimistic: true
     turn_on_action:
@@ -227,96 +227,96 @@ switch:
     turn_off_action:
       midea_ac.beeper_off:
   - platform: template
-    name: ${friendly_node_name} Auto Mode
-    id: ${node_id}_auto_mode
+    name: ${friendly_name} Auto Mode
+    id: ${id}_auto_mode
     icon: mdi:car-turbocharger
     optimistic: true
     lambda: return id(auto_mode);  
     turn_on_action:
         - lambda: |-
             id(auto_mode) = true;
-            id(${node_id}_automation_lambda).press();
+            id(${id}_automation_lambda).press();
     turn_off_action:
         - lambda: |-
             id(auto_mode) = false;
   - platform: template
-    name: ${friendly_node_name} Boost
-    id: ${node_id}_boost
+    name: ${friendly_name} Boost
+    id: ${id}_boost
     icon: mdi:car-turbocharger
     optimistic: true
-    lambda: return (id(${node_id}_my_climate).preset == ClimatePreset::CLIMATE_PRESET_BOOST);
+    lambda: return (id(${id}_my_climate).preset == ClimatePreset::CLIMATE_PRESET_BOOST);
     turn_on_action:
         - lambda: |-
-            auto call = id(${node_id}_my_climate).make_call();
+            auto call = id(${id}_my_climate).make_call();
             call.set_preset(ClimatePreset::CLIMATE_PRESET_BOOST);
             call.perform();
     turn_off_action:
         - lambda: |-
-            auto call = id(${node_id}_my_climate).make_call();
+            auto call = id(${id}_my_climate).make_call();
             call.set_preset(ClimatePreset::CLIMATE_PRESET_NONE);
             call.perform();
 
 button:
   - platform: restart
-    id: ${node_id}_restart_button
-    name: "${friendly_node_name} Restart"
+    id: ${id}_restart_button
+    name: "${friendly_name} Restart"
   - platform: template
-    name: "${friendly_node_name} Display Toggle"
-    id: ${node_id}_display_toggle
+    name: "${friendly_name} Display Toggle"
+    id: ${id}_display_toggle
     icon: mdi:theme-light-dark
     on_press:
       midea_ac.display_toggle:
              
   - platform: template
     internal: true
-    id: ${node_id}_automation_lambda
+    id: ${id}_automation_lambda
     on_press:
         - lambda: |-
                   if (id(auto_mode)) {
 
                       ESP_LOGW(
                               "climate_temp", "target: %f°F, room: %f°F", 
-                              (id(${node_id}_my_climate).target_temperature * 1.8 + 32),
-                              (id(${node_id}_room_temperature_c).state * 1.8 + 32)
+                              (id(${id}_my_climate).target_temperature * 1.8 + 32),
+                              (id(${id}_room_temperature_c).state * 1.8 + 32)
                       );
                        if (
-                              (id(${node_id}_room_temperature_c).state < id(cool_on_temp))
+                              (id(${id}_room_temperature_c).state < id(cool_on_temp))
                               && !id(cooling_room)
-                              && (id(${node_id}_outside_tempreture).state > id(outside_temp_minimum)) 
-                              && (id(${node_id}_outside_tempreture).state < id(outside_temp_maximum))
+                              && (id(${id}_outside_tempreture).state > id(outside_temp_minimum)) 
+                              && (id(${id}_outside_tempreture).state < id(outside_temp_maximum))
                           ) {
-                           if (ClimateMode::CLIMATE_MODE_OFF != id(${node_id}_my_climate).mode) {
-                              id(${node_id}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_NONE).perform();
+                           if (ClimateMode::CLIMATE_MODE_OFF != id(${id}_my_climate).mode) {
+                              id(${id}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_NONE).perform();
                               delay(2000);
-                              id(${node_id}_my_climate).make_call().set_mode(ClimateMode::CLIMATE_MODE_OFF).perform();
+                              id(${id}_my_climate).make_call().set_mode(ClimateMode::CLIMATE_MODE_OFF).perform();
                            }                           
-                       } else if(id(${node_id}_room_temperature_c).state < id(heat_on_temp) ) {
+                       } else if(id(${id}_room_temperature_c).state < id(heat_on_temp) ) {
                            if (id(cooling_room)) {
                                  id(cooling_room) = false;
-                           } else if (ClimateMode::CLIMATE_MODE_HEAT != id(${node_id}_my_climate).mode) {
-                              id(${node_id}_my_climate).make_call().set_mode(ClimateMode::CLIMATE_MODE_HEAT).perform();
+                           } else if (ClimateMode::CLIMATE_MODE_HEAT != id(${id}_my_climate).mode) {
+                              id(${id}_my_climate).make_call().set_mode(ClimateMode::CLIMATE_MODE_HEAT).perform();
                            }
                            delay(2000);
-                           if(id(${node_id}_room_temperature_c).state < id(turbo_heat_on_temp)) {
-                               if (ClimatePreset::CLIMATE_PRESET_BOOST !=  id(${node_id}_my_climate).preset.value()) {
-                                  id(${node_id}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_BOOST).perform();
-                               } else if (id(${node_id}_room_temperature_c).state > id(turbo_heat_off_temp)) {
-                               if (ClimatePreset::CLIMATE_PRESET_NONE !=   id(${node_id}_my_climate).preset.value()) {
-                                  id(${node_id}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_NONE).perform();
+                           if(id(${id}_room_temperature_c).state < id(turbo_heat_on_temp)) {
+                               if (ClimatePreset::CLIMATE_PRESET_BOOST !=  id(${id}_my_climate).preset.value()) {
+                                  id(${id}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_BOOST).perform();
+                               } else if (id(${id}_room_temperature_c).state > id(turbo_heat_off_temp)) {
+                               if (ClimatePreset::CLIMATE_PRESET_NONE !=   id(${id}_my_climate).preset.value()) {
+                                  id(${id}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_NONE).perform();
                                }
                               }
                            }
-                      } else if(id(${node_id}_room_temperature_c).state > id(cool_on_temp) ) {
-                           if (ClimateMode::CLIMATE_MODE_COOL != id(${node_id}_my_climate).mode) {
-                              id(${node_id}_my_climate).make_call().set_mode(ClimateMode::CLIMATE_MODE_COOL).perform();
+                      } else if(id(${id}_room_temperature_c).state > id(cool_on_temp) ) {
+                           if (ClimateMode::CLIMATE_MODE_COOL != id(${id}_my_climate).mode) {
+                              id(${id}_my_climate).make_call().set_mode(ClimateMode::CLIMATE_MODE_COOL).perform();
                            }
                            delay(2000);
-                           if (id(${node_id}_room_temperature_c).state > id(turbo_cool_on_temp)) {
-                               if (ClimatePreset::CLIMATE_PRESET_BOOST !=  id(${node_id}_my_climate).preset.value()) {
-                                  id(${node_id}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_BOOST).perform();
-                               } else if  (id(${node_id}_room_temperature_c).state < id(turbo_cool_off_temp)) {
-                               if (ClimatePreset::CLIMATE_PRESET_NONE !=   id(${node_id}_my_climate).preset.value()) {
-                                  id(${node_id}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_NONE).perform();
+                           if (id(${id}_room_temperature_c).state > id(turbo_cool_on_temp)) {
+                               if (ClimatePreset::CLIMATE_PRESET_BOOST !=  id(${id}_my_climate).preset.value()) {
+                                  id(${id}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_BOOST).perform();
+                               } else if  (id(${id}_room_temperature_c).state < id(turbo_cool_off_temp)) {
+                               if (ClimatePreset::CLIMATE_PRESET_NONE !=   id(${id}_my_climate).preset.value()) {
+                                  id(${id}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_NONE).perform();
                                }
                               }
                            }
@@ -326,10 +326,59 @@ button:
                   }
 
 
+# Example configuration entry
+select:
+  - platform: template
+    id: ${id}_my_climate_preset
+    name: "${friendly_name} Preset"
+    optimistic: true
+    options:
+      - None
+      - Boost
+      - Eco
+      - Sleep
+    initial_option: None
+    on_value:
+      then:
+      - lambda: |-
+           id(${id}_my_climate).make_call().set_preset(x).perform();
+  - platform: template
+    id: ${id}_my_climate_swing_mode
+    name: "${friendly_name} Swing Mode"
+    optimistic: true
+    options:
+      - Off
+      - Vertical
+    initial_option: Off
+    on_value:
+      then:
+      - lambda: |-
+           id(${id}_my_climate).make_call().set_swing_mode(x).perform();
+  - platform: template
+    id: ${id}_my_climate_fan_mode
+    name: "${friendly_name} Fan Mode
+    optimistic: true
+    options:
+      - Auto
+      - Low
+      - Medium
+      - High
+      - Silent
+      - Turbo
+    initial_option: "Auto"
+    on_value:
+      then:
+      - lambda: |-
+           if() {
+              id(${id}_my_climate).make_call().set_fan_mode(x).perform();
+           } else {
+              id(${id}_my_climate).make_call().set_custom_fan_mode(x).perform();
+           }
+
 number:
   - platform: template
-    name: ${friendly_node_name} Room Tempreture °C
-    id: ${node_id}_room_temperature_c
+    name: ${friendly_name} Room Tempreture °C
+    id: ${id}_room_temperature_c
     optimistic: true
     min_value: -40
     max_value: 140
@@ -338,7 +387,7 @@ number:
     on_value:
       then:
         - lambda: |-
-            id(${node_id}_automation_lambda).press();
+            id(${id}_automation_lambda).press();
          
          
 uart:
@@ -348,38 +397,38 @@ uart:
 
 climate:
   - platform: midea
-    id: ${node_id}_my_climate   # Use a unique id
-    name: ${friendly_node_name}          # Use a unique name
+    id: ${id}_my_climate   # Use a unique id
+    name: ${friendly_name}          # Use a unique name
     autoconf: true
     outdoor_temperature:
-      id: ${node_id}_outside_tempreture   # Use a unique id
-      name: ${friendly_node_name} Outside Tempreture
+      id: ${id}_outside_tempreture   # Use a unique id
+      name: ${friendly_name} Outside Tempreture
       on_value:
       - lambda: |-
-            id(${node_id}_automation_lambda).press();
+            id(${id}_automation_lambda).press();
     on_state:
     - lambda: |-
-         if(id(${node_id}_my_climate).target_temperature != id(previous_target_temp)) {
-            id(previous_target_temp) = id(${node_id}_my_climate).target_temperature;
-            id(cool_on_temp) = id(${node_id}_my_climate).target_temperature + $cool_on;
-            id(heat_on_temp) = id(${node_id}_my_climate).target_temperature + $heat_on;
-            id(turbo_cool_on_temp) = id(${node_id}_my_climate).target_temperature + $cool_turbo_on;
-            id(turbo_heat_on_temp) = id(${node_id}_my_climate).target_temperature + $heat_turbo_on;
-            id(turbo_cool_off_temp) = id(${node_id}_my_climate).target_temperature + $cool_turbo_off;
-            id(turbo_heat_off_temp) = id(${node_id}_my_climate).target_temperature + $heat_turbo_off;
-            id(outside_temp_maximum) = id(${node_id}_my_climate).target_temperature + ${outside_temp_maximum_difference};
-            id(outside_temp_minimum) = id(${node_id}_my_climate).target_temperature - ${outside_temp_minimum_difference};
-            id(${node_id}_temp_off_low).publish_state(id(outside_temp_minimum));
-            id(${node_id}_temp_off_high).publish_state(id(outside_temp_maximum));
-            id(${node_id}_target_temp).publish_state(id(${node_id}_my_climate).target_temperature);
-            id(${node_id}_temp_cool).publish_state(id(cool_on_temp));
-            id(${node_id}_temp_heat).publish_state(id(heat_on_temp));
-            id(${node_id}_temp_cool_turbo_on).publish_state(id(turbo_cool_on_temp));
-            id(${node_id}_temp_heat_turbo_on).publish_state(id(turbo_heat_on_temp));
-            id(${node_id}_temp_heat_turbo_off).publish_state(id(turbo_heat_off_temp));
-            id(${node_id}_temp_cool_turbo_off).publish_state(id(turbo_cool_off_temp));
+         if(id(${id}_my_climate).target_temperature != id(previous_target_temp)) {
+            id(previous_target_temp) = id(${id}_my_climate).target_temperature;
+            id(cool_on_temp) = id(${id}_my_climate).target_temperature + $cool_on;
+            id(heat_on_temp) = id(${id}_my_climate).target_temperature + $heat_on;
+            id(turbo_cool_on_temp) = id(${id}_my_climate).target_temperature + $cool_turbo_on;
+            id(turbo_heat_on_temp) = id(${id}_my_climate).target_temperature + $heat_turbo_on;
+            id(turbo_cool_off_temp) = id(${id}_my_climate).target_temperature + $cool_turbo_off;
+            id(turbo_heat_off_temp) = id(${id}_my_climate).target_temperature + $heat_turbo_off;
+            id(outside_temp_maximum) = id(${id}_my_climate).target_temperature + ${outside_temp_maximum_difference};
+            id(outside_temp_minimum) = id(${id}_my_climate).target_temperature - ${outside_temp_minimum_difference};
+            id(${id}_temp_off_low).publish_state(id(outside_temp_minimum));
+            id(${id}_temp_off_high).publish_state(id(outside_temp_maximum));
+            id(${id}_target_temp).publish_state(id(${id}_my_climate).target_temperature);
+            id(${id}_temp_cool).publish_state(id(cool_on_temp));
+            id(${id}_temp_heat).publish_state(id(heat_on_temp));
+            id(${id}_temp_cool_turbo_on).publish_state(id(turbo_cool_on_temp));
+            id(${id}_temp_heat_turbo_on).publish_state(id(turbo_heat_on_temp));
+            id(${id}_temp_heat_turbo_off).publish_state(id(turbo_heat_off_temp));
+            id(${id}_temp_cool_turbo_off).publish_state(id(turbo_cool_off_temp));
           } else {
-            id(${node_id}_current_temp).publish_state(id(${node_id}_my_climate).current_temperature);
+            id(${id}_current_temp).publish_state(id(${id}_my_climate).current_temperature);
          }
-         id(${node_id}_automation_lambda).press();
+         id(${id}_automation_lambda).press();
              
