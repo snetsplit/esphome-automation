@@ -347,16 +347,16 @@ select:
     name: "${friendly_name} Swing Mode"
     optimistic: true
     options:
-      - Off
+      - "Off"
       - Vertical
-    initial_option: Off
+    initial_option: "Off"
     on_value:
       then:
       - lambda: |-
            id(${id}_my_climate).make_call().set_swing_mode(x).perform();
   - platform: template
     id: ${id}_my_climate_fan_mode
-    name: "${friendly_name} Fan Mode
+    name: "${friendly_name} Fan Mode"
     optimistic: true
     options:
       - Auto
@@ -365,11 +365,11 @@ select:
       - High
       - Silent
       - Turbo
-    initial_option: "Auto"
+    initial_option: Auto
     on_value:
       then:
       - lambda: |-
-           if() {
+           if(false) {
               id(${id}_my_climate).make_call().set_fan_mode(x).perform();
            } else {
               id(${id}_my_climate).make_call().set_custom_fan_mode(x).perform();
