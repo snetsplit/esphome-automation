@@ -348,7 +348,7 @@ select:
     on_value:
       then:
       - lambda: |-
-           if(x ="None") {
+           if(x == "None") {
                id(${id}_my_climate)..set_preset(ClimatePreset::CLIMATE_PRESET_NONE);
            }
            id(${id}_my_climate).make_call().set_swing_mode(x).perform();
