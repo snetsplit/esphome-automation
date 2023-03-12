@@ -247,14 +247,10 @@ switch:
     lambda: return (id(${id}_my_climate).preset == ClimatePreset::CLIMATE_PRESET_BOOST);
     turn_on_action:
         - lambda: |-
-            auto call = id(${id}_my_climate).make_call();
-            call.set_preset(ClimatePreset::CLIMATE_PRESET_BOOST);
-            call.perform();
+            id(${id}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_BOOST).perform();
     turn_off_action:
         - lambda: |-
-            auto call = id(${id}_my_climate).make_call();
-            call.set_preset(ClimatePreset::CLIMATE_PRESET_NONE);
-            call.perform();
+            id(${id}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_NONE).perform();
 
 button:
   - platform: restart
@@ -352,6 +348,9 @@ select:
     on_value:
       then:
       - lambda: |-
+           if(x ="None") {
+               id(${id}_my_climate)..set_preset(ClimatePreset::CLIMATE_PRESET_NONE);
+           }
            id(${id}_my_climate).make_call().set_swing_mode(x).perform();
   - platform: template
     id: ${id}_my_climate_fan_mode
