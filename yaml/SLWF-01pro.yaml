@@ -324,7 +324,6 @@ button:
 
 select:
   - platform: template
-    internal: true
     id: ${id}_my_climate_preset
     name: "${friendly_name} Preset"
     optimistic: true
@@ -342,7 +341,6 @@ select:
            }
            id(${id}_my_climate).make_call().set_preset(x).perform();
   - platform: template
-    internal: true
     id: ${id}_my_climate_swing_mode
     name: "${friendly_name} Swing Mode"
     optimistic: true
@@ -355,7 +353,6 @@ select:
       - lambda: |-
            id(${id}_my_climate).make_call().set_swing_mode(x).perform();
   - platform: template
-    internal: true
     id: ${id}_my_climate_fan_mode
     name: "${friendly_name} Fan Mode"
     optimistic: true
