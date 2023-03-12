@@ -332,11 +332,11 @@ select:
     name: "${friendly_name} Preset"
     optimistic: true
     options:
-      - None
+      - "None"
       - Boost
       - Eco
       - Sleep
-    initial_option: None
+    initial_option: "None"
     on_value:
       then:
       - lambda: |-
