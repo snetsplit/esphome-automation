@@ -336,6 +336,9 @@ select:
     on_value:
       then:
       - lambda: |-
+           if(x == "None") {
+            id(${id}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_NONE).perform();
+           }
            id(${id}_my_climate).make_call().set_preset(x).perform();
   - platform: template
     id: ${id}_my_climate_swing_mode
@@ -348,9 +351,6 @@ select:
     on_value:
       then:
       - lambda: |-
-           if(x == "None") {
-            id(${id}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_NONE).perform();
-           }
            id(${id}_my_climate).make_call().set_swing_mode(x).perform();
   - platform: template
     id: ${id}_my_climate_fan_mode
