@@ -146,63 +146,43 @@ sensor:
   - platform: template
     name: ${friendly_name} Current Temp
     id: ${id}_current_temp
-    unit_of_measurement: °F
-    filters:
-     - lambda: return x * 1.8 + 32.0;
+    unit_of_measurement: °c
   - platform: template
     name: ${friendly_name} Target Temp
     id: ${id}_target_temp
-    unit_of_measurement: °F
-    filters:
-     - lambda: return x * 1.8 + 32.0;
+    unit_of_measurement: °c
   - platform: template
     name: ${friendly_name} Outside off low
     id: ${id}_temp_off_low
-    unit_of_measurement: °F
-    filters:
-     - lambda: return x * 1.8 + 32.0;
+    unit_of_measurement: °c
   - platform: template
     name: ${friendly_name} Outside off high
     id: ${id}_temp_off_high
-    unit_of_measurement: °F
-    filters:
-     - lambda: return x * 1.8 + 32.0;
+    unit_of_measurement: °c
   - platform: template
     name: ${friendly_name} Cool temp
     id: ${id}_temp_cool
-    unit_of_measurement: °F
-    filters:
-     - lambda: return x * 1.8 + 32.0;
+    unit_of_measurement: °c
   - platform: template
     name: ${friendly_name} heat temp
     id: ${id}_temp_heat
-    unit_of_measurement: °F
-    filters:
-     - lambda: return x * 1.8 + 32.0;
+    unit_of_measurement: °c
   - platform: template
     name: ${friendly_name} turbo cool on above set temp
     id: ${id}_temp_cool_turbo_on
-    unit_of_measurement: °F
-    filters:
-     - lambda: return x * 1.8 + 32.0;
+    unit_of_measurement: °c
   - platform: template
     name: ${friendly_name} turbo heat on below set temp
     id: ${id}_temp_heat_turbo_on
-    unit_of_measurement: °F
-    filters:
-     - lambda: return x * 1.8 + 32.0;
+    unit_of_measurement: °c
   - platform: template
     name: ${friendly_name} turbo heat off above set temp
     id: ${id}_temp_heat_turbo_off
-    unit_of_measurement: °F
-    filters:
-     - lambda: return x * 1.8 + 32.0;
+    unit_of_measurement: °c
   - platform: template
     name: ${friendly_name} turbo cool off below set temp
     id: ${id}_temp_cool_turbo_off
-    unit_of_measurement: °F
-    filters:
-     - lambda: return x * 1.8 + 32.0;
+    unit_of_measurement: °c
      
   
 # Text Sensors.
@@ -271,7 +251,7 @@ button:
                   if (id(auto_mode)) {
 
                       ESP_LOGW(
-                              "climate_temp", "target: %f°F, room: %f°F", 
+                              "climate_temp", "target: %f°c, room: %f°c", 
                               (id(${id}_my_climate).target_temperature * 1.8 + 32),
                               (id(${id}_room_temperature_c).state * 1.8 + 32)
                       );
