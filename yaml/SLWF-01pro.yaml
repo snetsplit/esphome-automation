@@ -394,6 +394,7 @@ climate:
     outdoor_temperature:
       id: ${id}_outside_tempreture   # Use a unique id
       name: ${friendly_name} Outside Tempreture
+      unit_of_measurement: °c
       on_value:
       - lambda: |-
             id(${id}_automation_lambda).press();
