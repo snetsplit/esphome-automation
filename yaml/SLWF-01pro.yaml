@@ -144,14 +144,6 @@ sensor:
     id: ${id}_wifi_signal
     update_interval: 60s
   - platform: template
-    name: ${friendly_name} Current Temp
-    id: ${id}_current_temp
-    unit_of_measurement: °C
-  - platform: template
-    name: ${friendly_name} Target Temp
-    id: ${id}_target_temp
-    unit_of_measurement: °C
-  - platform: template
     name: ${friendly_name} Outside off low
     id: ${id}_temp_off_low
     unit_of_measurement: °C
@@ -412,15 +404,12 @@ climate:
             id(outside_temp_minimum) = id(${id}_my_climate).target_temperature - ${outside_temp_minimum_difference};
             id(${id}_temp_off_low).publish_state(id(outside_temp_minimum));
             id(${id}_temp_off_high).publish_state(id(outside_temp_maximum));
-            id(${id}_target_temp).publish_state(id(${id}_my_climate).target_temperature);
             id(${id}_temp_cool).publish_state(id(cool_on_temp));
             id(${id}_temp_heat).publish_state(id(heat_on_temp));
             id(${id}_temp_cool_turbo_on).publish_state(id(turbo_cool_on_temp));
             id(${id}_temp_heat_turbo_on).publish_state(id(turbo_heat_on_temp));
             id(${id}_temp_heat_turbo_off).publish_state(id(turbo_heat_off_temp));
             id(${id}_temp_cool_turbo_off).publish_state(id(turbo_cool_off_temp));
-          } else {
-            id(${id}_current_temp).publish_state(id(${id}_my_climate).current_temperature);
-         }
+          } 
          id(${id}_automation_lambda).press();
              
