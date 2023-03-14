@@ -119,7 +119,7 @@ sensor:
   - platform: ntc
     sensor: temp_resistance_reading
     name: ${friendly_name} Temperature
-    unit_of_measurement: "°C"
+    unit_of_measurement: "°c"
     accuracy_decimals: 1
     icon: "mdi:thermometer"
     calibration:
