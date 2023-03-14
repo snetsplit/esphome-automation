@@ -211,18 +211,6 @@ switch:
     turn_off_action:
         - lambda: |-
             id(auto_mode) = false;
-  - platform: template
-    name: ${friendly_name} Boost
-    id: ${id}_boost
-    icon: mdi:car-turbocharger
-    optimistic: true
-    lambda: return (id(${id}_my_climate).preset == ClimatePreset::CLIMATE_PRESET_BOOST);
-    turn_on_action:
-        - lambda: |-
-            id(${id}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_BOOST).perform();
-    turn_off_action:
-        - lambda: |-
-            id(${id}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_NONE).perform();
 
 button:
   - platform: restart
