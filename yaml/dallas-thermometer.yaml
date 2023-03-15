@@ -37,7 +37,7 @@ sensor:
                   return false;
             then:
               - http_request.post: !lambda |- 
-                      return ${dallas_temp_update_url} + std::to_string(x);
+                      return "${dallas_temp_update_url}" + std::to_string(x);
 
 packages:
   device-base: 
