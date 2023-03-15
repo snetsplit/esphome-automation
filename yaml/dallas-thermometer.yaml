@@ -37,7 +37,7 @@ sensor:
                   return false;
             then:
               - http_request.post: !lambda |- 
-                      return "http://bedroom-heatpump.lan/number/bedroom_heatpump_room_tempreture_c/set?value=" + std::to_string(x);
+                      return ${dallas_temp_update_url} + std::to_string(x);
 
 packages:
   device-base: 
