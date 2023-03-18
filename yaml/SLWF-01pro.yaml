@@ -354,14 +354,7 @@ climate:
   - platform: midea
     id: ${id}_my_climate   # Use a unique id
     name: ${friendly_name}          # Use a unique name
-    autoconf: false
-    supported_modes:
-      - COOL
-      - HEAT
-    supported_presets: 
-      - BOOST
-    supported_swing_modes:      # Optional
-      - VERTICAL
+    autoconf: true
     outdoor_temperature:
       id: ${id}_outside_tempreture   # Use a unique id
       name: ${friendly_name} Outside Tempreture
