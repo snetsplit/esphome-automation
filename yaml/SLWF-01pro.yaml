@@ -355,21 +355,11 @@ climate:
     id: ${id}_my_climate   # Use a unique id
     name: ${friendly_name}          # Use a unique name
     autoconf: false
-    supported_modes:            # Optional. All capabilities in this section may be detected by autoconf.
-      - FAN_ONLY
-      - HEAT_COOL
+    supported_modes:
       - COOL
       - HEAT
-      - DRY
-    custom_fan_modes:           # Optional
-      - SILENT
-      - TURBO
-    supported_presets:          # Optional. All capabilities in this section may be detected by autoconf.
-      - ECO
+    supported_presets: 
       - BOOST
-      - SLEEP
-    custom_presets:             # Optional. All capabilities in this section may be detected by autoconf.
-      - FREEZE_PROTECTION
     supported_swing_modes:      # Optional
       - VERTICAL
     outdoor_temperature:
