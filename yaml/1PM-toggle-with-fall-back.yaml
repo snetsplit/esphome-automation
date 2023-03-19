@@ -87,12 +87,6 @@ esphome:
             then:
               - switch.turn_on: shelly_relay_1
             else:
-            
-time:
-  - platform: sntp
-    id: sntp_time
-    servers: 
-      - ${time_server}
 
 wifi:
   ssid: ${ssid}
