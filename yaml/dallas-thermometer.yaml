@@ -24,6 +24,7 @@ sensor:
     address: ${dallas_address}
     name: ${friendly_name}
     id: ${device_name}
+    icon: mdi:thermometer
     dallas_id: ${device_name}_pin
     on_value:
       then:
