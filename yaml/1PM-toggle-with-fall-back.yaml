@@ -158,6 +158,7 @@ sensor:
       unit_of_measurement: W
       id: "shelly1pm_power"
       device_class: power
+      icon: mdi:lan-check
       state_class: measurement
       accuracy_decimals: 0
       filters:
