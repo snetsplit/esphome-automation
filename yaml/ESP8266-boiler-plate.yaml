@@ -70,6 +70,7 @@ sensor:
   - platform: wifi_signal
     name: ${friendly_name} WiFi Signal
     id: ${sys_name}_${device_type}_wifi_signal
+    icon: mdi:wifi
     update_interval: 60s
 
 
@@ -89,9 +90,11 @@ text_sensor:
       time_t currTime = id(sntp_time).now().timestamp;
       strftime(str, sizeof(str), "%Y-%m-%d %H:%M", localtime(&currTime));
       return  { str };
+    icon: mdi:clock
     update_interval: 60s
 
 button:
   - platform: restart
     id: ${sys_name}_${device_type}_restart_button
+    icon: mdi:restart
     name: "${friendly_name} Restart"
