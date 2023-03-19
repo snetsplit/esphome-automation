@@ -237,7 +237,6 @@ sensor:
     
   - platform: ping
     ip_address: ${home_assistant_host}
-    icon: mdi:lan-check
     num_attempts: 1
     timeout: 1sec
 
