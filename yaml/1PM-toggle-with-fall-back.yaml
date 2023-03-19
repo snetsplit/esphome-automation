@@ -158,7 +158,6 @@ sensor:
       unit_of_measurement: W
       id: "shelly1pm_power"
       device_class: power
-      icon: mdi:lan-check
       state_class: measurement
       accuracy_decimals: 0
       filters:
@@ -238,17 +237,19 @@ sensor:
     
   - platform: ping
     ip_address: ${home_assistant_host}
+    icon: mdi:lan-check
     num_attempts: 1
     timeout: 1sec
 
     loss:
       id: packet_loss
       name: "Home Assistant Packet Loss"
-
+      icon: mdi:lan-check
     latency:
       id: latency
       name: "Home Assistant Latency"
       accuracy_decimals: 3
+      icon: mdi:lan-check
 
     update_interval: ${ping_rate}
 
