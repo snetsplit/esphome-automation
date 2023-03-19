@@ -155,10 +155,6 @@ sensor:
   - platform: sun
     name: Sun Azimuth
     type: azimuth
-  - platform: wifi_signal
-    name: "${friendly_name} WiFi Signal"
-    device_class: signal_strength
-    update_interval: 60s
   - platform: hlw8012
     cf_pin: GPIO05
     cf1_pin: GPIO13 # not used because it is not available on the 1PM but it is needed to compile
@@ -276,14 +272,6 @@ external_components:
     
 
 text_sensor:
-  - platform: template
-    name: "Current time"
-    lambda: |-
-      char str[17];
-      time_t currTime = id(sntp_time).now().timestamp;
-      strftime(str, sizeof(str), "%Y-%m-%d %H:%M", localtime(&currTime));
-      return  { str };
-    update_interval: 60s
   - platform: sun
     name: Sunrise
     type: sunrise
@@ -322,11 +310,6 @@ text_sensor:
               x[1] = hours[1];
            }
            return x + ((hours24 < 12)?" AM":" PM");
-
-button:
-  - platform: restart
-    id: restart_button
-    name: "${friendly_name} Restart"  
 
 binary_sensor:
   - platform: gpio
@@ -440,3 +423,9 @@ sun:
                - number.set:
                    id: "${device_name}_scene"
                    value: ${sunset_scene}
+
+packages:
+  device-base: 
+    url: https://github.com/snetsplit/esphome-automation
+    file: yaml/ESP8266-boiler-plate.yaml
+    refresh: 0s
