@@ -330,7 +330,7 @@ binary_sensor:
 
 number:
   - platform: template
-    icon: mdi:bulb-group-outline
+    icon: "mdi:bulb-group-outline"
     name: "${nice_name} Switch Scene"
     id: "${device_name}_scene"
     optimistic: true
