@@ -190,7 +190,7 @@ sensor:
     name: "${nice_name} Watts Last 24 hours"
     power_id: "shelly1pm_power"
     device_class: energy
-    icon: mdi:lightning-bolt-outline
+    icon: "mdi:lightning-bolt-outline"
     state_class: measurement
     filters:
       - multiply: 0.001
@@ -201,7 +201,7 @@ sensor:
     name: "${nice_name} Temperature"
     unit_of_measurement: "°c"
     accuracy_decimals: 1
-     icon: mdi:thermometer
+     icon: "mdi:thermometer"
     device_class: temperature
     calibration:
       b_constant: 3350
