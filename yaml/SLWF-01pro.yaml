@@ -352,11 +352,27 @@ uart:
 
 climate:
   - platform: midea
-    id: ${id}_my_climate   # Use a unique id
-    name: ${friendly_name}          # Use a unique name
-    autoconf: true
+    id: ${id}_my_climate
+    name: ${friendly_name}
+	supported_modes:
+      - COOL
+      - HEAT
+      - DRY
+    supported_fan_modes:
+      - AUTO
+	  - LOW
+	  - MEDIUM
+	  - HIGH
+    supported_presets:
+      - ECO
+      - BOOST
+      - SLEEP
+    custom_presets:
+      - FREEZE_PROTECTION
+    supported_swing_modes:
+      - VERTICAL
     outdoor_temperature:
-      id: ${id}_outside_tempreture   # Use a unique id
+      id: ${id}_outside_tempreture
       name: ${friendly_name} Outside Tempreture
       unit_of_measurement: °C
       on_value:

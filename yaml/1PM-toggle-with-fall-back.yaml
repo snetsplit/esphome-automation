@@ -156,7 +156,7 @@ sensor:
     power:
       name: "${nice_name} Watts"
       unit_of_measurement: W
-      icon: mdi:lightning-bolt-outline
+      icon: "mdi:lightning-bolt-outline"
       id: "shelly1pm_power"
       device_class: power
       state_class: measurement
