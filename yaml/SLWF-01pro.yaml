@@ -374,7 +374,7 @@ climate:
       - SLEEP
       - FREEZE_PROTECTION
     custom_fan_modes:
-      - QUIET
+      - SILENT
     supported_swing_modes:
       - VERTICAL
     outdoor_temperature:
