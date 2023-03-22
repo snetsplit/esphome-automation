@@ -147,34 +147,42 @@ sensor:
     name: ${friendly_name} Outside off low
     id: ${id}_temp_off_low
     unit_of_measurement: °C
+    icon: "mdi:thermometer"
   - platform: template
     name: ${friendly_name} Outside off high
     id: ${id}_temp_off_high
     unit_of_measurement: °C
+    icon: "mdi:thermometer"
   - platform: template
     name: ${friendly_name} Cool temp
     id: ${id}_temp_cool
     unit_of_measurement: °C
+    icon: "mdi:thermometer"
   - platform: template
     name: ${friendly_name} heat temp
     id: ${id}_temp_heat
     unit_of_measurement: °C
+    icon: "mdi:thermometer"
   - platform: template
     name: ${friendly_name} turbo cool on above set temp
     id: ${id}_temp_cool_turbo_on
     unit_of_measurement: °C
+    icon: "mdi:thermometer"
   - platform: template
     name: ${friendly_name} turbo heat on below set temp
     id: ${id}_temp_heat_turbo_on
     unit_of_measurement: °C
+    icon: "mdi:thermometer"
   - platform: template
     name: ${friendly_name} turbo heat off above set temp
     id: ${id}_temp_heat_turbo_off
     unit_of_measurement: °C
+    icon: "mdi:thermometer"
   - platform: template
     name: ${friendly_name} turbo cool off below set temp
     id: ${id}_temp_cool_turbo_off
     unit_of_measurement: °C
+    icon: "mdi:thermometer"
      
   
 # Text Sensors.
@@ -331,6 +339,7 @@ select:
 
 number:
   - platform: template
+    icon: "mdi:thermometer"
     name: ${friendly_name} Room Tempreture
     id: ${id}_room_temperature
     optimistic: true
@@ -351,6 +360,7 @@ uart:
   baud_rate: 9600
 
 climate:
+    icon: "mdi:heatpump"
   - platform: midea
     id: ${id}_my_climate
     name: ${friendly_name}
