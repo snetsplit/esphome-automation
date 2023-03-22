@@ -362,9 +362,6 @@ climate:
       - ECO
       - BOOST
       - SLEEP
-    custom_fan_modes:           # Optional
-      - SILENT
-      - TURBO
     custom_presets:
       - FREEZE_PROTECTION
     supported_swing_modes:
