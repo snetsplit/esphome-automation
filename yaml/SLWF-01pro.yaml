@@ -372,10 +372,9 @@ climate:
       - ECO
       - BOOST
       - SLEEP
-    custom_fan_modes:
-      - TURBO
-    custom_presets:
       - FREEZE_PROTECTION
+    custom_fan_modes:
+      - QUIET
     supported_swing_modes:
       - VERTICAL
     outdoor_temperature:
