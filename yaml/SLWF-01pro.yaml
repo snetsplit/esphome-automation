@@ -360,8 +360,8 @@ uart:
   baud_rate: 9600
 
 climate:
-    icon: "mdi:heatpump"
   - platform: midea
+    icon: "mdi:heatpump"
     id: ${id}_my_climate
     name: ${friendly_name}
     supported_modes:
