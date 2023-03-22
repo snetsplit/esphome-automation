@@ -373,7 +373,6 @@ climate:
       - BOOST
       - SLEEP
     custom_fan_modes:
-      - SILENT
       - TURBO
     custom_presets:
       - FREEZE_PROTECTION
