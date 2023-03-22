@@ -354,15 +354,15 @@ climate:
   - platform: midea
     id: ${id}_my_climate
     name: ${friendly_name}
-	supported_modes:
+    supported_modes:
       - COOL
       - HEAT
       - DRY
     supported_fan_modes:
       - AUTO
-	  - LOW
-	  - MEDIUM
-	  - HIGH
+      - LOW
+      - MEDIUM
+      - HIGH
     supported_presets:
       - ECO
       - BOOST
