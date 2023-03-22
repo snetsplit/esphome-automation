@@ -358,7 +358,7 @@ climate:
       - COOL
       - HEAT
       - DRY
-    supported_fan_modes:
+    fan_modes:
       - AUTO
       - LOW
       - MEDIUM
