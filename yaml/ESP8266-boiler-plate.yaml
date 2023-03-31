@@ -23,6 +23,7 @@ substitutions:
 logger:
 
 api:
+  password:  ${ota_password}
 
 ota:
   password:  ${ota_password}
