@@ -13,12 +13,10 @@ sensor:
     num_attempts: 1
     timeout: 1sec
     loss:
-      id: packet_loss
       name: "${nice_name} Packet Loss"
       id: "${sys_name}_packet_loss"
       icon: mdi:lan-check
     latency:
-      id: latency
       name: "${nice_name} Latency"
       id: "${sys_name}_latency"
       accuracy_decimals: 3
