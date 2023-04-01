@@ -209,5 +209,5 @@ sun:
 packages:
   device-base: 
     url: https://github.com/snetsplit/esphome-automation
-    file: yaml/pm-esp8266.yaml
+    file: yaml/base/pm-esp8266.yaml
     refresh: 0s
