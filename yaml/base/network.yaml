@@ -52,7 +52,24 @@ text_sensor:
   - platform: wifi_info
     ip_address:
       name: ${friendly_name} IP Address
-      id: ${sys_name}_${device_type}_ip_address
+      id: ${device_name}_ip_address
+      icon: mdi:ip-network
+    ssid:
+      name: ${friendly_name} SSID
+      id: ${device_name_ssid
+      icon: mdi:ip-network
+    bssid:
+      name: ${friendly_name} BSSID
+      id: ${device_name_bssid
+      icon: mdi:ip-network
+    mac_address:
+      name: ESP Mac Wifi Address
+      name: ${friendly_name} MAC Address
+      id: ${device_name_mac
+      icon: mdi:ip-network
+    scan_results:
+      name: ${friendly_name} Wifi Scan Results
+      id: ${device_name_scan
       icon: mdi:ip-network
   - platform: template
     name: "${friendly_name} Hostname"
