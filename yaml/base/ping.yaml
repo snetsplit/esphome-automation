@@ -1,6 +1,4 @@
 substitutions:
-  nice_name: "One PM"
-  sys_name: "onepm"
   home_assistant_host: "home.lan"
   ping_rate: 16sec
 

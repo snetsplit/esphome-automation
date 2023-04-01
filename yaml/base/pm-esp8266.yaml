@@ -1,10 +1,6 @@
 #source for orginal: https://www.esphome-devices.com/devices/Shelly-1PM
 #NOT COMPLETE. NOT WARRENTIED. USE AT OWN RISK.
 substitutions:
-  nice_name: "Shelly PM"
-  sys_name: "shellypm"
-  device_name: ${sys_name}_switch
-  name: ${sys_name}-switch
   max_temp: "80.0"
   max_power: "1600.0"
   friendly_name: "${nice_name} Shelly 1PM scenes"

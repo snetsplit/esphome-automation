@@ -1,8 +1,4 @@
 substitutions:
-  nice_name: "One PM"
-  sys_name: "onepm"
-  device_name: ${sys_name}_switch
-  name: ${sys_name}-switch
   sunrise_enabled: "true"
   sunset_enabled: "true"
   latitude: 48.8584°
