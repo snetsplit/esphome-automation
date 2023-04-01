@@ -19,8 +19,8 @@ sensor:
       icon: mdi:lan-check
     latency:
       id: latency
-      name:"${nice_name} Latency"
-      id:"${sys_name}_latency"
+      name: "${nice_name} Latency"
+      id: "${sys_name}_latency"
       accuracy_decimals: 3
       icon: mdi:lan-check
 
