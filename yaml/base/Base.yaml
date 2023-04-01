@@ -1,0 +1,20 @@
+substitutions:
+  nice_name: "ESPHome"
+  sys_name: "esphome"
+  device_type: "device"
+  device_type_nice: "Device"
+  device_name: ${sys_name}_${device_type}
+  friendly_name: "${nice_name} ${device_type_nice}"
+
+
+text_sensor:
+  - platform: version
+    name: ${friendly_name} ESPHome Version
+    id: ${device_name}_esphome_version
+    icon: mdi:home
+
+button:
+  - platform: restart
+    id: ${device_name}_restart_button
+    icon: mdi:restart
+    name: "${friendly_name} Restart"

@@ -1,0 +1,137 @@
+#source for orginal: https://www.esphome-devices.com/devices/Shelly-1PM
+#NOT COMPLETE. NOT WARRENTIED. USE AT OWN RISK.
+substitutions:
+  nice_name: "Shelly PM"
+  sys_name: "shellypm"
+  device_name: ${sys_name}_switch
+  name: ${sys_name}-switch
+  max_temp: "80.0"
+  max_power: "1600.0"
+  friendly_name: "${nice_name} Shelly 1PM scenes"
+
+i2c:
+  sda: GPIO12
+  scl: GPIO14
+
+sensor:
+  - platform: hlw8012
+    cf_pin: GPIO05
+    cf1_pin: GPIO13 # not used because it is not available on the 1PM but it is needed to compile
+    sel_pin: GPIO14 # not used because it is not available on the 1PM but it is needed to compile
+    power:
+      name: "${nice_name} Watts"
+      unit_of_measurement: W
+      icon: "mdi:lightning-bolt-outline"
+      id: "shelly1pm_power"
+      device_class: power
+      state_class: measurement
+      accuracy_decimals: 0
+      filters:
+      # Map from sensor -> measured value
+      - calibrate_linear:
+          - 0.0 -> 1.0
+          - 110.33186 -> 20.62
+          - 131.01909 -> 24.32
+          - 341.33920 -> 62.08
+          - 5561.41553 -> 1000.0
+          - 2975.51221 -> 535.7
+          - 9612.66309 -> 1720.0
+          - 14891.35352 -> 2679.0
+      # Make everything below 2W appear as just 0W.
+      - lambda: if (x < 2) return 0; else return x;
+      on_value_range:
+        - above: ${max_power}
+          then:
+            - switch.turn_off: shelly_relay_1
+            - homeassistant.service:
+                service: persistent_notification.create
+                data:
+                  title: Message from ${friendly_name}
+                data_template:
+                  message: Switch turned off because power exceeded ${max_power}W      
+    update_interval: 10s
+
+  - platform: total_daily_energy
+    name: "${nice_name} Watts Last 24 hours"
+    power_id: "shelly1pm_power"
+    device_class: energy
+    icon: "mdi:lightning-bolt-outline"
+    state_class: measurement
+    filters:
+      - multiply: 0.001
+    unit_of_measurement: kWh
+  - platform: ntc
+    sensor: temp_resistance_reading
+    name: "${nice_name} Temperature"
+    unit_of_measurement: "°c"
+    accuracy_decimals: 1
+    device_class: temperature
+    icon: "mdi:thermometer"
+    calibration:
+      b_constant: 3350
+      reference_resistance: 10kOhm
+      reference_temperature: 298.15K
+    on_value_range:
+      - above: ${max_temp}
+        then:
+          - globals.set:
+              id: too_hot_boolean
+              value: 'true'
+          - switch.turn_off: shelly_relay_1
+          - homeassistant.service:
+              service: persistent_notification.create
+              data:
+                title: Message from ${friendly_name}
+              data_template:
+                message: Switch turned off because temperature exceeded ${max_temp}°C
+          - homeassistant.event:
+              event: esphome.overheat
+              data:
+                title: "${friendly_name} has overheated."
+      - below: ${max_temp}
+        then:
+          - globals.set:
+              id: too_hot_boolean
+              value: 'false'
+  - platform: resistance
+    id: temp_resistance_reading
+    sensor: temp_analog_reading
+    configuration: DOWNSTREAM
+    resistor: 32kOhm
+  - platform: adc
+    id: temp_analog_reading
+    pin: A0
+
+
+output:
+  - platform: esp8266_pwm
+    id: state_led
+    pin:
+      number: GPIO00
+      inverted: true
+
+
+binary_sensor:
+  - platform: gpio
+    pin: GPIO16
+    name: "ade7953 IRQ pin"
+    internal: true
+  - platform: gpio
+    pin:
+      number: GPIO4
+    filters:
+      - delayed_on_off: 50ms # small delay to prevent debouncing
+    name: "${friendly_name} External Switch"
+    on_state:
+      then:
+      - number.increment:
+          id: "${device_name}_scene"
+          cycle: true
+    internal: false
+    id: switchid
+
+packages:
+  device-base: 
+    url: https://github.com/snetsplit/esphome-automation
+    file: yaml/base/ESP8266.yaml
+    refresh: 0s
