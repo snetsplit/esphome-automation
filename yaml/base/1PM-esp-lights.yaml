@@ -143,7 +143,7 @@ number:
                     and:
                       - wifi.connected:
                       - api.connected:
-                      - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_toggle_boolean) && !id(too_hot_boolean));
+                      - lambda: return ((id(${sys_name}_packet_loss).state < 100) && !id(basic_edge_switch_toggle_boolean) && !id(too_hot_boolean));
                   then:
                       - homeassistant.service:
                           service: scene.turn_on
