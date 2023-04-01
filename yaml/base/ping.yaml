@@ -27,10 +27,3 @@ sensor:
 external_components:
   - source: github://trombik/esphome-component-ping
     components: [ ping ]
-
-
-packages:
-  names: 
-    url: https://github.com/snetsplit/esphome-automation
-    file: yaml/base/names.yaml
-    refresh: 0s
