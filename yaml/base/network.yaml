@@ -53,15 +53,15 @@ text_sensor:
     ip_address:
       name: ${friendly_name} IP Address
       id: ${device_name}_ip_address
-      icon: mdi:ip-network
+      icon: mdi:wifi
     ssid:
       name: ${friendly_name} AP
       id: ${device_name}_ssid
-      icon: mdi:ip-network
+      icon: mdi:wifi
     bssid:
       name: ${friendly_name} AP MAC
       id: ${device_name}_bssid
-      icon: mdi:ip-network
+      icon: mdi:wifi
     mac_address:
       name: ${friendly_name} MAC Address
       id: ${device_name}_mac
@@ -69,7 +69,7 @@ text_sensor:
     scan_results:
       name: ${friendly_name} APs Available
       id: ${device_name}_scan
-      icon: mdi:ip-network
+      icon: mdi:wifi
   - platform: template
     name: "${friendly_name} Hostname"
     id: ${device_name}_hostname
