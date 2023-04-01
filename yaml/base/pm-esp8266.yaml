@@ -38,16 +38,6 @@ sensor:
           - 14891.35352 -> 2679.0
       # Make everything below 2W appear as just 0W.
       - lambda: if (x < 2) return 0; else return x;
-      on_value_range:
-        - above: ${max_power}
-          then:
-            - switch.turn_off: shelly_relay_1
-            - homeassistant.service:
-                service: persistent_notification.create
-                data:
-                  title: Message from ${friendly_name}
-                data_template:
-                  message: Switch turned off because power exceeded ${max_power}W      
     update_interval: 10s
 
   - platform: total_daily_energy
@@ -61,6 +51,7 @@ sensor:
     unit_of_measurement: kWh
 
   - platform: ntc
+    sensor: ${device_name}_temp_resistance_reading
     id: ${device_name}_esp_temp
     calibration:
       b_constant: 3350
