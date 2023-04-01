@@ -58,4 +58,4 @@ text_sensor:
     name: "${friendly_name} Hostname"
     id: ${device_name}_hostname
     icon: mdi:ip-network
-    lambda: return "${name}.${domain}"
+    lambda: return {"${name}${domain}"};
