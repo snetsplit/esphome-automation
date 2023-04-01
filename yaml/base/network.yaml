@@ -21,7 +21,7 @@ wifi:
   password: ${password}
   domain: ${domain}
   ap:
-    ssid: "${friendly_name} Fallback"
+    ssid: "${friendly_name}"
     password: ${password}
   power_save_mode: ${power_save_mode}
 
