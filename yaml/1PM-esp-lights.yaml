@@ -22,8 +22,8 @@ globals:
      initial_value: ${scene_light_host_string_1}
      
 substitutions:
-  nice_name: "Bedroom"
-  sys_name: "bedroom"
+  nice_name: "One PM"
+  sys_name: "onepm"
   device_name: ${sys_name}_switch
   name: ${sys_name}-switch
   max_temp: "80.0"

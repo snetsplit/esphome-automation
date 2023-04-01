@@ -43,5 +43,5 @@ sensor:
 packages:
   device-base: 
     url: https://github.com/snetsplit/esphome-automation
-    file: yaml/ESP8266-boiler-plate.yaml
+    file: yaml/base/ESP8366.yaml
     refresh: 0s
