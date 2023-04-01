@@ -4,6 +4,7 @@ substitutions:
   device_type: "device"
   device_type_nice: "Device"
   device_name: ${sys_name}_${device_type}
+  name: ${sys_name}-${device_type}
   friendly_name: "${nice_name} ${device_type_nice}"
   web_server_port: "80"
   ssid: "IP freely"
@@ -53,3 +54,8 @@ text_sensor:
       name: ${friendly_name} IP Address
       id: ${sys_name}_${device_type}_ip_address
       icon: mdi:ip-network
+  - platform: template
+    name: "${friendly_name} Hostname"
+    id: ${device_name}_hostname
+    icon: mdi:ip-network
+    lambda: return "${name}.${domain}"
