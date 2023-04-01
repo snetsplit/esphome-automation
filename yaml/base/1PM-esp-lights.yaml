@@ -207,7 +207,11 @@ sun:
                    value: ${sunset_scene}
 
 packages:
-  device-base: 
+  base: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/pm-esp8266.yaml
+    refresh: 0s
+  sun: 
+    url: https://github.com/snetsplit/esphome-automation
+    file: yaml/base/sun.yaml
     refresh: 0s
