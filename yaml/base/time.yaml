@@ -19,3 +19,10 @@ time:
       - ${time_server1}
       - ${time_server2}
       - ${time_server3}
+
+sensor:
+  - platform: uptime
+    name: "${friendly_name} Uptime Sensor
+    id: ${device_name}_uptime_sensor
+    icon: mdi:clock-start
+    update_interval: 60s

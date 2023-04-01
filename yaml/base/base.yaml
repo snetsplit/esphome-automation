@@ -6,6 +6,7 @@ substitutions:
   device_name: ${sys_name}_${device_type}
   friendly_name: "${nice_name} ${device_type_nice}"
 
+logger:
 
 text_sensor:
   - platform: version
