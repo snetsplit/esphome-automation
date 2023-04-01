@@ -61,10 +61,3 @@ text_sensor:
 sun:
   latitude: ${latitude}
   longitude: ${longitude}
-
-
-
-  base: 
-    url: https://github.com/snetsplit/esphome-automation
-    file: yaml/base/names.yaml
-    refresh: 0s
