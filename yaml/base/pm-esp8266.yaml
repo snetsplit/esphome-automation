@@ -53,6 +53,10 @@ sensor:
   - platform: ntc
     sensor: ${device_name}_temp_resistance_reading
     id: ${device_name}_esp_temp
+    calibration:
+      b_constant: 3350
+      reference_resistance: 10kOhm
+      reference_temperature: 298.15K
 
 
 output:
