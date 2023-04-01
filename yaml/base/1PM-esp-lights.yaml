@@ -1,0 +1,213 @@
+#source for orginal: https://www.esphome-devices.com/devices/Shelly-1PM
+#NOT COMPLETE. NOT WARRENTIED. USE AT OWN RISK.
+globals:
+   - id: basic_edge_switch_toggle_boolean
+     type: bool
+     restore_value: true
+     initial_value: 'false'
+   - id: too_hot_boolean
+     type: bool
+     restore_value: false
+     initial_value: 'false'
+   - id: scene_light_index_1
+     type: unsigned int
+     restore_value: no
+     initial_value: '0'
+   - id: scene_light_host_string_1
+     type: const std::vector<std::string>
+     initial_value: ${scene_light_host_string_1}
+     
+substitutions:
+  max_temp: "80.0"
+  max_power: "1600.0"
+  restore_mode: RESTORE_DEFAULT_ON
+  light_automation_input_number_min: '0'
+  light_automation_input_number_max: '2'
+  
+  auto_off_boolean_1: "false"
+  off_scene_1: '0'
+  on_scene_1: '1'
+  delay_time_1: "1min"
+  scene_light_host_string_1: ""
+  
+
+esphome:
+  on_boot:
+    priority: 200
+    then:
+       - if:
+            condition:
+              - lambda: return (${off_scene_1}.0 == id(${device_name}_scene).state);
+            then:
+              - switch.turn_on: shelly_relay_1
+            else:
+
+
+switch:
+  - platform: gpio
+    name: "${nice_name} Switch Relay"
+    pin: GPIO15
+    id: shelly_relay_1
+    icon: "mdi:electric-switch"
+    restore_mode: ${restore_mode}
+    on_turn_on:
+      - if:
+           condition:
+             - lambda: return (${auto_off_boolean_1} && (${off_scene_1}.0 == id(${device_name}_scene).state));
+           then:
+             - number.set:
+                 id: "${device_name}_scene"
+                 value: ${on_scene_1}
+           else:                         
+    
+  - platform: template
+    name: "${nice_name} Switch Edge Mode"
+    id: "basic_edge_switch_toggle_switch"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: basic_edge_switch_toggle_boolean
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: basic_edge_switch_toggle_boolean
+          value: 'false'
+    lambda: |-
+      return id(basic_edge_switch_toggle_boolean);
+      
+sensor:
+  - platform: ntc
+    sensor: temp_resistance_reading
+    name: "${nice_name} Temperature"
+    unit_of_measurement: "°c"
+    accuracy_decimals: 1
+    device_class: temperature
+    icon: "mdi:thermometer"
+    calibration:
+      b_constant: 3350
+      reference_resistance: 10kOhm
+      reference_temperature: 298.15K
+    on_value_range:
+      - above: ${max_temp}
+        then:
+          - globals.set:
+              id: too_hot_boolean
+              value: 'true'
+          - switch.turn_off: shelly_relay_1
+          - homeassistant.service:
+              service: persistent_notification.create
+              data:
+                title: Message from ${friendly_name}
+              data_template:
+                message: Switch turned off because temperature exceeded ${max_temp}°C
+          - homeassistant.event:
+              event: esphome.overheat
+              data:
+                title: "${friendly_name} has overheated."
+      - below: ${max_temp}
+        then:
+          - globals.set:
+              id: too_hot_boolean
+              value: 'false'
+
+
+
+
+number:
+  - platform: template
+    icon: "mdi:bulb-group-outline"
+    name: "${nice_name} Switch Scene"
+    id: "${device_name}_scene"
+    optimistic: true
+    min_value: ${light_automation_input_number_min}
+    max_value: ${light_automation_input_number_max}
+    restore_value: true
+    step: 1
+    on_value:
+      then:
+      - if:
+            condition:
+              and:
+                - sun.is_above_horizon:
+                - lambda: return ((${light_automation_input_number_max} != 1) && (x == 1) && ${dont_ignore_sun_1});
+            then:
+              - number.increment:
+                   id: "${device_name}_scene"
+                   cycle: true
+            else:
+              - if:
+                  condition:
+                    and:
+                      - wifi.connected:
+                      - api.connected:
+                      - lambda: return ((id(packet_loss).state < 100) && !id(basic_edge_switch_toggle_boolean) && !id(too_hot_boolean));
+                  then:
+                      - homeassistant.service:
+                          service: scene.turn_on
+                          data_template: 
+                            entity_id: !lambda  |- 
+                              int sceneNameLength = 64;
+                              char sceneNameCharBuffer[sceneNameLength]; 
+                              std::snprintf(sceneNameCharBuffer, sceneNameLength, "scene.${device_name}%.0f", x); 
+                              ESP_LOGI("scene", "Setting scene: [%s]", sceneNameCharBuffer); 
+                              std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
+                              return sceneName;
+                  else:
+                    - if:
+                        condition:
+                          - lambda: return (${off_scene_1}.0 == x);
+                        then:
+                          - switch.turn_off: shelly_relay_1
+                        else:
+                          - switch.turn_on: shelly_relay_1
+              - if:
+                  condition:
+                    - lambda: return (${auto_off_boolean_1} && ${off_scene_1}.0 != x);
+                  then:
+                    - delay: ${delay_time_1}
+                    - number.set:
+                        id: "${device_name}_scene"
+                        value: ${off_scene_1}
+                  else:
+              - lambda: id(scene_light_index_1) = 0;
+              - while:
+                  condition:
+                    - lambda: return (id(scene_light_index_1) < id(scene_light_host_string_1).size());
+                  then:
+                    - http_request.post: !lambda |- 
+                                std::string sceneName = "http://" + id(scene_light_host_string_1).at(id(scene_light_index_1)) + "/number/scene/set?value=" + std::to_string(int(x));
+                                ESP_LOGI("scene", "Setting switch at: [%s]", sceneName); 
+                                id(scene_light_index_1) += 1;
+                                return sceneName;  
+                         
+sun:
+  on_sunrise:
+    - then:
+    - elevation: ${sunrise_elevation} 
+      then: 
+        - if:
+             condition:
+               - lambda: return  ${sunrise_enabled};
+             then:
+               - number.set:
+                   id: "${device_name}_scene"
+                   value: ${sunrise_scene}
+
+  on_sunset:
+    - then:
+    - elevation: ${sunset_elevation} 
+      then: 
+        - if:
+             condition:
+               - lambda: return  ${sunset_enabled};
+             then:
+               - number.set:
+                   id: "${device_name}_scene"
+                   value: ${sunset_scene}
+
+packages:
+  device-base: 
+    url: https://github.com/snetsplit/esphome-automation
+    file: yaml/pm-esp8266.yaml
+    refresh: 0s
