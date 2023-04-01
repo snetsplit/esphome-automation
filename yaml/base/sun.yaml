@@ -1,0 +1,93 @@
+substitutions:
+  nice_name: "One PM"
+  sys_name: "onepm"
+  device_name: ${sys_name}_switch
+  name: ${sys_name}-switch
+  sunrise_enabled: "true"
+  sunset_enabled: "true"
+  latitude: 48.8584°
+  longitude: 2.2945°
+  sunrise_elevation: "-0.833"
+  sunset_elevation: "-0.833"
+
+sensor:
+  - platform: sun
+    name: Sun Elevation
+    name: "${nice_name} Elevation"
+    id: "${sys_name}_elevation"
+    type: elevation
+  - platform: sun
+    name: Sun Azimuth
+    name: "${nice_name} Azimuth"
+    id: "${sys_name}_azimuth"
+    type: azimuth
+
+text_sensor:
+  - platform: sun
+    name: "${nice_name} Sunrise"
+    id: "${sys_name}_sunrise"
+    type: sunrise
+    filters:
+      - lambda: |-
+           char hours[3] = "  ";
+           hours[0] = x[0];
+           hours[1] = x[1];
+           int hours24 = atoi(hours);
+           int hours12 = ((hours24 == 0) || (hours24 == 12))?12:(hours24 % 12);
+           itoa(hours12,hours,10);
+           if(hours12 < 10) {
+              x[0] = ' ';
+              x[1] = hours[0];
+           } else {
+              x[0] = hours[0];
+              x[1] = hours[1];
+           }
+           return x + ((hours24 < 12)?" AM":" PM");
+  - platform: sun
+    name: "${nice_name} Sunset"
+    id: "${sys_name}_sunset"
+    type: sunset
+    filters:
+      - lambda: |-
+           char hours[3] = "  ";
+           hours[0] = x[0];
+           hours[1] = x[1];
+           int hours24 = atoi(hours);
+           int hours12 = ((hours24 == 0) || (hours24 == 12))?12:(hours24 % 12);
+           itoa(hours12,hours,10);
+           if(hours12 < 10) {
+              x[0] = ' ';
+              x[1] = hours[0];
+           } else {
+              x[0] = hours[0];
+              x[1] = hours[1];
+           }
+           return x + ((hours24 < 12)?" AM":" PM");
+
+sun:
+  latitude: ${latitude}
+  longitude: ${longitude}
+
+  on_sunrise:
+    - then:
+    - elevation: ${sunrise_elevation}
+      then:
+        - if:
+             condition:
+               - lambda: return  ${sunrise_enabled};
+             then:
+               - number.set:
+                   id: "${device_name}_scene"
+                   value: ${sunrise_scene}
+
+  on_sunset:
+    - then:
+    - elevation: ${sunset_elevation}
+      then:
+        - if:
+             condition:
+               - lambda: return  ${sunset_enabled};
+             then:
+               - number.set:
+                   id: "${device_name}_scene"
+                   value: ${sunset_scene}
