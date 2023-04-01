@@ -1,0 +1,8 @@
+substitutions:
+  nice_name: "ESPHome"
+  sys_name: "esphome"
+  device_type: "device"
+  device_type_nice: "Device"
+  device_name: ${sys_name}_${device_type}
+  name: ${sys_name}-${device_type}
+  friendly_name: "${nice_name} ${device_type_nice}"
