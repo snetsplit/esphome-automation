@@ -5,6 +5,7 @@ substitutions:
   longitude: 2.2945°
   sunrise_elevation: "-0.833"
   sunset_elevation: "-0.833"
+  sun_enabled: "true"
 
 sensor:
   - platform: sun
