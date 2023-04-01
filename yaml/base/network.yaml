@@ -56,7 +56,7 @@ text_sensor:
       icon: mdi:ip-network
     ssid:
       name: ${friendly_name} SSID
-      id: ${device_name_ssid
+      id: ${device_name}_ssid
       icon: mdi:ip-network
     bssid:
       name: ${friendly_name} BSSID
@@ -64,11 +64,11 @@ text_sensor:
       icon: mdi:ip-network
     mac_address:
       name: ${friendly_name} MAC Address
-      id: ${device_name_mac
+      id: ${device_name}_mac
       icon: mdi:ip-network
     scan_results:
       name: ${friendly_name} Wifi Scan Results
-      id: ${device_name_scan
+      id: ${device_name}_scan
       icon: mdi:ip-network
   - platform: template
     name: "${friendly_name} Hostname"
