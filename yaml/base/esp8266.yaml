@@ -7,6 +7,11 @@ esphome:
   platform: ESP8266
   board: esp01_1m
 
+
+i2c:
+  sda: GPIO12
+  scl: GPIO14
+
 sensor:
   - platform: ntc
     sensor: ${device_name}_temp_resistance_reading
