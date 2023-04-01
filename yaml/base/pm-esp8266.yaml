@@ -1,11 +1,5 @@
 #source for orginal: https://www.esphome-devices.com/devices/Shelly-1PM
 #NOT COMPLETE. NOT WARRENTIED. USE AT OWN RISK.
-substitutions:
-  max_temp: "80.0"
-  max_power: "1600.0"
-  friendly_name: "${nice_name} Shelly 1PM scenes"
-
-
 globals:
    - id: too_hot_boolean
      type: bool
