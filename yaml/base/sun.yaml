@@ -63,27 +63,3 @@ text_sensor:
 sun:
   latitude: ${latitude}
   longitude: ${longitude}
-
-  on_sunrise:
-    - then:
-    - elevation: ${sunrise_elevation}
-      then:
-        - if:
-             condition:
-               - lambda: return  ${sunrise_enabled};
-             then:
-               - number.set:
-                   id: "${device_name}_scene"
-                   value: ${sunrise_scene}
-
-  on_sunset:
-    - then:
-    - elevation: ${sunset_elevation}
-      then:
-        - if:
-             condition:
-               - lambda: return  ${sunset_enabled};
-             then:
-               - number.set:
-                   id: "${device_name}_scene"
-                   value: ${sunset_scene}

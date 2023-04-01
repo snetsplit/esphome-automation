@@ -1,12 +1,5 @@
 #source for orginal: https://www.esphome-devices.com/devices/Shelly-1PM
 #NOT COMPLETE. NOT WARRENTIED. USE AT OWN RISK.
-globals:
-   - id: too_hot_boolean
-     type: bool
-     restore_value: false
-     initial_value: 'false'
-
-
 i2c:
   sda: GPIO12
   scl: GPIO14
@@ -48,6 +41,14 @@ sensor:
     filters:
       - multiply: 0.001
     unit_of_measurement: kWh
+  - platform: resistance
+    id: temp_resistance_reading
+    sensor: temp_analog_reading
+    configuration: DOWNSTREAM
+    resistor: 32kOhm
+  - platform: adc
+    id: temp_analog_reading
+    pin: A0
 
 
 output:
