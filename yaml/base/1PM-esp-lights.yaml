@@ -220,4 +220,4 @@ packages:
   ping: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/ping.yaml
-    refresh: 0
+    refresh: 0s
