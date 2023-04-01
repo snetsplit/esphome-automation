@@ -63,7 +63,6 @@ text_sensor:
       id: ${device_name_bssid
       icon: mdi:ip-network
     mac_address:
-      name: ESP Mac Wifi Address
       name: ${friendly_name} MAC Address
       id: ${device_name_mac
       icon: mdi:ip-network
