@@ -7,11 +7,8 @@ esphome:
   platform: ESP8266
   board: esp01_1m
 
-i2c:
-  sda: GPIO12
-  scl: GPIO14
-
 sensor:
+  - platform: ntc
     sensor: ${device_name}_temp_resistance_reading
     name: "${nice_name} Temperature"
     unit_of_measurement: "°c"
@@ -22,6 +19,14 @@ sensor:
       b_constant: 3350
       reference_resistance: 10kOhm
       reference_temperature: 298.15K
+  - platform: resistance
+    id: ${device_name}_temp_resistance_reading
+    sensor: ${device_name}_temp_analog_reading
+    configuration: DOWNSTREAM
+    resistor: 32kOhm
+  - platform: adc
+    id: ${device_name}_temp_analog_reading
+    pin: A0
 
 packages:
   base: 
