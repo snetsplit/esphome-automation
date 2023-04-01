@@ -8,12 +8,10 @@ substitutions:
 
 sensor:
   - platform: sun
-    name: Sun Elevation
     name: "${nice_name} Elevation"
     id: "${sys_name}_elevation"
     type: elevation
   - platform: sun
-    name: Sun Azimuth
     name: "${nice_name} Azimuth"
     id: "${sys_name}_azimuth"
     type: azimuth
