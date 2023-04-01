@@ -55,7 +55,7 @@ text_sensor:
       id: ${device_name}_ip_address
       icon: mdi:ip-network
     ssid:
-      name: ${friendly_name} Network
+      name: ${friendly_name} AP
       id: ${device_name}_ssid
       icon: mdi:ip-network
     bssid:
@@ -67,7 +67,7 @@ text_sensor:
       id: ${device_name}_mac
       icon: mdi:ip-network
     scan_results:
-      name: ${friendly_name} Networks Available
+      name: ${friendly_name} APs Available
       id: ${device_name}_scan
       icon: mdi:ip-network
   - platform: template
