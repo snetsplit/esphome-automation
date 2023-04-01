@@ -67,7 +67,7 @@ text_sensor:
       id: ${device_name}_mac
       icon: mdi:ip-network
     scan_results:
-      name: ${friendly_name} Wifi Scan Results
+      name: ${friendly_name} Networks Available
       id: ${device_name}_scan
       icon: mdi:ip-network
   - platform: template
