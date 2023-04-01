@@ -60,7 +60,7 @@ text_sensor:
       icon: mdi:ip-network
     bssid:
       name: ${friendly_name} BSSID
-      id: ${device_name_bssid
+      id: ${device_name}_bssid
       icon: mdi:ip-network
     mac_address:
       name: ${friendly_name} MAC Address
