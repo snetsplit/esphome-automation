@@ -60,7 +60,6 @@ number:
                                 index++;
                                 httpRequestComponent.set_url("http://bedroom-switch.lan/number/bedroom_switch_scene/set?value=" + std::to_string(index));
                                 httpRequestComponent.send({});
-                                std::this_thread::sleep_for(std::chrono::milliseconds(4000));
                             }
                             httpRequestComponent.close();
 
