@@ -193,7 +193,7 @@ number:
                                         httpRequestComponent.set_method("POST");
                                         httpRequestComponent.dump_config();
                                         httpRequestComponent.send(foo);
-                                       // httpRequestComponent.close();
+                                        httpRequestComponent.close();
                                         id(scene_light_index_1) = 0;
                       - while:
                           condition:
