@@ -189,7 +189,7 @@ number:
                                         esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                                         httpRequestComponent.set_url("http://bedroom-switch.lan/number/bedroom_switch_scene/set?value=2");
                                         httpRequestComponent.set_method("POST");
-                                        httpRequestComponent.send();
+                                        httpRequestComponent.send(null);
                                         httpRequestComponent.close();
                                         id(scene_light_index_1) = 0;
                       - while:
