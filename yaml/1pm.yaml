@@ -186,10 +186,12 @@ number:
                                 value: ${off_scene_1}
                           else:
                       - lambda: |-
+                                        std::vector<HttpRequestResponseTrigger foo = std::vector<HttpRequestResponseTrigger();
                                         esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                                         httpRequestComponent.set_url("http://bedroom-switch.lan/number/bedroom_switch_scene/set?value=2");
                                         httpRequestComponent.set_method("POST");
-                                        httpRequestComponent.send(null);
+                                        httpRequestComponent.dump_config();
+                                        httpRequestComponent.send(foo);
                                         httpRequestComponent.close();
                                         id(scene_light_index_1) = 0;
                       - while:
