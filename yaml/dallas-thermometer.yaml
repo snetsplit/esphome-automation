@@ -53,8 +53,7 @@ number:
     on_value:
       then:
           - lambda: |-
-                            return;
-
+                            esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
 packages:
   device-base: 
     url: https://github.com/snetsplit/esphome-automation
