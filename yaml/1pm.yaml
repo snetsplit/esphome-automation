@@ -186,7 +186,7 @@ number:
                                 value: ${off_scene_1}
                           else:
                       - lambda: |-
-                                        std::vector<HttpRequestResponseTrigger foo = std::vector<HttpRequestResponseTrigger();
+                                       esphome::http_request::HttpRequestResponseTrigger foo = esphome::http_request::HttpRequestResponseTrigger();
                                         esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                                         httpRequestComponent.set_url("http://bedroom-switch.lan/number/bedroom_switch_scene/set?value=2");
                                         httpRequestComponent.set_method("POST");
@@ -232,12 +232,12 @@ packages:
   base: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/pm-esp8266.yaml
-    refresh: 0s
+    refresh: 1d
   sun: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/sun.yaml
-    refresh: 0s
+    refresh: 1d
   ping: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/ping.yaml
-    refresh: 0s
+    refresh: 1d
