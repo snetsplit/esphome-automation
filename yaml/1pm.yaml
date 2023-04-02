@@ -187,6 +187,7 @@ number:
                           else:
                       - lambda: |-
                                         const std::vector<esphome::http_request::HttpRequestResponseTrigger*>foo;
+                                        foo.reserve(0);
                                         esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                                         httpRequestComponent.set_url("http://bedroom-switch.lan/number/bedroom_switch_scene/set?value=2");
                                         httpRequestComponent.set_method("POST");
