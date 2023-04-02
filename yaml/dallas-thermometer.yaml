@@ -50,9 +50,20 @@ number:
     max_value: 1
     restore_value: true
     step: 1
+    on_value:
+      then:
+          - lambda: |-
+                            std::vector<>foo;
+                            foo.reserve(0);
+                            esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
+                            httpRequestComponent.set_url("http://bedroom-switch.lan/number/bedroom_switch_scene/set?value=2");
+                            httpRequestComponent.set_method("POST");
+                            httpRequestComponent.dump_config();
+                            httpRequestComponent.send(foo);
+                            httpRequestComponent.close();
 
 packages:
   device-base: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/esp8266.yaml
-    refresh: 0s
+    refresh: 1d
