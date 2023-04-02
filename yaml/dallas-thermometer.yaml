@@ -56,6 +56,8 @@ number:
                             esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                             httpRequestComponent.set_url("http://bedroom-switch.lan/number/bedroom_switch_scene/set?value=2");
                             httpRequestComponent.set_method("POST");
+                            httpRequestComponent.dump_config();
+                            httpRequestComponent.close();
 
 packages:
   device-base: 
