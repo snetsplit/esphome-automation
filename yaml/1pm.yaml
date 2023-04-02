@@ -137,7 +137,7 @@ number:
             condition:
               and:
                 - lambda: |-
-                            bool okay = id(last_value_1) != x;
+                            bool okay = (id(last_value_1) != x);
                              ESP_LOGI("bool", "Last value [%d]%d %d", okay,x,id(last_value_1)); 
                              id(last_value_1) = x;
                             return okay;
@@ -185,7 +185,9 @@ number:
                                 id: "${device_name}_scene"
                                 value: ${off_scene_1}
                           else:
-                      - lambda: id(scene_light_index_1) = 0;
+                      - lambda: |-
+                                        HttpRequestComponent httpRequestComponent = new HttpRequestComponent();
+                                        id(scene_light_index_1) = 0;
                       - while:
                           condition:
                             - lambda: return (id(scene_light_index_1) < id(scene_light_host_string_1).size());
