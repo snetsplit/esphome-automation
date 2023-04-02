@@ -138,8 +138,8 @@ number:
               and:
                 - lambda: |-
                             bool okay = id(last_value_1) != x;
+                             ESP_LOGI("bool", "Last value [%d]%d %d", okay,x,id(last_value_1)); 
                              id(last_value_1) = x;
-                             ESP_LOGI("bool", "Last value [%d]", okay); 
                             return okay;
             then:
               - if:
@@ -166,7 +166,6 @@ number:
                                       int sceneNameLength = 64;
                                       char sceneNameCharBuffer[sceneNameLength]; 
                                       std::snprintf(sceneNameCharBuffer, sceneNameLength, "scene.${device_name}%.0f", x); 
-                                      ESP_LOGI("scene", "Setting scene: [%s]", sceneNameCharBuffer); 
                                       std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
                                       return sceneName;
                           else:
@@ -193,7 +192,6 @@ number:
                           then:
                             - http_request.post: !lambda |- 
                                         std::string sceneName = "http://" + id(scene_light_host_string_1).at(id(scene_light_index_1)) + "/set?value=" + std::to_string(int(x));
-                                        ESP_LOGI("scene", "Setting switch at: [%s]", sceneName); 
                                         id(scene_light_index_1) += 1;
                                         return sceneName;  
                          
