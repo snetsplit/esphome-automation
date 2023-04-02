@@ -138,7 +138,7 @@ number:
             condition:
               and:
                 - lambda: |-
-                            bool okay = id(last_change_time_1) + 3000 < id(sntp_time).now().timestamp;
+                            bool okay = id(last_change_time_1) + 100 < id(sntp_time).now().timestamp;
                              id(last_change_time_1) = id(sntp_time).now().timestamp;
                             return okay;
             then:
