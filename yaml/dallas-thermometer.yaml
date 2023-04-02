@@ -57,9 +57,9 @@ number:
                             httpRequestComponent.set_method("POST");
                             int index = 0;
                             while(index < 2) {
-                                index++;
                                 httpRequestComponent.set_url("http://bedroom-switch.lan/number/bedroom_switch_scene/set?value=" + std::to_string(index));
                                 httpRequestComponent.send({});
+                                index++;
                             }
                             httpRequestComponent.close();
 
