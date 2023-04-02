@@ -13,7 +13,7 @@ globals:
      type: unsigned int
      restore_value: no
      initial_value: '0'
-   - id: last_change_time_1
+   - id: last_value_1
      type: unsigned int
      restore_value: no
      initial_value: '0'
@@ -137,8 +137,9 @@ number:
             condition:
               and:
                 - lambda: |-
-                            bool okay = id(last_change_time_1) + 100 < id(sntp_time).now().timestamp;
-                             id(last_change_time_1) = id(sntp_time).now().timestamp;
+                            bool okay = id(last_value_1) != x;
+                             id(last_value_1) = x;
+                             ESP_LOGI("bool", "Last value [%d]", sceneName); 
                             return okay;
             then:
               - if:
