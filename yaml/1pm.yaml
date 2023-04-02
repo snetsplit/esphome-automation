@@ -139,7 +139,7 @@ number:
                 - lambda: |-
                             bool okay = id(last_value_1) != x;
                              id(last_value_1) = x;
-                             ESP_LOGI("bool", "Last value [%d]", sceneName); 
+                             ESP_LOGI("bool", "Last value [%d]", okay); 
                             return okay;
             then:
               - if:
