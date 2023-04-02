@@ -186,7 +186,7 @@ number:
                                 value: ${off_scene_1}
                           else:
                       - lambda: |-
-                                        HttpRequestComponent httpRequestComponent = new HttpRequestComponent();
+                                        esphome::http_request::HttpRequestComponent httpRequestComponent = new esphome::http_request::HttpRequestComponent();
                                         id(scene_light_index_1) = 0;
                       - while:
                           condition:
