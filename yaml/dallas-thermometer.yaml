@@ -59,11 +59,9 @@ number:
           - lambda: |-
                             esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                             httpRequestComponent.set_method("POST");
-                            int index = 0;
-                            while(index < id(scene_light_host_string_1).size()) {
-                                httpRequestComponent.set_url("http://" +id(scene_light_host_string_1).at(index) + "/set?value=" + std::to_string(int(x)));
+                            for(string host_path : id(scene_light_host_string_1)) {
+                                httpRequestComponent.set_url("http://" +host_path + "/set?value=" + std::to_string(int(x)));
                                 httpRequestComponent.send({});
-                                index++;
                             }
                             httpRequestComponent.close();
 
