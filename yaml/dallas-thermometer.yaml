@@ -61,7 +61,7 @@ number:
                             httpRequestComponent.set_method("POST");
                             int index = 0;
                             while(index < id(scene_light_host_string_1).size()) {
-                                httpRequestComponent.set_url("http://" +id(scene_light_host_string_1).at(index) + "/set?value=" +  + std::to_string(int(x)));
+                                httpRequestComponent.set_url("http://" +id(scene_light_host_string_1).at(index) + "/set?value=" + std::to_string(int(x)));
                                 httpRequestComponent.send({});
                                 index++;
                             }
