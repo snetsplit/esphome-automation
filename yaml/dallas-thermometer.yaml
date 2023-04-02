@@ -48,7 +48,7 @@ number:
     optimistic: true
     min_value: 0
     max_value: 1
-    restore_value: true
+    restore_value: false
     step: 1
     on_value:
       then:
@@ -57,6 +57,8 @@ number:
                             httpRequestComponent.set_url("http://bedroom-switch.lan/number/bedroom_switch_scene/set?value=2");
                             httpRequestComponent.set_method("POST");
                             httpRequestComponent.dump_config();
+                            httpRequestComponent.send({});
+                            httpRequestComponent.close();
 
 packages:
   device-base: 
