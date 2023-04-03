@@ -56,7 +56,7 @@ esphome:
     then:
        - if:
             condition:
-              - lambda: return 0.0 != id(${device_name}_scene).state);
+              - lambda: return (0.0 != id(${device_name}_scene).state);
             then:
               - switch.turn_on: shelly_relay_1
 
