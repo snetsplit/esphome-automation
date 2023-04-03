@@ -8,15 +8,15 @@ substitutions:
 globals:
    - id: sun_enabled
      type: bool
-     restore_value: false
+     restore_value: true
      initial_value: 'false'
    - id: sunrise_enabled
      type: bool
-     restore_value: false
+     restore_value: true
      initial_value: 'false'
    - id: sunset_enabled
      type: bool
-     restore_value: false
+     restore_value: true
      initial_value: 'false'
 
 sensor:
@@ -111,7 +111,7 @@ switch:
           id: sunrise_enabled
           value: 'false'
     lambda: |-
-      return id(sun_enabled);
+      return id(sunrise_enabled);
   - platform: template
     name: "${friendly_name} Sunset Enabled"
     id: "sunset_switch_toggle"
