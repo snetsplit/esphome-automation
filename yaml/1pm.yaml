@@ -184,16 +184,14 @@ number:
     id: "${device_name}_scene"
     optimistic: true
     min_value: ${light_automation_input_number_min}
-    max_value: 3
+    max_value: 4
     restore_value: true
     step: 1
     on_value:
       then:
           - lambda: |-
                         if(id(sun_enabled) && (id(sun_id).elevation() > 0) && (1 == x) && (${light_automation_input_number_max} > 1)) {
-                           auto call = id(${device_name}_scene).make_call();
-                           call.set_value(2);
-                           call.perform();
+                           id(${device_name}_scene).make_call().set_value(2).perform();
                            return;
                         }
                         bool relayNoFlip = false;
