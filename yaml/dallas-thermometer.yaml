@@ -57,18 +57,19 @@ number:
     on_value:
       then:
           - lambda: |-
-                            api::HomeAssistantServiceCallAction<> *ha_service;
-                            ha_service = new api::HomeAssistantServiceCallAction<>(api_apiserver);
-                            ha_service->set_service("scene.turn_on");
-                            ha_service->set_data({api::KeyValuePair("entity_id", "scene.hallway" + std::to_string(int(x)))});
-                            ha_service->play();
-                            esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
-                            httpRequestComponent.set_method("POST");
-                            for(std::string host_path : id(scene_light_host_string_1)) {
-                                httpRequestComponent.set_url("http://" +host_path + "/set?value=" + std::to_string(int(x)));
-                                httpRequestComponent.send({});
-                            }
-                            httpRequestComponent.close();
+                       HomeassistantServiceResponse resp;
+                       resp.service = "scene.turn_on";
+                       HomeassistantServiceMap entity_id_kv;
+                       entity_id_kv.key = "entity_id";
+                       entity_id_kv.value ="scene.${device_name}" + std::to_string(int(x));
+                       id(api_id).send_homeassistant_service_call(resp);
+                        esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
+                        httpRequestComponent.set_method("POST");
+                        for(std::string host_path : id(scene_light_host_string_1)) {
+                            httpRequestComponent.set_url("http://" +host_path + "/set?value=" + std::to_string(int(x)));
+                            httpRequestComponent.send({});
+                        }
+                        httpRequestComponent.close();
 
 packages:
   device-base: 
