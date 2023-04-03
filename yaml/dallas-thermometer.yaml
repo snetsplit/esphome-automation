@@ -1,3 +1,9 @@
+globals:
+   - id: previous_temp
+     type: float
+     restore_value: false
+     initial_value: '3'
+
 substitutions:
   device_type: "thermometer"
   device_type_nice: "Thermometer"
