@@ -188,7 +188,6 @@ number:
                             entity_id_kv.value ="scene.${device_name}" + std::to_string(int(x));
                             resp.data.push_back(entity_id_kv);
                             id(api_id).send_homeassistant_service_call(resp);
-                            return;
                          } else if (!id(edge_switch) && id(wifi_id).is_connected()) {
                             esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                             httpRequestComponent.set_method("POST");
@@ -197,14 +196,11 @@ number:
                                 httpRequestComponent.send({});
                             }
                             httpRequestComponent.close();
-                            return;
-                        } else {
-                            if(0 == x) {
+                        } else if(0 == x) {
                                 id(shelly_relay_1).turn_off();
-                            } else {
-                                id(shelly_relay_1).turn_on();
-                            }
-                       }
+                        } else {
+                            id(shelly_relay_1).turn_on();
+                        }
 
 
 sun:
