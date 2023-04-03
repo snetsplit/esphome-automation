@@ -76,6 +76,66 @@ switch:
              - number.set:
                  id: "${device_name}_scene"
                  value: 1
+  - platform: template
+    name: "${nice_name} Switch Edge Mode"
+    id: "basic_edge_switch_toggle_switch"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: edge_switch
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: edge_switch
+          value: 'false'
+    lambda: |-
+      return id(edge_switch);
+  - platform: template
+    name: "${nice_name} Scene"
+    id: "scene_switch_toggle"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: scene_switch
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: scene_switch
+          value: 'false'
+    lambda: |-
+      return id(scene_switch);
+  - platform: template
+    name: "${nice_name} http control"
+    id: "http_switch_toggle"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: http_switch
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: http_switch
+          value: 'false'
+    lambda: |-
+      return id(http_switch);
+  - platform: template
+    name: "${nice_name} Auto Off"
+    id: "auto_off_switch_toggle"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: auto_off_timer
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: auto_off_timer
+          value: 'false'
+    lambda: |-
+      return id(auto_off_timer);
 
 sensor:
   - platform: ntc
