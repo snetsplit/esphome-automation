@@ -12,18 +12,18 @@ sensor:
     name: "${nice_name} Elevation"
     id: "${sys_name}_elevation"
     type: elevation
-	icon: "mdi:sun"
+    icon: "mdi:sun"
   - platform: sun
     name: "${nice_name} Azimuth"
     id: "${sys_name}_azimuth"
     type: azimuth
-	icon: "mdi:sun"
+    icon: "mdi:sun"
 
 text_sensor:
   - platform: sun
     name: "${nice_name} Sunrise"
     id: "${sys_name}_sunrise"
-	icon: "mdi:sunrise"
+    icon: "mdi:sunrise"
     type: sunrise
     filters:
       - lambda: |-
@@ -44,7 +44,7 @@ text_sensor:
   - platform: sun
     name: "${nice_name} Sunset"
     id: "${sys_name}_sunset"
-	icon: "mdi:sunset"
+    icon: "mdi:sunset"
     type: sunset
     filters:
       - lambda: |-
