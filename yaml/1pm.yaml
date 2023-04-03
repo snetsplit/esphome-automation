@@ -66,7 +66,6 @@ switch:
              - number.set:
                  id: "${device_name}_scene"
                  value: ${on_scene_1}
-           else:                         
   - platform: template
     name: "${nice_name} Switch Edge Mode"
     id: "basic_edge_switch_toggle_switch"
@@ -74,13 +73,44 @@ switch:
     restore_state: true
     turn_on_action:
       - globals.set:
-          id: basic_edge_switch_toggle_boolean
+          id: edge_switch
           value: 'true'
     turn_off_action:
       - globals.set:
-          id: basic_edge_switch_toggle_boolean
+          id: edge_switch
           value: 'false'
     lambda: |-
+      return id(edge_switch);
+  - platform: template
+    name: "${nice_name} Scene"
+    id: "scene_switch_toggle"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: scene_switch
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: scene_switch
+          value: 'false'
+    lambda: |-
+      return id(scene_switch);
+  - platform: template
+    name: "${nice_name} Sun Enabled"
+    id: "sun_switch_toggle"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: sun_enabled
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: sun_enabled
+          value: 'false'
+    lambda: |-
+      return id(sun_enabled);
       return id(basic_edge_switch_toggle_boolean);
       
 sensor:
@@ -133,69 +163,36 @@ number:
     step: 1
     on_value:
       then:
-      - if:
-            condition:
-              and:
-                - lambda: |-
-                            bool okay = (id(last_value_1) != x);
-                             ESP_LOGI("bool", "Last value [%d]%d %d", okay,x,id(last_value_1)); 
-                             id(last_value_1) = x;
-                            return okay;
-            then:
-              - if:
-                    condition:
-                      and:
-                        - sun.is_above_horizon:
-                        - lambda: return ((${light_automation_input_number_max} > 1) && (x == 1) && ${sun_enabled});
-                    then:
-                      - number.increment:
-                           id: "${device_name}_scene"
-                           cycle: true
-                    else:
-                      - if:
-                          condition:
-                            and:
-                              - wifi.connected:
-                              - api.connected:
-                              - lambda: return ((id(${sys_name}_packet_loss).state < 100) && !id(basic_edge_switch_toggle_boolean) && !id(too_hot_boolean));
-                          then:
-                              - homeassistant.service:
-                                  service: scene.turn_on
-                                  data_template: 
-                                    entity_id: !lambda  |- 
-                                      int sceneNameLength = 64;
-                                      char sceneNameCharBuffer[sceneNameLength]; 
-                                      std::snprintf(sceneNameCharBuffer, sceneNameLength, "scene.${device_name}%.0f", x); 
-                                      std::__cxx11::basic_string sceneName = sceneNameCharBuffer;
-                                      return sceneName;
-                          else:
-                            - if:
-                                condition:
-                                  - lambda: return (${off_scene_1} == x);
-                                then:
-                                  - switch.turn_off: shelly_relay_1
-                                else:
-                                  - switch.turn_on: shelly_relay_1
-                      - if:
-                          condition:
-                            - lambda: return (${auto_off_boolean_1} && ${off_scene_1}.0 != x);
-                          then:
-                            - delay: ${delay_time_1}
-                            - number.set:
-                                id: "${device_name}_scene"
-                                value: ${off_scene_1}
-                          else:
-                      - lambda: |-
-                                        id(scene_light_index_1) = 0;
-                      - while:
-                          condition:
-                            - lambda: return (id(scene_light_index_1) < id(scene_light_host_string_1).size());
-                          then:
-                            - http_request.post: !lambda |- 
-                                        std::string sceneName = "http://" + id(scene_light_host_string_1).at(id(scene_light_index_1)) + "/set?value=" + std::to_string(int(x));
-                                        id(scene_light_index_1) += 1;
-                                        return sceneName;  
-                         
+          - lambda: |-
+                        if(id(sun_enabled) && (id(sun_id).elevation() < 0) && (1 == x) && (${light_automation_input_number_max} > 1)) {
+                           id(${device_name}_scene).state =2;
+                           x = 2;
+                        }
+                        if(!id(edge_switch) && id(scene_switch) && id(api_id).is_connected()) {
+                            HomeassistantServiceResponse resp;
+                            resp.service = "scene.turn_on";
+                            HomeassistantServiceMap entity_id_kv;
+                            entity_id_kv.key = "entity_id";
+                            entity_id_kv.value ="scene.${device_name}" + std::to_string(int(x));
+                            resp.data.push_back(entity_id_kv);
+                            id(api_id).send_homeassistant_service_call(resp);
+                            return;
+                         } else if (!id(edge_switch) && id(wifi_id).is_connected()) {
+                            esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
+                            httpRequestComponent.set_method("POST");
+                            for(std::string host_path : id(scene_light_host_string_1)) {
+                                httpRequestComponent.set_url("http://" +host_path + "/set?value=" + std::to_string(int(x)));
+                                httpRequestComponent.send({});
+                            }
+                            httpRequestComponent.close();
+                            return;
+                        } else {
+                            if(0 == x) {
+                                id(shelly_relay_1).turn_off();
+                            } else {
+                                id(shelly_relay_1).turn_on();
+                            }
+                       }
 sun:
   on_sunrise:
     - then:
