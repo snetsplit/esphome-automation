@@ -9,6 +9,7 @@ substitutions:
   ota_password: "wouldn't you like to know?"
 
 api:
+  id: api_id
   password:  ${ota_password}
 
 ota:
