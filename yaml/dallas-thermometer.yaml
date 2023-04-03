@@ -6,17 +6,14 @@ globals:
    - id: scene_light_host_string_1
      type: const std::vector<std::string>
      initial_value: ${scene_light_host_string_1}
-globals:
    - id: basic_edge_switch_toggle_boolean
      type: bool
      restore_value: false
      initial_value: 'false'
-globals:
    - id: test
      type: bool
      restore_value: false
      initial_value: 'false'
-globals:
    - id: scene_switch
      type: bool
      restore_value: false
@@ -65,7 +62,7 @@ switch:
     name: "${nice_name} Switch Relay"
     id: shelly_relay_1
     icon: "mdi:electric-switch"
-    restore_mode: false
+    restore_mode: ALWAYS_OFF
     turn_on_action:
       - globals.set:
           id: test
