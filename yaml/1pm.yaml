@@ -62,20 +62,6 @@ esphome:
 
 
 switch:
-  - platform: gpio
-    name: "${nice_name} Switch Relay"
-    pin: GPIO15
-    id: shelly_relay_1
-    icon: "mdi:electric-switch"
-    restore_mode: ${restore_mode}
-    on_turn_on:
-      - if:
-           condition:
-             - lambda: return (id(auto_off_timer) && (0.0 == id(${device_name}_scene).state));
-           then:
-             - number.set:
-                 id: "${device_name}_scene"
-                 value: 1
   - platform: template
     name: "${nice_name} Switch Edge Mode"
     id: "basic_edge_switch_toggle_switch"
