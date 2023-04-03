@@ -32,24 +32,19 @@ globals:
      type: bool
      restore_value: false
      initial_value: 'false'
+   - id: auto_off_timer
+     type: bool
+     restore_value: false
+     initial_value: 'false'
      
 substitutions:
   device_type: "switch"
   device_type_nice: "Switch"
-  max_temp: "80.0"
+  max_temp: "60.0"
   max_power: "1600.0"
   restore_mode: RESTORE_DEFAULT_ON
-  light_automation_input_number_min: '0'
   light_automation_input_number_max: '2'
-  
-  auto_off_boolean_1: "false"
-  off_scene_1: '0'
-  on_scene_1: '1'
-  delay_time_1: "1min"
   scene_light_host_string_1: ""
-
-  sunrise_scene: "0"
-  sunset_scene: "1"
   
 esphome:
   on_boot:
@@ -57,10 +52,9 @@ esphome:
     then:
        - if:
             condition:
-              - lambda: return (${off_scene_1}.0 == id(${device_name}_scene).state);
+              - lambda: return 0.0 != id(${device_name}_scene).state);
             then:
               - switch.turn_on: shelly_relay_1
-            else:
 
 
 switch:
@@ -73,11 +67,11 @@ switch:
     on_turn_on:
       - if:
            condition:
-             - lambda: return (${auto_off_boolean_1} && (${off_scene_1}.0 == id(${device_name}_scene).state));
+             - lambda: return (id(auto_off_timer) && (0.0 == id(${device_name}_scene).state));
            then:
              - number.set:
                  id: "${device_name}_scene"
-                 value: ${on_scene_1}
+                 value: 1
   - platform: template
     name: "${nice_name} Switch Edge Mode"
     id: "basic_edge_switch_toggle_switch"
@@ -138,6 +132,21 @@ switch:
           value: 'false'
     lambda: |-
       return id(sun_enabled);
+  - platform: template
+    name: "${nice_name} Auto Off"
+    id: "auto_off_switch_toggle"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: auto_off_timer
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: auto_off_timer
+          value: 'false'
+    lambda: |-
+      return id(auto_off_timer);
       
 sensor:
   - platform: ntc
@@ -183,7 +192,7 @@ number:
     name: "${nice_name} Switch Scene"
     id: "${device_name}_scene"
     optimistic: true
-    min_value: ${light_automation_input_number_min}
+    min_value: 0
     max_value: 4
     restore_value: true
     step: 1
@@ -222,8 +231,23 @@ number:
                                 id(shelly_relay_1).turn_on();
                         } else if(!relayNoFlip) {
                                 id(${device_name}_scene).make_call().number_to_max().perform();
+                                return;
                         }
-
+                        
+                        if((0.0 < x) && auto_off_timer) {
+                            delay(30000);
+                        }
+  - platform: template
+    icon: "mdi:clock"
+    name: "${nice_name} Auto Off Seconds"
+    id: "${device_name}_auto_off_seconds"
+    optimistic: true
+    min_value: 0
+    max_value: 8640
+    mode: box
+    native_unit_of_measurement: "s"
+    restore_value: true
+    step: 1
 
 sun:
   on_sunrise:
