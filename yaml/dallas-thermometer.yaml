@@ -118,7 +118,7 @@ number:
       then:
           - lambda: |-
                         if(id(basic_edge_switch_toggle_boolean)) {
-                        else if(id(scene_switch) && id(api_id).is_connected()) {
+                        } else if(id(scene_switch) && id(api_id).is_connected()) {
                             HomeassistantServiceResponse resp;
                             resp.service = "scene.turn_on";
                             HomeassistantServiceMap entity_id_kv;
