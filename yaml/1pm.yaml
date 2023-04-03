@@ -205,6 +205,8 @@ number:
                                 id(shelly_relay_1).turn_on();
                             }
                        }
+
+
 sun:
   on_sunrise:
     - then:
