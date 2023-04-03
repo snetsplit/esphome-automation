@@ -29,7 +29,7 @@ substitutions:
   dallas_update: 15s
   scene_light_host_string_1: '{"frontyard-switch.lan/number/frontyard_switch_scene","bedroom-switch.lan/number/bedroom_switch_scene"}' 
   call_scene_1: "false"
-
+  off_scene_1: "0"
 
 dallas:
   - pin: ${dallas_pin}
