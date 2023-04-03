@@ -184,6 +184,7 @@ number:
     step: 1
     on_value:
       then:
+          - delay: 20s
           - lambda: |-
                         if(id(sun_enabled) && (id(sun_id).elevation() > ${day_elevation}) && (1 == x) && (id(${device_name}_scene).traits.get_max_value() > 1)) {
                            id(${device_name}_scene).make_call().number_increment(false).perform();
