@@ -18,6 +18,10 @@ globals:
      type: bool
      restore_value: false
      initial_value: 'false'
+   - id: sun_enabled
+     type: bool
+     restore_value: false
+     initial_value: 'false'
 
 
 substitutions:
@@ -28,8 +32,6 @@ substitutions:
   dallas_temp_update_url: "http://whatever"
   dallas_update: 15s
   scene_light_host_string_1: '{"frontyard-switch.lan/number/frontyard_switch_scene","bedroom-switch.lan/number/bedroom_switch_scene"}' 
-  call_scene_1: "false"
-  off_scene_1: "0"
 
 dallas:
   - pin: ${dallas_pin}
@@ -103,6 +105,21 @@ switch:
           value: 'false'
     lambda: |-
       return id(scene_switch);
+  - platform: template
+    name: "${nice_name} Sun Enabled"
+    id: "sun_switch_toggle"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: sun_enabled
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: sun_enabled
+          value: 'false'
+    lambda: |-
+      return id(sun_enabled);
 
 number:
   - platform: template
@@ -111,12 +128,15 @@ number:
     id: "${device_name}_scene"
     optimistic: true
     min_value: 0
-    max_value: 3
+    max_value: ${light_automation_input_number_max}
     restore_value: false
     step: 1
     on_value:
       then:
           - lambda: |-
+                        if(id(sun_enabled) && (id(sun_id).elevation() < 0) && (1 == x) && (${light_automation_input_number_max} > 1)) {
+                           id(${device_name}_scene).state =2;
+                        }
                         if(id(basic_edge_switch_toggle_boolean)) {
                         } else if(id(scene_switch) && id(api_id).is_connected()) {
                             HomeassistantServiceResponse resp;
@@ -138,7 +158,7 @@ number:
                             return;
                         }
 
-                        if(${off_scene_1} == x) {
+                        if(0 == x) {
                             id(shelly_relay_1).turn_off();
                         } else {
                             id(shelly_relay_1).turn_on();
@@ -147,4 +167,8 @@ packages:
   device-base: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/esp8266.yaml
-    refresh: 1d
+    refresh: 1s
+  sune: 
+    url: https://github.com/snetsplit/esphome-automation
+    file: yaml/base/sun.yaml
+    refresh: 1s

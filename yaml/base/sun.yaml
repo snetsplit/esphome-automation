@@ -60,5 +60,6 @@ text_sensor:
            return x + ((hours24 < 12)?" AM":" PM");
 
 sun:
+  id: sun_id
   latitude: ${latitude}
   longitude: ${longitude}
