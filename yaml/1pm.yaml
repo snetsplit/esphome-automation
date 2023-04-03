@@ -222,6 +222,14 @@ number:
                         
                         if((0.0 < x) && auto_off_timer) {
                         }
+      - if:
+           condition:
+             - lambda: return (id(auto_off_timer) && (0.0 < id(${device_name}_scene).state));
+           then:
+             - delay: !lambda return id(${device_name}_auto_off_seconds).state;
+             - number.set:
+                 id: "${device_name}_scene"
+                 value: 0
   - platform: template
     icon: "mdi:clock"
     name: "${friendly_name} Auto Off Seconds"
