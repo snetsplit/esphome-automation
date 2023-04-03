@@ -62,7 +62,9 @@ number:
                        HomeassistantServiceMap entity_id_kv;
                        entity_id_kv.key = "entity_id";
                        entity_id_kv.value ="scene.hallway" + std::to_string(int(x));
+                       resp.data.push_back(entity_id_kv);
                        id(api_id).send_homeassistant_service_call(resp);
+                       
                         esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                         httpRequestComponent.set_method("POST");
                         for(std::string host_path : id(scene_light_host_string_1)) {
