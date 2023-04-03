@@ -6,6 +6,21 @@ globals:
    - id: scene_light_host_string_1
      type: const std::vector<std::string>
      initial_value: ${scene_light_host_string_1}
+globals:
+   - id: basic_edge_switch_toggle_boolean
+     type: bool
+     restore_value: false
+     initial_value: 'false'
+globals:
+   - id: test
+     type: bool
+     restore_value: false
+     initial_value: 'false'
+globals:
+   - id: scene_switch
+     type: bool
+     restore_value: false
+     initial_value: 'false'
 
 
 substitutions:
@@ -16,6 +31,7 @@ substitutions:
   dallas_temp_update_url: "http://whatever"
   dallas_update: 15s
   scene_light_host_string_1: '{"frontyard-switch.lan/number/frontyard_switch_scene","bedroom-switch.lan/number/bedroom_switch_scene"}' 
+  call_scene_1: "false"
 
 
 dallas:
@@ -44,6 +60,53 @@ sensor:
               - http_request.post: !lambda |- 
                       return "${dallas_temp_update_url}" + std::to_string(x);
 
+switch:
+  - platform: template
+    name: "${nice_name} Switch Relay"
+    id: shelly_relay_1
+    icon: "mdi:electric-switch"
+    restore_mode: false
+    turn_on_action:
+      - globals.set:
+          id: test
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: test
+          value: 'false'
+    lambda: |-
+      return id(test);
+  - platform: template
+    name: "${nice_name} Switch Edge Mode"
+    id: "basic_edge_switch_toggle_switch"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: basic_edge_switch_toggle_boolean
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: basic_edge_switch_toggle_boolean
+          value: 'false'
+    lambda: |-
+      return id(basic_edge_switch_toggle_boolean);
+  - platform: template
+    name: "${nice_name} Scene"
+    id: "scene_switch"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: scene_switch
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: scene_switch
+          value: 'false'
+    lambda: |-
+      return id(scene_switch);
+
 number:
   - platform: template
     icon: "mdi:bulb-group-outline"
@@ -57,22 +120,32 @@ number:
     on_value:
       then:
           - lambda: |-
-                       HomeassistantServiceResponse resp;
-                       resp.service = "scene.turn_on";
-                       HomeassistantServiceMap entity_id_kv;
-                       entity_id_kv.key = "entity_id";
-                       entity_id_kv.value ="scene.hallway_switch" + std::to_string(int(x));
-                       resp.data.push_back(entity_id_kv);
-                       id(api_id).send_homeassistant_service_call(resp);
-                       
-                        esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
-                        httpRequestComponent.set_method("POST");
-                        for(std::string host_path : id(scene_light_host_string_1)) {
-                            httpRequestComponent.set_url("http://" +host_path + "/set?value=" + std::to_string(int(x)));
-                            httpRequestComponent.send({});
+                        if(id(basic_edge_switch_toggle_boolean)) {
+                        else if(id(scene_switch) && id(api_id).is_connected()) {
+                            HomeassistantServiceResponse resp;
+                            resp.service = "scene.turn_on";
+                            HomeassistantServiceMap entity_id_kv;
+                            entity_id_kv.key = "entity_id";
+                            entity_id_kv.value ="scene.${device_name}" + std::to_string(int(x));
+                            resp.data.push_back(entity_id_kv);
+                            id(api_id).send_homeassistant_service_call(resp);
+                            return;
+                         } else if (id(wifi_id).is_connected()) {
+                            esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
+                            httpRequestComponent.set_method("POST");
+                            for(std::string host_path : id(scene_light_host_string_1)) {
+                                httpRequestComponent.set_url("http://" +host_path + "/set?value=" + std::to_string(int(x)));
+                                httpRequestComponent.send({});
+                            }
+                            httpRequestComponent.close();
+                            return;
                         }
-                        httpRequestComponent.close();
 
+                        if(${off_scene_1} == x) {
+                            id(shelly_relay_1).turn_off();
+                        } else {
+                            id(shelly_relay_1).turn_on();
+                        }
 packages:
   device-base: 
     url: https://github.com/snetsplit/esphome-automation
