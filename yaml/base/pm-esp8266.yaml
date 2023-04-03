@@ -10,7 +10,7 @@ sensor:
     cf1_pin: GPIO13 # not used because it is not available on the 1PM but it is needed to compile
     sel_pin: GPIO14 # not used because it is not available on the 1PM but it is needed to compile
     power:
-      name: "${nice_name} Watts"
+      name: "${friendly_name} Watts"
       unit_of_measurement: W
       icon: "mdi:lightning-bolt-outline"
       id: "shelly1pm_power"
@@ -33,7 +33,7 @@ sensor:
     update_interval: 10s
 
   - platform: total_daily_energy
-    name: "${nice_name} Watts Last 24 hours"
+    name: "${friendly_name} Watts Last 24 hours"
     power_id: "shelly1pm_power"
     device_class: energy
     icon: "mdi:lightning-bolt-outline"
