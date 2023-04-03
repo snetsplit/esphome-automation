@@ -99,7 +99,7 @@ switch:
       return id(sun_enabled);
   - platform: template
     name: "${nice_name} Sunrise Enabled"
-    id: "sun_switch_toggle"
+    id: "sunrise_switch_toggle"
     optimistic: false
     restore_state: true
     turn_on_action:
@@ -114,7 +114,7 @@ switch:
       return id(sun_enabled);
   - platform: template
     name: "${nice_name} Sunset Enabled"
-    id: "sun_switch_toggle"
+    id: "sunset_switch_toggle"
     optimistic: false
     restore_state: true
     turn_on_action:
