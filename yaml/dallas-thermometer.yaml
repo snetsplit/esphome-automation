@@ -137,6 +137,7 @@ number:
           - lambda: |-
                         if(id(sun_enabled) && (id(sun_id).elevation() < 0) && (1 == x) && (${light_automation_input_number_max} > 1)) {
                            id(${device_name}_scene).state =2;
+                           x = 2;
                         }
                         if(id(basic_edge_switch_toggle_boolean)) {
                         } else if(id(scene_switch) && id(api_id).is_connected()) {
