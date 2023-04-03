@@ -16,6 +16,9 @@ globals:
    - id: scene_light_host_string_1
      type: const std::vector<std::string>
      initial_value: ${scene_light_host_string_1}
+   - id: scene_master_host_1
+     type: std::string
+     initial_value: ${scene_master_host_1}
    - id: edge_switch
      type: bool
      restore_value: false
@@ -45,6 +48,7 @@ substitutions:
   restore_mode: RESTORE_DEFAULT_ON
   light_automation_input_number_max: '2'
   scene_light_host_string_1: ""
+  scene_master_host_1: ""
   sunrise_scene: 0
   sunset_scene: 1
   
