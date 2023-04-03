@@ -43,7 +43,7 @@ packages:
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/esp8266.yaml
     refresh: 1s
-sun:
-  id: sun_id
-  latitude: ${latitude}
-  longitude: ${longitude}
+  sun: 
+    url: https://github.com/snetsplit/esphome-automation
+    file: yaml/base/sun.yaml
+    refresh: 1d
