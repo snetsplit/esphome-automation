@@ -123,7 +123,6 @@ switch:
           value: 'false'
     lambda: |-
       return id(http_switch);
-      return id(basic_edge_switch_toggle_boolean);
   - platform: template
     name: "${nice_name} Sun Enabled"
     id: "sun_switch_toggle"
@@ -139,7 +138,6 @@ switch:
           value: 'false'
     lambda: |-
       return id(sun_enabled);
-      return id(basic_edge_switch_toggle_boolean);
       
 sensor:
   - platform: ntc
@@ -209,7 +207,7 @@ number:
                             id(api_id).send_homeassistant_service_call(resp);
                             relayFlip = false;
                          }
-                         if (!id(edge_switch) && id(edge_switch)  && id(wifi_id).is_connected()) {
+                         if (!id(edge_switch) && id(http_switch)  && id(wifi_id).is_connected()) {
                             esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                             httpRequestComponent.set_method("POST");
                             for(std::string host_path : id(scene_light_host_string_1)) {
