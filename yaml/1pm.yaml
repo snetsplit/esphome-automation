@@ -20,6 +20,18 @@ globals:
    - id: scene_light_host_string_1
      type: const std::vector<std::string>
      initial_value: ${scene_light_host_string_1}
+   - id: edge_switch
+     type: bool
+     restore_value: false
+     initial_value: 'false'
+   - id: scene_switch
+     type: bool
+     restore_value: false
+     initial_value: 'false'
+   - id: sun_enabled
+     type: bool
+     restore_value: false
+     initial_value: 'false'
      
 substitutions:
   device_type: "switch"
