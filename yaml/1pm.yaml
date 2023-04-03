@@ -218,10 +218,10 @@ number:
                         
                         if(!relayNoFlip && (0 == x)) {
                                 id(shelly_relay_1).turn_off();
-                        }else if(!relayNoFlip && (id(${device_name}_scene).traits.get_max() == x)) {
+                        }else if(!relayNoFlip && (id(${device_name}_scene).traits.get_max_value() == x)) {
                                 id(shelly_relay_1).turn_on();
                         } else if(!relayNoFlip) {
-                                id(${device_name}_scene).make_call().number_to_max_value().perform();
+                                id(${device_name}_scene).make_call().number_to_max().perform();
                         }
 
 
