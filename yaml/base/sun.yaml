@@ -3,9 +3,21 @@ substitutions:
   sunset_enabled: "true"
   latitude: 48.8584°
   longitude: 2.2945°
-  sunrise_elevation: "-0.833"
-  sunset_elevation: "-0.833"
-  sun_enabled: "true"
+  day_elevation: "-0.833"
+
+globals:
+   - id: sun_enabled
+     type: bool
+     restore_value: false
+     initial_value: 'false'
+   - id: sunrise_enabled
+     type: bool
+     restore_value: false
+     initial_value: 'false'
+   - id: sunset_enabled
+     type: bool
+     restore_value: false
+     initial_value: 'false'
 
 sensor:
   - platform: sun
@@ -67,3 +79,51 @@ sun:
   id: sun_id
   latitude: ${latitude}
   longitude: ${longitude}
+
+
+switch:
+  - platform: template
+    name: "${nice_name} Sun Enabled"
+    id: "sun_switch_toggle"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: sun_enabled
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: sun_enabled
+          value: 'false'
+    lambda: |-
+      return id(sun_enabled);
+  - platform: template
+    name: "${nice_name} Sunrise Enabled"
+    id: "sun_switch_toggle"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: sunrise_enabled
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: sunrise_enabled
+          value: 'false'
+    lambda: |-
+      return id(sun_enabled);
+  - platform: template
+    name: "${nice_name} Sunset Enabled"
+    id: "sun_switch_toggle"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: sunset_enabled
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: sunset_enabled
+          value: 'false'
+    lambda: |-
+      return id(sunset_enabled);

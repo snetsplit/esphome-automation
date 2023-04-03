@@ -9,10 +9,14 @@ globals:
      type: unsigned int
      restore_value: no
      initial_value: '0'
-   - id: last_value_1
+   - id: sunrise_scene
      type: unsigned int
      restore_value: no
      initial_value: '0'
+   - id: sunset_scene
+     type: unsigned int
+     restore_value: no
+     initial_value: '1'
    - id: scene_light_host_string_1
      type: const std::vector<std::string>
      initial_value: ${scene_light_host_string_1}
@@ -31,10 +35,6 @@ globals:
      type: bool
      restore_value: false
      initial_value: 'false'
-   - id: sun_enabled
-     type: bool
-     restore_value: false
-     initial_value: 'false'
    - id: auto_off_timer
      type: bool
      restore_value: false
@@ -49,8 +49,6 @@ substitutions:
   light_automation_input_number_max: '2'
   scene_light_host_string_1: ""
   scene_master_host_1: ""
-  sunrise_scene: 0
-  sunset_scene: 1
   
 esphome:
   on_boot:
@@ -124,21 +122,6 @@ switch:
     lambda: |-
       return id(http_switch);
   - platform: template
-    name: "${nice_name} Sun Enabled"
-    id: "sun_switch_toggle"
-    optimistic: false
-    restore_state: true
-    turn_on_action:
-      - globals.set:
-          id: sun_enabled
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: sun_enabled
-          value: 'false'
-    lambda: |-
-      return id(sun_enabled);
-  - platform: template
     name: "${nice_name} Auto Off"
     id: "auto_off_switch_toggle"
     optimistic: false
@@ -205,7 +188,7 @@ number:
     on_value:
       then:
           - lambda: |-
-                        if(id(sun_enabled) && (id(sun_id).elevation() > 0) && (1 == x) && (id(${device_name}_scene).traits.get_max_value() > 1)) {
+                        if(id(sun_enabled) && (id(sun_id).elevation() > ${day_elevation}) && (1 == x) && (id(${device_name}_scene).traits.get_max_value() > 1)) {
                            id(${device_name}_scene).make_call().number_increment(false).perform();
                            return;
                         }
@@ -254,31 +237,47 @@ number:
     unit_of_measurement: "s"
     restore_value: true
     step: 1
+  - platform: template
+    icon: "mdi:clock"
+    name: "${nice_name} Sunrise Scene"
+    id: "${device_name}_sunrise_scene"
+    optimistic: true
+    min_value: 0
+    max_value: ${light_automation_input_number_max}
+    restore_value: true
+    step: 1
+  - platform: template
+    icon: "mdi:clock"
+    name: "${nice_name} Sunset Scene"
+    id: "${device_name}_sunset_scene"
+    optimistic: true
+    min_value: 0
+    max_value: ${light_automation_input_number_max}
+    restore_value: true
+    step: 1
 
 sun:
   on_sunrise:
-    - then:
-    - elevation: ${sunrise_elevation} 
+    - elevation: ${day_elevation} 
       then: 
         - if:
              condition:
-               - lambda: return  ${sunrise_enabled};
+               - lambda: return  id(sunrise_enabled);
              then:
                - number.set:
                    id: "${device_name}_scene"
-                   value: ${sunrise_scene}
+                   value: !lambda return id(sunrise_scene);
 
   on_sunset:
-    - then:
-    - elevation: ${sunset_elevation} 
+    - elevation: ${day_elevation} 
       then: 
         - if:
              condition:
-               - lambda: return  ${sunset_enabled};
+               - lambda: return  id(sunset_enabled);
              then:
                - number.set:
                    id: "${device_name}_scene"
-                   value: ${sunset_scene}
+                   value: !lambda return id(sunset_scene);
 
 packages:
   base: 
@@ -288,8 +287,4 @@ packages:
   sun: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/sun.yaml
-    refresh: 1d
-  ping: 
-    url: https://github.com/snetsplit/esphome-automation
-    file: yaml/base/ping.yaml
-    refresh: 1d
+    refresh: 1s
