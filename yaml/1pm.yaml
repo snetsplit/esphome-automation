@@ -140,7 +140,7 @@ switch:
 sensor:
   - platform: ntc
     sensor: temp_resistance_reading
-    name: "${friendly_name} Temperature"
+    name: "${friendly_name} Shelly Temperature"
     unit_of_measurement: "°c"
     accuracy_decimals: 1
     device_class: temperature
@@ -218,9 +218,6 @@ number:
                         } else if(!relayNoFlip) {
                                 id(${device_name}_scene).make_call().number_to_max().perform();
                                 return;
-                        }
-                        
-                        if((0.0 < x) && auto_off_timer) {
                         }
           - if:
                condition:
