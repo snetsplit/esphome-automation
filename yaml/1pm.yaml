@@ -226,7 +226,7 @@ number:
                condition:
                  - lambda: return (id(auto_off_timer) && (0.0 < id(${device_name}_scene).state));
                then:
-                 - delay: !lambda return  std::to_string(id(${device_name}_auto_off_seconds).state);
+                 - delay: !lambda return  std::to_string(int(id(${device_name}_auto_off_seconds).state));
                  - number.set:
                      id: "${device_name}_scene"
                      value: 0
