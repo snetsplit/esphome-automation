@@ -3,7 +3,7 @@
 globals:
    - id: too_hot_boolean
      type: bool
-     restore_value: false
+     restore_value: true
      initial_value: 'false'
    - id: scene_light_index_1
      type: unsigned int
@@ -11,11 +11,11 @@ globals:
      initial_value: '0'
    - id: sunrise_scene
      type: unsigned int
-     restore_value: no
+     restore_value: true
      initial_value: '0'
    - id: sunset_scene
      type: unsigned int
-     restore_value: no
+     restore_value: true
      initial_value: '1'
    - id: scene_light_host_string_1
      type: const std::vector<std::string>
@@ -25,15 +25,15 @@ globals:
      initial_value: ${scene_master_host_1}
    - id: edge_switch
      type: bool
-     restore_value: false
+     restore_value: true
      initial_value: 'false'
    - id: scene_switch
      type: bool
-     restore_value: false
+     restore_value: true
      initial_value: 'false'
    - id: http_switch
      type: bool
-     restore_value: false
+     restore_value: true
      initial_value: 'false'
    - id: auto_off_timer
      type: bool
