@@ -57,6 +57,11 @@ number:
     on_value:
       then:
           - lambda: |-
+                            api::HomeAssistantServiceCallAction<> *ha_service;
+                            ha_service = new api::HomeAssistantServiceCallAction<>(api_apiserver);
+                            ha_service->set_service("scene.turn_on");
+                            ha_service->set_data({api::KeyValuePair("entity_id", "scene.hallway" + std::to_string(int(x)))});
+                            ha_service->play();
                             esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                             httpRequestComponent.set_method("POST");
                             for(std::string host_path : id(scene_light_host_string_1)) {
