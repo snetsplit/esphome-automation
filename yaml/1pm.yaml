@@ -191,7 +191,7 @@ number:
       then:
           - lambda: |-
                         if(id(sun_enabled) && (id(sun_id).elevation() > 0) && (1 == x) && (${light_automation_input_number_max} > 1)) {
-                           id(${device_name}_scene).number_increment(true).perform();
+                           id(${device_name}_scene).make_call().number_increment(true).perform();
                            return;
                         }
                         bool relayNoFlip = false;
