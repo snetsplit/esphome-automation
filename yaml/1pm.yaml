@@ -1,10 +1,6 @@
 #source for orginal: https://www.esphome-devices.com/devices/Shelly-1PM
 #NOT COMPLETE. NOT WARRENTIED. USE AT OWN RISK.
 globals:
-   - id: basic_edge_switch_toggle_boolean
-     type: bool
-     restore_value: true
-     initial_value: 'false'
    - id: too_hot_boolean
      type: bool
      restore_value: false
@@ -25,6 +21,10 @@ globals:
      restore_value: false
      initial_value: 'false'
    - id: scene_switch
+     type: bool
+     restore_value: false
+     initial_value: 'false'
+   - id: http_switch
      type: bool
      restore_value: false
      initial_value: 'false'
@@ -109,6 +109,22 @@ switch:
     lambda: |-
       return id(scene_switch);
   - platform: template
+    name: "${nice_name} http control"
+    id: "http_switch_toggle"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: http_switch
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: http_switch
+          value: 'false'
+    lambda: |-
+      return id(http_switch);
+      return id(basic_edge_switch_toggle_boolean);
+  - platform: template
     name: "${nice_name} Sun Enabled"
     id: "sun_switch_toggle"
     optimistic: false
@@ -177,10 +193,13 @@ number:
       then:
           - lambda: |-
                         if(id(sun_enabled) && (id(sun_id).elevation() > 0) && (1 == x) && (${light_automation_input_number_max} > 1)) {
-                           id(${device_name}_scene).state =2;
-                           x = 2;
+                           auto call = id(${device_name}_scene).make_call();
+                           call.set_value(2);
+                           call.perform();
+                           return;
                         }
-                        if(!id(edge_switch) && id(scene_switch) && id(api_id).is_connected()) {
+                        bool relayFlip = true;
+                        if(!id(edge_switch) && id(scene_switch) && id(api_id).is_connected()  && id(wifi_id).is_connected()) {
                             HomeassistantServiceResponse resp;
                             resp.service = "scene.turn_on";
                             HomeassistantServiceMap entity_id_kv;
@@ -188,7 +207,9 @@ number:
                             entity_id_kv.value ="scene.${device_name}" + std::to_string(int(x));
                             resp.data.push_back(entity_id_kv);
                             id(api_id).send_homeassistant_service_call(resp);
-                         } else if (!id(edge_switch) && id(wifi_id).is_connected()) {
+                            relayFlip = false;
+                         }
+                         if (!id(edge_switch) && id(edge_switch)  && id(wifi_id).is_connected()) {
                             esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                             httpRequestComponent.set_method("POST");
                             for(std::string host_path : id(scene_light_host_string_1)) {
@@ -196,7 +217,14 @@ number:
                                 httpRequestComponent.send({});
                             }
                             httpRequestComponent.close();
-                        } else if(0 == x) {
+                            relayFlip = false;
+                        }
+                        
+                        if(relayFlip) {
+                          return;
+                        }
+                        
+                        if(0 == x) {
                                 id(shelly_relay_1).turn_off();
                         } else {
                             id(shelly_relay_1).turn_on();
