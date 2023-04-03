@@ -90,7 +90,7 @@ switch:
       return id(basic_edge_switch_toggle_boolean);
   - platform: template
     name: "${nice_name} Scene"
-    id: "scene_switch"
+    id: "scene_switch_toggle"
     optimistic: false
     restore_state: true
     turn_on_action:
