@@ -61,7 +61,7 @@ number:
                        resp.service = "scene.turn_on";
                        HomeassistantServiceMap entity_id_kv;
                        entity_id_kv.key = "entity_id";
-                       entity_id_kv.value ="scene.${device_name}" + std::to_string(int(x));
+                       entity_id_kv.value ="scene.hallway" + std::to_string(int(x));
                        id(api_id).send_homeassistant_service_call(resp);
                         esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                         httpRequestComponent.set_method("POST");
