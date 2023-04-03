@@ -179,7 +179,7 @@ number:
     id: "${device_name}_scene"
     optimistic: true
     min_value: 0
-    max_value: 4
+    max_value: ${light_automation_input_number_max}
     restore_value: true
     step: 1
     on_value:
@@ -222,14 +222,14 @@ number:
                         
                         if((0.0 < x) && auto_off_timer) {
                         }
-      - if:
-           condition:
-             - lambda: return (id(auto_off_timer) && (0.0 < id(${device_name}_scene).state));
-           then:
-             - delay: !lambda return  std::to_string(int(id(${device_name}_auto_off_seconds).state));
-             - number.set:
-                 id: "${device_name}_scene"
-                 value: 0
+          - if:
+               condition:
+                 - lambda: return (id(auto_off_timer) && (0.0 < id(${device_name}_scene).state));
+               then:
+                 - delay: !lambda return  std::to_string(int(id(${device_name}_auto_off_seconds).state));
+                 - number.set:
+                     id: "${device_name}_scene"
+                     value: 0
   - platform: template
     icon: "mdi:clock"
     name: "${friendly_name} Auto Off Seconds"
