@@ -31,7 +31,8 @@ substitutions:
   dallas_pin: "GPI0 whatever"
   dallas_temp_update_url: "http://whatever"
   dallas_update: 15s
-  scene_light_host_string_1: '{"frontyard-switch.lan/number/frontyard_switch_scene","bedroom-switch.lan/number/bedroom_switch_scene"}' 
+  scene_light_host_string_1: '{"frontyard-switch.lan/number/frontyard_switch_scene","bedroom-switch.lan/number/bedroom_switch_scene"}'
+  light_automation_input_number_max: '2'
 
 dallas:
   - pin: ${dallas_pin}
