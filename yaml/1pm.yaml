@@ -172,9 +172,6 @@ sensor:
               id: too_hot_boolean
               value: 'false'
 
-
-
-
 number:
   - platform: template
     icon: "mdi:bulb-group-outline"
@@ -224,7 +221,9 @@ number:
                         }
                         
                         if((0.0 < x) && auto_off_timer) {
+                            ESP_LOGI("custom_lambda", "Starting custom lambda function...");
                             delay(30000);
+                            ESP_LOGI("custom_lambda", "Stoping custom lambda function...");
                         }
   - platform: template
     icon: "mdi:clock"
