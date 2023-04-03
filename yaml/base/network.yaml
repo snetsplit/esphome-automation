@@ -18,6 +18,7 @@ ota:
 captive_portal:
 
 wifi:
+  id: wifi_id
   ssid: ${ssid}
   password: ${password}
   domain: ${domain}
