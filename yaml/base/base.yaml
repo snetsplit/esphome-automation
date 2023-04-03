@@ -30,4 +30,4 @@ packages:
   network: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/network.yaml
-    refresh: 1s
+    refresh: 1d
