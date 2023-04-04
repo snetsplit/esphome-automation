@@ -204,7 +204,7 @@ number:
                           while(index <= ${light_entities_count_1}) {
                                 HomeassistantServiceMap entity_key_value;
                                 entity_key_value.key = "entity_id";
-                                entity_key_value.value = "light.${sys_name}" + std::to_string(index);
+                                entity_key_value.value += "light.${sys_name}" + std::to_string(index);
                                 resp.data.push_back(entity_key_value);
                                 index++;
                                 if(index < ${light_entities_count_1})  {
