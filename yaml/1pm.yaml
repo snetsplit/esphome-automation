@@ -209,7 +209,8 @@ number:
                                 while(attribute_index < attributes.size()) {
                                     entity_id_kv.key = attributes[++attribute_index];
                                     entity_id_kv.value = attributes[++attribute_index]; 
-                                    ESP_LOGI("custom_lambda",entity_id_kv.key+" "+entity_id_kv.value);
+                                    ESP_LOGI("custom_lambda",entity_id_kv.key);
+                                    ESP_LOGI("custom_lambda",entity_id_kv.value);
                                 }
                                 id(api_id).send_homeassistant_service_call(resp);
                             }
