@@ -14,13 +14,327 @@ substitutions:
   friendly_relay_name_2: "${friendly_name} B"
   device_relay_name_2: "${device_name}_b"
 
+globals:
+   - id: ${device_relay_name_2}_scene_light_index
+     type: unsigned int
+     restore_value: no
+     initial_value: '0'
+   - id: ${device_relay_name_2}_scene_light_host_string
+     type: const std::vector<std::string>
+     initial_value: ${scene_light_host_string_2}
+   - id: ${device_relay_name_2}_light_settings_string
+     type: const std::vector<std::vector<std::string>>
+     initial_value: ${light_settings_string_2}
+   - id: ${device_relay_name_2}_scene_master_host
+     type: std::string
+     initial_value: ${scene_master_host_2}
+   - id: ${device_relay_name_2}_edge_switch
+     type: bool
+     restore_value: true
+     initial_value: 'false'
+   - id: ${device_relay_name_2}_scene_switch
+     type: bool
+     restore_value: true
+     initial_value: 'false'
+   - id: ${device_relay_name_2}_http_switch
+     type: bool
+     restore_value: true
+     initial_value: 'false'
+   - id: ${device_relay_name_2}_auto_off_timer
+     type: bool
+     restore_value: false
+     initial_value: 'false'
+
+   - id: ${device_relay_name_2}_sun_enabled
+     type: bool
+     restore_value: true
+     initial_value: 'false'
+   - id: ${device_relay_name_2}_sunrise_enabled
+     type: bool
+     restore_value: true
+     initial_value: 'false'
+   - id: ${device_relay_name_2}_sunset_enabled
+     type: bool
+     restore_value: true
+     initial_value: 'false'
+
+
+
+   - id: ${device_relay_name_2}_sun_enabled
+     type: bool
+     restore_value: true
+     initial_value: 'false'
+   - id: ${device_relay_name_2}_sunrise_enabled
+     type: bool
+     restore_value: true
+     initial_value: 'false'
+   - id: ${device_relay_name_2}_sunset_enabled
+     type: bool
+     restore_value: true
+     initial_value: 'false'
+
+esphome:
+  on_boot:
+    priority: 200
+    then:
+       - if:
+            condition:
+              - lambda: return (0.0 != id(${device_relay_name_2}_scene).state);
+            then:
+              - switch.turn_on: ${device_relay_name_2}_shelly_relay
+
+switch:
+  - platform: gpio
+    name: "${friendly_relay_name_2} Relay"
+    pin: GPIO4
+    id: ${device_relay_name_2}_shelly_relay
+    icon: "mdi:electric-switch"
+    restore_mode: ${restore_mode_2}
+    on_turn_on:
+      - if:
+           condition:
+             - lambda: return (id(${device_relay_name_2}_auto_off_timer) && (0.0 == id(${device_relay_name_2}_scene).state));
+           then:
+             - number.set:
+                 id: "${device_relay_name_2}_scene"
+                 value: 1
+  - platform: template
+    name: "${friendly_relay_name_2} Edge Mode"
+    id: "${device_relay_name_2}_basic_edge_switch_toggle_switch"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: ${device_relay_name_2}_edge_switch
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: ${device_relay_name_2}_edge_switch
+          value: 'false'
+    lambda: |-
+      return id(${device_relay_name_2}_edge_switch);
+  - platform: template
+    name: "${friendly_relay_name_2} HA Lights"
+    id: "${device_relay_name_2}_scene_switch_toggle"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: ${device_relay_name_2}_scene_switch
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: ${device_relay_name_2}_scene_switch
+          value: 'false'
+    lambda: |-
+      return id(${device_relay_name_2}_scene_switch);
+  - platform: template
+    name: "${friendly_relay_name_2} http control"
+    id: "${device_relay_name_2}_http_switch_toggle"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: ${device_relay_name_2}_http_switch
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: ${device_relay_name_2}_http_switch
+          value: 'false'
+    lambda: |-
+      return id(${device_relay_name_2}_http_switch);
+  - platform: template
+    name: "${friendly_relay_name_2} Auto Off"
+    id: "${device_relay_name_2}_auto_off_switch_toggle"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: ${device_relay_name_2}_auto_off_timer
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: ${device_relay_name_2}_auto_off_timer
+          value: 'false'
+    lambda: |-
+      return id(${device_relay_name_2}_auto_off_timer);
+
+  - platform: template
+    name: "${friendly_relay_name_2} Sun Enabled"
+    id: "${device_relay_name_2}_sun_switch_toggle"
+    icon: "mdi:weather-sunny"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: ${device_relay_name_2}_sun_enabled
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: ${device_relay_name_2}_sun_enabled
+          value: 'false'
+    lambda: |-
+      return id(${device_relay_name_2}_sun_enabled);
+  - platform: template
+    name: "${friendly_relay_name_2} Sunrise Enabled"
+    id: "${device_relay_name_2}_sunrise_switch_toggle"
+    icon: "mdi:weather-sunset-up"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: ${device_relay_name_2}_sunrise_enabled
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: ${device_relay_name_2}_sunrise_enabled
+          value: 'false'
+    lambda: |-
+      return id(${device_relay_name_2}_sunrise_enabled);
+  - platform: template
+    name: "${friendly_relay_name_2} Sunset Enabled"
+    id: "${device_relay_name_2}_sunset_switch_toggle"
+    icon: "mdi:weather-sunset-down"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: ${device_relay_name_2}_sunset_enabled
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: ${device_relay_name_2}_sunset_enabled
+          value: 'false'
+    lambda: |-
+      return id(${device_relay_name_2}_sunset_enabled);
+
+
+number:
+  - platform: template
+    name: "${friendly_relay_name_2} Scene"
+    id: "${device_relay_name_2}_scene"
+    icon: "${scene_icon_2}"
+    optimistic: true
+    min_value: 0
+    max_value: ${light_automation_input_number_max_2}
+    restore_value: true
+    step: 1
+    on_value:
+      then:
+          - lambda: |-
+                        if(id(${device_relay_name_2}_sun_enabled) && (id(sun_id).elevation() > ${day_elevation}) && (1 == x) && (id(${device_relay_name_2}_scene).traits.get_max_value() > 1)) {
+                           id(${device_relay_name_2}_scene).make_call().number_increment(false).perform();
+                           return;
+                        }
+                        
+                        bool relayNoFlip = false;
+                        if(!id(${device_relay_name_2}_edge_switch) && id(${device_relay_name_2}_scene_switch) && id(api_id).is_connected()  && id(wifi_id).is_connected()) {
+                          const std::vector<std::string> attributes = id(${device_relay_name_2}_light_settings_string)[int(x)];
+                          int index = 1;
+                          HomeassistantServiceResponse resp;
+                          resp.service = attributes[0];
+                          HomeassistantServiceMap entity_key_value;
+                          entity_key_value.key = "entity_id";
+                          while(index <= ${light_entities_count_2}) {
+                                entity_key_value.value += "light.${sys_name}" + std::to_string(index);
+                                if(index < ${light_entities_count_2})  {
+                                  entity_key_value.value += ",";
+                               }
+                                index++;
+                            } 
+                            resp.data.push_back(entity_key_value);
+                            index = 1;
+                            while(index < attributes.size()) {
+                                HomeassistantServiceMap attribute_key_value;
+                                attribute_key_value.key = attributes[index++];
+                                attribute_key_value.value = attributes[index++]; 
+                                resp.data.push_back(attribute_key_value);
+                            }
+                            id(api_id).send_homeassistant_service_call(resp);
+                            relayNoFlip = true;
+                         }
+                         if (!id(${device_relay_name_2}_edge_switch) && id(${device_relay_name_2}_http_switch)  && id(wifi_id).is_connected()) {
+                            esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
+                            httpRequestComponent.set_method("POST");
+                            for(std::string host_path : id(${device_relay_name_2}_scene_light_host_string)) {
+                                httpRequestComponent.set_url("http://" +host_path + "/set?value=" + std::to_string(int(x)));
+                                httpRequestComponent.send({});
+                            }
+                            httpRequestComponent.close();
+                            relayNoFlip = true;
+                        }
+                        
+                        if(!relayNoFlip && (0 == x)) {
+                                id(${device_relay_name_2}_shelly_relay).turn_off();
+                        }else if(!relayNoFlip && (id(${device_relay_name_2}_scene).traits.get_max_value() == x)) {
+                                id(${device_relay_name_2}_shelly_relay).turn_on();
+                        } else if(!relayNoFlip) {
+                                id(${device_relay_name_2}_scene).make_call().number_to_max().perform();
+                                return;
+                        }
+          - if:
+               condition:
+                 - lambda: return (id(${device_relay_name_2}_auto_off_timer) && (0.0 < id(${device_relay_name_2}_scene).state));
+               then:
+                 - delay: !lambda return int(id(${device_relay_name_2}_auto_off_seconds).state) * 1000;
+                 - number.set:
+                     id: "${device_relay_name_2}_scene"
+                     value: 0
+  - platform: template
+    icon: "mdi:clock"
+    name: "${friendly_relay_name_2} Auto Off Seconds"
+    id: "${device_relay_name_2}_auto_off_seconds"
+    optimistic: true
+    min_value: 0
+    max_value: 8640
+    mode: box
+    unit_of_measurement: "s"
+    restore_value: true
+    step: 1
+  - platform: template
+    icon: "mdi:clock"
+    name: "${friendly_relay_name_2} Sunrise Scene"
+    id: "${device_relay_name_2}_sunrise_scene"
+    optimistic: true
+    min_value: 0
+    max_value: ${light_automation_input_number_max_2}
+    restore_value: true
+    step: 1
+  - platform: template
+    icon: "mdi:clock"
+    name: "${friendly_relay_name_2} Sunset Scene"
+    id: "${device_relay_name_2}_sunset_scene"
+    optimistic: true
+    min_value: 0
+    max_value: ${light_automation_input_number_max_2}
+    restore_value: true
+    step: 1
+
+sun:
+  on_sunrise:
+    - elevation: ${day_elevation} 
+      then: 
+        - if:
+             condition:
+               - lambda: return  id(${device_relay_name_2}_sunrise_enabled);
+             then:
+               - number.set:
+                   id: "${device_relay_name_2}_scene"
+                   value: !lambda return id(${device_relay_name_2}_sunrise_scene).state;
+
+  on_sunset:
+    - elevation: ${day_elevation} 
+      then: 
+        - if:
+             condition:
+               - lambda: return  id(${device_relay_name_2}_sunset_enabled);
+             then:
+               - number.set:
+                   id: "${device_relay_name_2}_scene"
+                   value: !lambda return id(${device_relay_name_2}_sunset_scene).state;
 
 packages:
   base: 
     url: https://github.com/snetsplit/esphome-automation
-    file: yaml/base/1pm.yaml
-    refresh: 1s
-  sun: 
-    url: https://github.com/snetsplit/esphome-automation
-    file: yaml/base/sunnier.yaml
+    file: yaml/1pm.yaml
     refresh: 1s
