@@ -14,33 +14,13 @@ substitutions:
   friendly_relay_name_2: "${friendly_name} B"
   device_relay_name_2: "${device_name}_b"
 
-globals:
-   - id: ${device_relay_name_2}_scene_light_index
-     type: unsigned int
-     restore_value: no
-     initial_value: '0'
-   - id: ${device_relay_name_2}_scene_light_host_string
-     type: const std::vector<std::string>
-     initial_value: ${scene_light_host_string_2}
-   - id: ${device_relay_name_2}_light_settings_string
-     type: const std::vector<std::vector<std::string>>
-     initial_value: ${light_settings_string_2}
-   - id: ${device_relay_name_2}_scene_master_host
-     type: std::string
-     initial_value: ${scene_master_host_2}
-   - id: ${device_relay_name_2}_edge_switch
-     type: bool
-     restore_value: true
-     initial_value: 'false'
-   - id: ${device_relay_name_2}_scene_switch
-     type: bool
-     restore_value: true
-     initial_value: 'false'
-   - id: ${device_relay_name_2}_http_switch
-     type: bool
-     restore_value: true
-     initial_value: 'false'
-   - id: ${device_relay_name_2}_auto_off_timer
-     type: bool
-     restore_value: false
-     initial_value: 'false'
+
+packages:
+  base: 
+    url: https://github.com/snetsplit/esphome-automation
+    file: yaml/base/1pm.yaml
+    refresh: 1s
+  sun: 
+    url: https://github.com/snetsplit/esphome-automation
+    file: yaml/base/sunnier.yaml
+    refresh: 1s
