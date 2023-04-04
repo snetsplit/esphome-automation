@@ -68,7 +68,7 @@ esphome:
 
 switch:
   - platform: gpio
-    name: "${friendly_name} Switch Relay"
+    name: "${friendly_name} Relay"
     pin: GPIO15
     id: shelly_relay_1
     icon: "mdi:electric-switch"
