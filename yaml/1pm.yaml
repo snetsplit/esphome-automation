@@ -12,8 +12,6 @@ substitutions:
   light_settings_string_1: '{{"light.turn_off"},{"light.turn_on","kelvin","2700","brightness_pct","30"},{"light.turn_on","kelvin","4587","brightness_pct","100"}}'
   light_entities_count_1: "2"
   scene_icon_1: "mdi:ceiling-light-outline"
-  friendly_relay_name_1: "${friendly_name}"
-  device_relay_name_1: "${device_name}"
 
 globals:
    - id: too_hot_boolean
@@ -155,6 +153,7 @@ sensor:
               id: too_hot_boolean
               value: 'true'
           - switch.turn_off: ${device_relay_name_1}_shelly_relay
+          - switch.turn_off: ${device_relay_name_2}_shelly_relay
           - homeassistant.service:
               service: persistent_notification.create
               data:
@@ -164,7 +163,7 @@ sensor:
           - homeassistant.event:
               event: esphome.overheat
               data:
-                title: "${friendly_relay_name_1} has overheated."
+                title: "${friendly_name} has overheated."
       - below: ${max_temp}
         then:
           - globals.set:

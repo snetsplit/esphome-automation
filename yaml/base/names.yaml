@@ -8,5 +8,5 @@ substitutions:
   friendly_name: "${nice_name} ${device_type_nice}"
   friendly_relay_name_1: "${friendly_name}"
   device_relay_name_1: "${device_name}"
-  friendly_relay_name_2: "${friendly_name}_2"
-  device_relay_name_2: "${device_name}_2"
+  friendly_relay_name_2: "${friendly_name}"
+  device_relay_name_2: "${device_name}"
