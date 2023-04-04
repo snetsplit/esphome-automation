@@ -201,7 +201,7 @@ number:
                           int index = 1;
                           HomeassistantServiceResponse resp;
                           resp.service = attributes[0];
-                          while(light_index <= ${light_entities_count_1}) {
+                          while(index <= ${light_entities_count_1}) {
                                 HomeassistantServiceMap entity_key_value;
                                 entity_key_value.key = "entity_id";
                                 entity_key_value.value = "light.${sys_name}" + std::to_string(index);
@@ -209,7 +209,7 @@ number:
                                 index++;
                             }
                             index = 1;
-                            while(attribute_index < attributes.size()) {
+                            while(index < attributes.size()) {
                                 HomeassistantServiceMap attribute_key_value;
                                 attribute_key_value.key = attributes[index++];
                                 attribute_key_value.value = attributes[index++]; 
