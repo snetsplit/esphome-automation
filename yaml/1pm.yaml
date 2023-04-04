@@ -82,7 +82,7 @@ switch:
                  id: "${device_name}_scene"
                  value: 1
   - platform: template
-    name: "${friendly_name} Switch Edge Mode"
+    name: "${friendly_name} Edge Mode"
     id: "basic_edge_switch_toggle_switch"
     optimistic: false
     restore_state: true
