@@ -75,7 +75,7 @@ switch:
     pin: GPIO15
     id: ${device_relay_name_1}_shelly_relay
     icon: "mdi:electric-switch"
-    restore_mode: ${restore_mode}
+    restore_mode: ${restore_mode_1}
     on_turn_on:
       - if:
            condition:
