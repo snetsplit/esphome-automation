@@ -23,9 +23,6 @@ globals:
    - id: light_settings_string_1
      type: const std::vector<std::vector<std::string>>
      initial_value: ${light_settings_string_1}
-   - id: light_entities_count_1
-     type: int
-     initial_value: ${light_entities_count_1}
    - id: scene_master_host_1
      type: std::string
      initial_value: ${scene_master_host_1}
@@ -200,7 +197,7 @@ number:
                         bool relayNoFlip = false;
                         if(!id(edge_switch) && id(scene_switch) && id(api_id).is_connected()  && id(wifi_id).is_connected()) {
                           int light_index = 0;
-                          while(light_index < attributes.length) {
+                          while(light_index < ${light_entities_count_1}) {
                                 const std::vector<std::string> attributes = id(light_settings_string_1)[int(x)];
                                 HomeassistantServiceResponse resp;
                                 resp.service = attributes[0];
