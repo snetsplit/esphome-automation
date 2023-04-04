@@ -201,15 +201,18 @@ number:
                                 const std::vector<std::string> attributes = id(light_settings_string_1)[int(x)];
                                 HomeassistantServiceResponse resp;
                                 resp.service = attributes[0];
-                                HomeassistantServiceMap entity_id_kv;
-                                entity_id_kv.key = "entity_id";
-                                entity_id_kv.value = "light.${sys_name}" + std::to_string(++light_index);
-                                resp.data.push_back(entity_id_kv);
+                                HomeassistantServiceMap entity_key_value;
+                                entity_key_value.key = "entity_id";
+                                entity_key_value.value = "light.${sys_name}" + std::to_string(++light_index);
+                                resp.data.push_back(entity_key_value);
                                 int attribute_index = 0;
                                 while(attribute_index < attributes.size()) {
-                                    entity_id_kv.key = attributes[++attribute_index];
-                                    entity_id_kv.value = attributes[++attribute_index]; 
-                                    ESP_LOGI("woo","key %s",entity_id_kv.key);
+                                    HomeassistantServiceMap attribute_key_value;
+                                    attribute_key_value.key = attributes[++attribute_index];
+                                    attribute_key_value.value = attributes[++attribute_index]; 
+                                    ESP_LOGI("woo","key %s",attribute_key_value.key);
+                                    ESP_LOGI("woo","value %s",attribute_key_value.value);
+                                    resp.data.push_back(attribute_key_value);
                                 }
                                 id(api_id).send_homeassistant_service_call(resp);
                             }
