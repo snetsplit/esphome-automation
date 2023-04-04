@@ -24,12 +24,12 @@ sensor:
     name: "${friendly_name} Sun Elevation"
     id: "${sys_name}_elevation"
     type: elevation
-    icon: "mdi:sunny"
+    icon: "mdi:weather-sunny"
   - platform: sun
     name: "${friendly_name} Sun Azimuth"
     id: "${sys_name}_azimuth"
     type: azimuth
-    icon: "mdi:sunny"
+    icon: "mdi:weather-sunny"
 
 text_sensor:
   - platform: sun
@@ -85,7 +85,7 @@ switch:
   - platform: template
     name: "${friendly_name} Sun Enabled"
     id: "sun_switch_toggle"
-    icon: "mdi:sunny"
+    icon: "mdi:weather-sunny"
     optimistic: false
     restore_state: true
     turn_on_action:
