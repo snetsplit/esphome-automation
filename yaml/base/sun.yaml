@@ -6,15 +6,15 @@ substitutions:
   day_elevation: "-0.833"
 
 globals:
-   - id: sun_enabled
+   - id: ${device_relay_name_1}_sun_enabled
      type: bool
      restore_value: true
      initial_value: 'false'
-   - id: sunrise_enabled
+   - id: ${device_relay_name_1}_sunrise_enabled
      type: bool
      restore_value: true
      initial_value: 'false'
-   - id: sunset_enabled
+   - id: ${device_relay_name_1}_sunset_enabled
      type: bool
      restore_value: true
      initial_value: 'false'
@@ -83,50 +83,50 @@ sun:
 
 switch:
   - platform: template
-    name: "${friendly_name} Sun Enabled"
-    id: "sun_switch_toggle"
+    name: "${friendly_relay_name_1} Sun Enabled"
+    id: "${device_relay_name_1}_sun_switch_toggle"
     icon: "mdi:weather-sunny"
     optimistic: false
     restore_state: true
     turn_on_action:
       - globals.set:
-          id: sun_enabled
+          id: ${device_relay_name_1}_sun_enabled
           value: 'true'
     turn_off_action:
       - globals.set:
-          id: sun_enabled
+          id: ${device_relay_name_1}_sun_enabled
           value: 'false'
     lambda: |-
-      return id(sun_enabled);
+      return id(${device_relay_name_1}sun_enabled);
   - platform: template
-    name: "${friendly_name} Sunrise Enabled"
-    id: "sunrise_switch_toggle"
+    name: "${friendly_relay_name_1} Sunrise Enabled"
+    id: "${device_relay_name_1}_sunrise_switch_toggle"
     icon: "mdi:weather-sunset-up"
     optimistic: false
     restore_state: true
     turn_on_action:
       - globals.set:
-          id: sunrise_enabled
+          id: ${device_relay_name_1}_sunrise_enabled
           value: 'true'
     turn_off_action:
       - globals.set:
-          id: sunrise_enabled
+          id: ${device_relay_name_1}_sunrise_enabled
           value: 'false'
     lambda: |-
-      return id(sunrise_enabled);
+      return id(${device_relay_name_1}_sunrise_enabled);
   - platform: template
-    name: "${friendly_name} Sunset Enabled"
-    id: "sunset_switch_toggle"
+    name: "${friendly_relay_name_1} Sunset Enabled"
+    id: "${device_relay_name_1}_sunset_switch_toggle"
     icon: "mdi:weather-sunset-down"
     optimistic: false
     restore_state: true
     turn_on_action:
       - globals.set:
-          id: sunset_enabled
+          id: ${device_relay_name_1}_sunset_enabled
           value: 'true'
     turn_off_action:
       - globals.set:
-          id: sunset_enabled
+          id: ${device_relay_name_1}_sunset_enabled
           value: 'false'
     lambda: |-
-      return id(sunset_enabled);
+      return id(${device_relay_name_1}_sunset_enabled);

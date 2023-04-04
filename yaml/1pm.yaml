@@ -12,7 +12,6 @@ substitutions:
   light_settings_string_1: '{{"light.turn_off"},{"light.turn_on","kelvin","2700","brightness_pct","30"},{"light.turn_on","kelvin","4587","brightness_pct","100"}}'
   light_entities_count_1: "2"
   scene_icon_1: "mdi:ceiling-light-outline"
-  relay_id_1: ""
   friendly_relay_name_1: "${friendly_name}"
   device_relay_name_1: "${device_name}"
 
@@ -25,14 +24,6 @@ globals:
      type: unsigned int
      restore_value: no
      initial_value: '0'
-   - id: ${device_relay_name_1}_sunrise_scene
-     type: unsigned int
-     restore_value: true
-     initial_value: '0'
-   - id: ${device_relay_name_1}_sunset_scene
-     type: unsigned int
-     restore_value: true
-     initial_value: '1'
    - id: ${device_relay_name_1}_scene_light_host_string
      type: const std::vector<std::string>
      initial_value: ${scene_light_host_string_1}
@@ -309,8 +300,8 @@ packages:
   base: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/pm-esp8266.yaml
-    refresh: 1d
+    refresh: 1s
   sun: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/sun.yaml
-    refresh: 1d
+    refresh: 1s

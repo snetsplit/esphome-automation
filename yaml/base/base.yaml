@@ -22,7 +22,7 @@ packages:
   names: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/names.yaml
-    refresh: 1d
+    refresh: 1s
   time: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/time.yaml
