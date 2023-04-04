@@ -215,7 +215,7 @@ number:
                             id(api_id).send_homeassistant_service_call(resp);
                             relayNoFlip = true;
                          }
-                         if (!id(${device_relay_name_1}_edge_switch) && id({device_relay_name_1}_http_switch)  && id(wifi_id).is_connected()) {
+                         if (!id(${device_relay_name_1}_edge_switch) && id(${device_relay_name_1}_http_switch)  && id(wifi_id).is_connected()) {
                             esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                             httpRequestComponent.set_method("POST");
                             for(std::string host_path : id(${device_relay_name_1}_scene_light_host_string)) {
