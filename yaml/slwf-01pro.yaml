@@ -1,0 +1,335 @@
+substitutions:
+  heat_on: "-2"
+  cool_on: "4"
+  heat_turbo_on: "-2"
+  cool_turbo_on: "4"
+  heat_turbo_off: "2"
+  cool_turbo_off: "0"
+  outside_temp_minimum_difference: "5.4"
+  outside_temp_maximum_difference: "3"
+esphome:
+  on_boot:
+    priority: 600
+    then:
+      lambda: |-
+         id(${device_name}_beeper).turn_on();
+
+globals:
+   - id: auto_mode
+     type: bool
+     restore_value: true
+     initial_value: 'false'
+   - id: outside_temp_minimum
+     type: float
+     restore_value: false
+     initial_value: '11'
+   - id: outside_temp_maximum
+     type: float
+     restore_value: true
+     initial_value: '3'
+   - id: previous_target_temp
+     type: float
+     restore_value: false
+     initial_value: '3'
+   - id: cool_on_temp
+     type: float
+     restore_value: false
+     initial_value: '3'
+   - id: heat_on_temp
+     type: float
+     restore_value: false
+     initial_value: '3'
+   - id: turbo_cool_on_temp
+     type: float
+     restore_value: false
+     initial_value: '3'
+   - id: turbo_heat_on_temp
+     type: float
+     restore_value: false
+     initial_value: '3'
+   - id: turbo_cool_off_temp
+     type: float
+     restore_value: false
+     initial_value: '3'
+   - id: turbo_heat_off_temp
+     type: float
+     restore_value: false
+     initial_value: '3'
+   - id: cooling_room
+     type: boolean
+     restore_value: false
+     initial_value: 'false'
+
+ota:
+
+logger:
+  level: WARN
+
+sensor:
+  - platform: ntc
+    sensor: temp_resistance_reading
+    name: ${friendly_name} ESP8266 Temperature
+    unit_of_measurement: "°c"
+    accuracy_decimals: 1
+    icon: "mdi:thermometer"
+    calibration:
+      b_constant: 3350
+      reference_resistance: 10kOhm
+      reference_temperature: 298.15K
+  - platform: template
+    name: "${friendly_name} Outside off low"
+    id: ${device_name}_temp_off_low
+    unit_of_measurement: °C
+    icon: "mdi:thermometer"
+  - platform: template
+    name: ${friendly_name} Outside off high
+    id: ${device_name}_temp_off_high
+    unit_of_measurement: °C
+    icon: "mdi:thermometer"
+  - platform: template
+    name: ${friendly_name} Cool temp
+    id: ${device_name}_temp_cool
+    unit_of_measurement: °C
+    icon: "mdi:thermometer"
+  - platform: template
+    name: ${friendly_name} heat temp
+    id: ${device_name}_temp_heat
+    unit_of_measurement: °C
+    icon: "mdi:thermometer"
+  - platform: template
+    name: ${friendly_name} turbo cool on above set temp
+    id: ${device_name}_temp_cool_turbo_on
+    unit_of_measurement: °C
+    icon: "mdi:thermometer"
+  - platform: template
+    name: ${friendly_name} turbo heat on below set temp
+    id: ${device_name}_temp_heat_turbo_on
+    unit_of_measurement: °C
+    icon: "mdi:thermometer"
+  - platform: template
+    name: ${friendly_name} turbo heat off above set temp
+    id: ${device_name}_temp_heat_turbo_off
+    unit_of_measurement: °C
+    icon: "mdi:thermometer"
+  - platform: template
+    name: ${friendly_name} turbo cool off below set temp
+    id: ${device_name}_temp_cool_turbo_off
+    unit_of_measurement: °C
+    icon: "mdi:thermometer"
+
+switch:
+  - platform: template
+    name: ${friendly_name} Beeper
+    id: ${device_name}_beeper
+    icon: mdi:volume-source
+    optimistic: true
+    turn_on_action:
+      midea_ac.beeper_on:
+    turn_off_action:
+      midea_ac.beeper_off:
+  - platform: template
+    name: ${friendly_name} Auto Mode
+    id: ${device_name}_auto_mode
+    icon: mdi:car-turbocharger
+    optimistic: true
+    lambda: return id(auto_mode);  
+    turn_on_action:
+        - lambda: |-
+            id(auto_mode) = true;
+            id(${device_name}_automation_lambda).press();
+    turn_off_action:
+        - lambda: |-
+            id(auto_mode) = false;
+
+button:
+  - platform: template
+    name: "${friendly_name} Display Toggle"
+    id: ${device_name}_display_toggle
+    icon: mdi:theme-light-dark
+    on_press:
+      midea_ac.display_toggle:
+             
+  - platform: template
+    internal: true
+    id: ${device_name}_automation_lambda
+    on_press:
+        - lambda: |-
+                  if (id(auto_mode)) {
+
+                      ESP_LOGW(
+                              "climate_temp", "target: %f°C, room: %f°C", 
+                              (id(${device_name}_my_climate).target_temperature * 1.8 + 32),
+                              (id(${device_name}_room_temperature).state * 1.8 + 32)
+                      );
+                       if (
+                              (id(${device_name}_room_temperature).state < id(cool_on_temp))
+                              && !id(cooling_room)
+                              && (id(${device_name}_outside_tempreture).state > id(outside_temp_minimum)) 
+                              && (id(${device_name}_outside_tempreture).state < id(outside_temp_maximum))
+                          ) {
+                           if (ClimateMode::CLIMATE_MODE_OFF != id(${device_name}_my_climate).mode) {
+                              id(${device_name}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_NONE).perform();
+                              delay(2000);
+                              id(${device_name}_my_climate).make_call().set_mode(ClimateMode::CLIMATE_MODE_OFF).perform();
+                           }                           
+                       } else if(id(${device_name}_room_temperature).state < id(heat_on_temp) ) {
+                           if (id(cooling_room)) {
+                                 id(cooling_room) = false;
+                           } else if (ClimateMode::CLIMATE_MODE_HEAT != id(${device_name}_my_climate).mode) {
+                              id(${device_name}_my_climate).make_call().set_mode(ClimateMode::CLIMATE_MODE_HEAT).perform();
+                           }
+                           delay(2000);
+                           if(id(${device_name}_room_temperature).state < id(turbo_heat_on_temp)) {
+                               if (ClimatePreset::CLIMATE_PRESET_BOOST !=  id(${device_name}_my_climate).preset.value()) {
+                                  id(${device_name}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_BOOST).perform();
+                               } else if (id(${device_name}_room_temperature).state > id(turbo_heat_off_temp)) {
+                               if (ClimatePreset::CLIMATE_PRESET_NONE !=   id(${device_name}_my_climate).preset.value()) {
+                                  id(${device_name}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_NONE).perform();
+                               }
+                              }
+                           }
+                      } else if(id(${device_name}_room_temperature).state > id(cool_on_temp) ) {
+                           if (ClimateMode::CLIMATE_MODE_COOL != id(${device_name}_my_climate).mode) {
+                              id(${device_name}_my_climate).make_call().set_mode(ClimateMode::CLIMATE_MODE_COOL).perform();
+                           }
+                           delay(2000);
+                           if (id(${device_name}_room_temperature).state > id(turbo_cool_on_temp)) {
+                               if (ClimatePreset::CLIMATE_PRESET_BOOST !=  id(${device_name}_my_climate).preset.value()) {
+                                  id(${device_name}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_BOOST).perform();
+                               } else if  (id(${device_name}_room_temperature).state < id(turbo_cool_off_temp)) {
+                               if (ClimatePreset::CLIMATE_PRESET_NONE !=   id(${device_name}_my_climate).preset.value()) {
+                                  id(${device_name}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_NONE).perform();
+                               }
+                              }
+                           }
+                       } else {
+                              ESP_LOGW("climate_mode", "Setting mode: [%s]",  "none");
+                             }
+                  }
+
+
+select:
+  - platform: template
+    id: ${device_name}_my_climate_preset
+    name: "${friendly_name} Preset"
+    optimistic: true
+    options:
+      - "None"
+      - Boost
+      - Eco
+      - Sleep
+    initial_option: "None"
+    on_value:
+      then:
+      - lambda: |-
+           if(x == "None") {
+            id(${device_name}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_NONE).perform();
+           }
+           id(${device_name}_my_climate).make_call().set_preset(x).perform();
+  - platform: template
+    id: ${device_name}_my_climate_swing_mode
+    name: "${friendly_name} Swing Mode"
+    optimistic: true
+    options:
+      - "Off"
+      - Vertical
+    initial_option: "Off"
+    on_value:
+      then:
+      - lambda: |-
+           id(${device_name}_my_climate).make_call().set_swing_mode(x).perform();
+  - platform: template
+    id: ${device_name}_my_climate_fan_mode
+    name: "${friendly_name} Fan Mode"
+    optimistic: true
+    options:
+      - Auto
+      - Low
+      - Medium
+      - High
+      - Silent
+      - Turbo
+    initial_option: Auto
+    on_value:
+      then:
+      - lambda: |-
+           id(${device_name}_my_climate).make_call().set_fan_mode(x).perform();
+
+number:
+  - platform: template
+    icon: "mdi:thermometer"
+    name: ${friendly_name} Room Tempreture
+    id: ${device_name}_room_temperature
+    optimistic: true
+    min_value: -40
+    max_value: 80
+    restore_value: true
+    unit_of_measurement: °C
+    step: 0.1
+    on_value:
+      then:
+        - lambda: |-
+            id(${device_name}_automation_lambda).press();
+         
+         
+uart:
+  tx_pin: GPIO1
+  rx_pin: GPIO3
+  baud_rate: 9600
+
+climate:
+  - platform: midea
+    icon: "mdi:heatpump"
+    id: ${device_name}_my_climate
+    name: ${friendly_name}
+    supported_modes:
+      - COOL
+      - HEAT
+      - DRY
+    supported_presets:
+      - ECO
+      - BOOST
+      - SLEEP
+    custom_fan_modes:
+      - TURBO
+      - SILENT
+    custom_presets:
+      - FREEZE_PROTECTION
+    supported_swing_modes:
+      - VERTICAL
+    outdoor_temperature:
+      id: ${device_name}_outside_tempreture
+      name: ${friendly_name} Outside Tempreture
+      unit_of_measurement: °C
+      on_value:
+      - lambda: |-
+            id(${device_name}_automation_lambda).press();
+    on_state:
+    - lambda: |-
+         if(id(${device_name}_my_climate).target_temperature != id(previous_target_temp)) {
+            id(previous_target_temp) = id(${device_name}_my_climate).target_temperature;
+            id(cool_on_temp) = id(${device_name}_my_climate).target_temperature + $cool_on;
+            id(heat_on_temp) = id(${device_name}_my_climate).target_temperature + $heat_on;
+            id(turbo_cool_on_temp) = id(${device_name}_my_climate).target_temperature + $cool_turbo_on;
+            id(turbo_heat_on_temp) = id(${device_name}_my_climate).target_temperature + $heat_turbo_on;
+            id(turbo_cool_off_temp) = id(${device_name}_my_climate).target_temperature + $cool_turbo_off;
+            id(turbo_heat_off_temp) = id(${device_name}_my_climate).target_temperature + $heat_turbo_off;
+            id(outside_temp_maximum) = id(${device_name}_my_climate).target_temperature + ${outside_temp_maximum_difference};
+            id(outside_temp_minimum) = id(${device_name}_my_climate).target_temperature - ${outside_temp_minimum_difference};
+            id(${device_name}_temp_off_low).publish_state(id(outside_temp_minimum));
+            id(${device_name}_temp_off_high).publish_state(id(outside_temp_maximum));
+            id(${device_name}_temp_cool).publish_state(id(cool_on_temp));
+            id(${device_name}_temp_heat).publish_state(id(heat_on_temp));
+            id(${device_name}_temp_cool_turbo_on).publish_state(id(turbo_cool_on_temp));
+            id(${device_name}_temp_heat_turbo_on).publish_state(id(turbo_heat_on_temp));
+            id(${device_name}_temp_heat_turbo_off).publish_state(id(turbo_heat_off_temp));
+            id(${device_name}_temp_cool_turbo_off).publish_state(id(turbo_cool_off_temp));
+          } 
+         id(${device_name}_automation_lambda).press();
+
+
+packages:
+  device-base: 
+    url: https://github.com/snetsplit/esphome-automation
+    file: yaml/base/esp8266.yaml
+    refresh: 1s
