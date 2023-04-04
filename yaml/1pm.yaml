@@ -210,7 +210,7 @@ number:
                                   entity_key_value.value += ",";
                                }
                             } 
-                            ESP_LOGI("debug","entity: %s",entity_key_value.value.c_string());
+                            ESP_LOGI("debug","entity: %s",entity_key_value.value.c_str());
                             resp.data.push_back(entity_key_value);
                             index = 1;
                             while(index < attributes.size()) {
