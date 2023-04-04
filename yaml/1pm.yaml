@@ -211,6 +211,8 @@ number:
                                     HomeassistantServiceMap attribute_key_value;
                                     attribute_key_value.key = attributes[attribute_index++];
                                     attribute_key_value.value = attributes[attribute_index++]; 
+                                    ESP_LOGI("woo","key %s",attribute_key_value.key.c_str());
+                                    ESP_LOGI("woo","value %s",attribute_key_value.value.c_str());
                                     resp.data.push_back(attribute_key_value);
                                 }
                                 id(api_id).send_homeassistant_service_call(resp);
