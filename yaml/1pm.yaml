@@ -207,6 +207,8 @@ number:
                                 entity_key_value.value = "light.${sys_name}" + std::to_string(index);
                                 resp.data.push_back(entity_key_value);
                                 index++;
+                                if(index < ${light_entities_count_1})  {
+                                  entity_key_value.value += ",";
                             }
                             index = 1;
                             while(index < attributes.size()) {
