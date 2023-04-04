@@ -20,6 +20,12 @@ globals:
    - id: scene_light_host_string_1
      type: const std::vector<std::string>
      initial_value: ${scene_light_host_string_1}
+   - id: light_settings_string_1
+     type: const std::vector<std::vector<std::string>>
+     initial_value: ${light_settings_string_1}
+   - id: light_entities_count_1
+     type: int
+     initial_value: ${light_entities_count_1}
    - id: scene_master_host_1
      type: std::string
      initial_value: ${scene_master_host_1}
@@ -49,6 +55,8 @@ substitutions:
   light_automation_input_number_max: '2'
   scene_light_host_string_1: ""
   scene_master_host_1: ""
+  light_settings_string_1: '{{"light.turn_off"},{"light.turn_on","kelvin","2700","brightness","100"},{"light.turn_on","kelvin","2800","brightness","255"}}'
+  light_entities_count_1: "2"
   
 esphome:
   on_boot:
@@ -191,13 +199,23 @@ number:
                         }
                         bool relayNoFlip = false;
                         if(!id(edge_switch) && id(scene_switch) && id(api_id).is_connected()  && id(wifi_id).is_connected()) {
-                            HomeassistantServiceResponse resp;
-                            resp.service = "scene.turn_on";
-                            HomeassistantServiceMap entity_id_kv;
-                            entity_id_kv.key = "entity_id";
-                            entity_id_kv.value ="scene.${device_name}" + std::to_string(int(x));
-                            resp.data.push_back(entity_id_kv);
-                            id(api_id).send_homeassistant_service_call(resp);
+                          int light_index = 0;
+                          while(light_index < attributes.length) {
+                                const std::vector<std::string> attributes = id(light_settings_string_1)[int(x)];
+                                HomeassistantServiceResponse resp;
+                                resp.service = attributes[0];
+                                HomeassistantServiceMap entity_id_kv;
+                                entity_id_kv.key = "entity_id";
+                                entity_id_kv.value = "${sys_name}" + std::to_string(++light_index);
+                                resp.data.push_back(entity_id_kv);
+                                int attribute_index = 0;
+                                while(attribute_index < attributes.length) {
+                                    entity_id_kv.key = attributes[++attribute_index];
+                                    entity_id_kv.value = attributes[++attribute_index];
+                                    resp.data.push_back(entity_id_kv);
+                                }
+                                id(api_id).send_homeassistant_service_call(resp);
+                            }
                             relayNoFlip = true;
                          }
                          if (!id(edge_switch) && id(http_switch)  && id(wifi_id).is_connected()) {
