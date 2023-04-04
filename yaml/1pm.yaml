@@ -1,5 +1,18 @@
 #source for orginal: https://www.esphome-devices.com/devices/Shelly-1PM
 #NOT COMPLETE. NOT WARRENTIED. USE AT OWN RISK.
+substitutions:
+  device_type: "switch"
+  device_type_nice: "Switch"
+  max_temp: "60.0"
+  max_power: "1600.0"
+  restore_mode: RESTORE_DEFAULT_ON
+  light_automation_input_number_max: '2'
+  scene_light_host_string_1: ""
+  scene_master_host_1: ""
+  light_settings_string_1: '{{"light.turn_off"},{"light.turn_on","kelvin","2700","brightness_pct","30"},{"light.turn_on","kelvin","4587","brightness_pct","100"}}'
+  light_entities_count_1: "2"
+  scene_icon: "mdi:ceiling-light-outline"
+
 globals:
    - id: too_hot_boolean
      type: bool
@@ -42,19 +55,7 @@ globals:
      type: bool
      restore_value: false
      initial_value: 'false'
-     
-substitutions:
-  device_type: "switch"
-  device_type_nice: "Switch"
-  max_temp: "60.0"
-  max_power: "1600.0"
-  restore_mode: RESTORE_DEFAULT_ON
-  light_automation_input_number_max: '2'
-  scene_light_host_string_1: ""
-  scene_master_host_1: ""
-  light_settings_string_1: '{{"light.turn_off"},{"light.turn_on","kelvin","2700","brightness_pct","30"},{"light.turn_on","kelvin","4587","brightness_pct","100"}}'
-  light_entities_count_1: "2"
-  
+
 esphome:
   on_boot:
     priority: 200
@@ -64,7 +65,6 @@ esphome:
               - lambda: return (0.0 != id(${device_name}_scene).state);
             then:
               - switch.turn_on: shelly_relay_1
-
 
 switch:
   - platform: gpio
@@ -179,9 +179,9 @@ sensor:
 
 number:
   - platform: template
-    icon: "mdi:bulb-group-outline"
     name: "${friendly_name} Scene"
     id: "${device_name}_scene"
+    icon: "${scene_icon}"
     optimistic: true
     min_value: 0
     max_value: ${light_automation_input_number_max}
@@ -306,7 +306,7 @@ packages:
   base: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/pm-esp8266.yaml
-    refresh: 1d
+    refresh: 1s
   sun: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/sun.yaml
