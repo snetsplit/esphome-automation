@@ -47,6 +47,7 @@ sensor:
       reference_temperature: 298.15K
 
 button:
+    platform: template
     id: test
     name: "${friendly_name} Test"
     on_press:
