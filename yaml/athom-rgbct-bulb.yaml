@@ -1,29 +1,11 @@
 substitutions:
-  name: "athom-bulb"
-  id: "athom_bulb"
-  friendly_name: "Athom Bulb"
-  device_name: ${name}
   light_automation_1_input_number_min: "0"
   light_automation_1_input_number_max: "3"
-  project_name: "athom.rgbct-light"
-  project_version: "1.0"
   light_restore_mode: ALWAYS_ON
   color_interlock: 'true'
-  domain: ".local"
-  web_server_port: "80"
-  ssid: "IP freely"
-  password: "ewwwwwwwww"
-  switch_ssid: "Switch Shelly Fallback"
-  scene_master_host: "http://woo"
 
 
 esphome:
-  name: ${name}
-  name_add_mac_suffix: false
-  comment: "${friendly_name} Athom RGBCT Bulb"
-  project:
-    name: "${project_name}"
-    version: "${project_version}"
   on_boot:
     - priority: 600
       then:
@@ -42,75 +24,28 @@ esphome:
                   });
 
 
-http_request:
-  useragent: esphome/device
-  timeout: 2s
-  id: "http_request_data"
-  esp8266_disable_ssl_support: true
-
-esp8266:
-  board: esp8285
-  restore_from_flash: false
-
-api:
-
-ota:
-
-logger:
-
 web_server:
   port: 80
   local: true
 
-
-wifi:
-  ap:
-    ssid: "${friendly_name} Fallback"
-    password: ${password}
-  domain: ${domain}
-  networks:
-   - ssid: ${ssid}
-     password: ${password}
-   - ssid: "${switch_ssid}"
-     password: ${password}
-  power_save_mode: HIGH # for ESP8266 LOW/HIGH are mixed up, esphome/issues/issues/1532
-  
-captive_portal:
-
 dashboard_import:
   package_import_url: github://athom-tech/athom-configs/athom-rgbct-light.yaml
-
-binary_sensor:
-  - platform: status
-    name: "${friendly_name} Status"
 
 sensor:
   - platform: uptime
     name: "${friendly_name} Uptime"
   - platform: ntc
     sensor: temp_resistance_reading
-    name: "${friendly_name} Temperature"
-    unit_of_measurement: "°C"
+    name: "${friendly_name} ESP Temperature"
+    unit_of_measurement: "°c"
     accuracy_decimals: 1
     device_class: temperature
     calibration:
       b_constant: 3350
       reference_resistance: 10kOhm
       reference_temperature: 298.15K
-  - platform: resistance
-    id: temp_resistance_reading
-    sensor: temp_analog_reading
-    configuration: DOWNSTREAM
-    resistor: 32kOhm
-  - platform: adc
-    id: temp_analog_reading
-    pin: A0
-    
+
 button:
-  - platform: restart
-    id: restart_button
-    name: "${friendly_name} Restart"
-  - platform: template
     id: test
     name: "${friendly_name} Test"
     on_press:
@@ -123,7 +58,7 @@ button:
                   json::parse_json(id(http_request_data).get_string(), [](JsonObject root) {
                       id(scene).publish_state(root["state"]);
                   });
-  
+
 
 output:
   - platform: esp8266_pwm
@@ -145,8 +80,8 @@ output:
 
 light:
   - platform: rgbct
-    name: "${friendly_name}"
-    id: "${id}_rgbct_light"
+    name: "${nice_name}"
+    id: "${device_name}_rgbct_light"
     restore_mode: ${light_restore_mode}
     red: red_output
     green: green_output
@@ -158,18 +93,10 @@ light:
     color_interlock: ${color_interlock}
     default_transition_length: 0.33s
 
-text_sensor:
-  - platform: wifi_info
-    ip_address:
-      name: "${friendly_name} IP Address"
-      disabled_by_default: true
-  
-
-
 number:
   - platform: template
     id: "scene"
-    name: "scene"
+    name: "${friendly_name} Scene"
     optimistic: true
     min_value: ${light_automation_1_input_number_min}
     max_value: ${light_automation_1_input_number_max}
@@ -182,14 +109,14 @@ number:
               - lambda: return (0.0 == x);
             then:
               - light.turn_off:
-                  id: "${id}_rgbct_light"
+                  id: "${device_name}_rgbct_light"
                   transition_length: 1s
         - if:
             condition:
               - lambda: return (1.0 == x);
             then:
               - light.turn_on:
-                  id: "${id}_rgbct_light"
+                  id: "${device_name}_rgbct_light"
                   color_mode: "COLOR_TEMPERATURE"
                   brightness: 32%
                   color_temperature: 2600 K
@@ -198,7 +125,7 @@ number:
               - lambda: return (2.0 == x);
             then:
               - light.turn_on:
-                  id: "${id}_rgbct_light"
+                  id: "${device_name}_rgbct_light"
                   color_mode: "COLOR_TEMPERATURE"
                   brightness: 100%
                   color_temperature: 3000 K
@@ -207,7 +134,7 @@ number:
               - lambda: return (3.0 == x);
             then:
               - light.turn_on:
-                  id: "${id}_rgbct_light"
+                  id: "${device_name}_rgbct_light"
                   color_mode: "COLOR_TEMPERATURE"
                   brightness: 100%
                   color_temperature: 6500 K
@@ -222,7 +149,7 @@ number:
     on_value:
       then:
         - light.turn_on:
-            id: "${id}_rgbct_light"
+            id: "${device_name}_rgbct_light"
             color_mode: "RGB"
             color_brightness: !lambda 'return x/100.0;'
   - platform: template
@@ -236,7 +163,7 @@ number:
     on_value:
       then:
         - light.turn_on:
-            id: "${id}_rgbct_light"
+            id: "${device_name}_rgbct_light"
             color_mode: "WHITE"
             brightness: !lambda 'return x/100.0;'
   - platform: template
@@ -250,7 +177,7 @@ number:
     on_value:
       then:
         - light.turn_on:
-            id: "${id}_rgbct_light"
+            id: "${device_name}_rgbct_light"
             color_mode: "COLOR_TEMPERATURE"
             color_temperature: !lambda 'return x;'
   - platform: template
@@ -264,7 +191,7 @@ number:
     on_value:
       then:
         - light.turn_on:
-            id: "${id}_rgbct_light"
+            id: "${device_name}_rgbct_light"
             color_mode: "RGB"
             red: !lambda 'return x/100.0;'
   - platform: template
@@ -278,7 +205,7 @@ number:
     on_value:
       then:
         - light.turn_on:
-            id: "${id}_rgbct_light"
+            id: "${device_name}_rgbct_light"
             color_mode: "RGB"
             green: !lambda 'return x/100.0;'
   - platform: template
@@ -292,6 +219,13 @@ number:
     on_value:
       then:
         - light.turn_on:
-            id: "${id}_rgbct_light"
+            id: "${device_name}_rgbct_light"
             color_mode: "RGB"
             blue: !lambda 'return x/100.0;'
+
+
+packages:
+  base: 
+    url: https://github.com/snetsplit/esphome-automation
+    file: yaml/base/base.yaml
+    refresh: 1d
