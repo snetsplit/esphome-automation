@@ -77,4 +77,4 @@ packages:
   device-base: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/esp8266.yaml
-    refresh: 1s
+    refresh: 1d
