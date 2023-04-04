@@ -58,21 +58,6 @@ globals:
      restore_value: true
      initial_value: 'false'
 
-
-
-   - id: ${device_relay_name_2}_sun_enabled
-     type: bool
-     restore_value: true
-     initial_value: 'false'
-   - id: ${device_relay_name_2}_sunrise_enabled
-     type: bool
-     restore_value: true
-     initial_value: 'false'
-   - id: ${device_relay_name_2}_sunset_enabled
-     type: bool
-     restore_value: true
-     initial_value: 'false'
-
 esphome:
   on_boot:
     priority: 200
