@@ -41,15 +41,6 @@ sensor:
     filters:
       - multiply: 0.001
     unit_of_measurement: kWh
-  - platform: resistance
-    id: temp_resistance_reading
-    sensor: temp_analog_reading
-    configuration: DOWNSTREAM
-    resistor: 32kOhm
-  - platform: adc
-    id: temp_analog_reading
-    pin: A0
-
 
 output:
   - platform: esp8266_pwm
