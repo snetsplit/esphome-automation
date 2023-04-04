@@ -197,6 +197,7 @@ number:
                                     ESP_LOGI("woo","key %f",x);
                         bool relayNoFlip = false;
                         if(!id(edge_switch) && id(scene_switch) && id(api_id).is_connected()  && id(wifi_id).is_connected()) {
+                          const std::vector<std::string> attributes = id(light_settings_string_1)[int(x)];
                           int index = 1;
                           while(light_index < ${light_entities_count_1}) {
                                 HomeassistantServiceResponse resp;
@@ -214,7 +215,6 @@ number:
                                 attribute_key_value.value = attributes[index++]; 
                                 resp.data.push_back(attribute_key_value);
                             }
-                            const std::vector<std::string> attributes = id(light_settings_string_1)[int(x)];
                             id(api_id).send_homeassistant_service_call(resp);
                             relayNoFlip = true;
                          }
