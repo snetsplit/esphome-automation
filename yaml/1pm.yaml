@@ -209,6 +209,7 @@ number:
                                 index++;
                                 if(index < ${light_entities_count_1})  {
                                   entity_key_value.value += ",";
+                               }
                             }
                             index = 1;
                             while(index < attributes.size()) {
