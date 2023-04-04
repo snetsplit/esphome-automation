@@ -310,4 +310,4 @@ packages:
   sun: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/sun.yaml
-    refresh: 1d
+    refresh: 1s
