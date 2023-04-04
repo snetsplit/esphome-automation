@@ -10,7 +10,6 @@ substitutions:
 
 api:
   id: api_id
-  password:  ${ota_password}
 
 ota:
   password:  ${ota_password}

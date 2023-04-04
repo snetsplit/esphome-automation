@@ -97,7 +97,7 @@ switch:
     lambda: |-
       return id(edge_switch);
   - platform: template
-    name: "${friendly_name} Scene"
+    name: "${friendly_name} HA Lights"
     id: "scene_switch_toggle"
     optimistic: false
     restore_state: true
@@ -180,7 +180,7 @@ sensor:
 number:
   - platform: template
     icon: "mdi:bulb-group-outline"
-    name: "${friendly_name} Switch Scene"
+    name: "${friendly_name} Scene"
     id: "${device_name}_scene"
     optimistic: true
     min_value: 0
