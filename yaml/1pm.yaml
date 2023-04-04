@@ -52,7 +52,7 @@ substitutions:
   light_automation_input_number_max: '2'
   scene_light_host_string_1: ""
   scene_master_host_1: ""
-  light_settings_string_1: '{{"light.turn_off"},{"light.turn_on","kelvin","2700","brightness","100"},{"light.turn_on","kelvin","2800","brightness","255"}}'
+  light_settings_string_1: '{{"light.turn_off","",""},{"light.turn_on","kelvin","2700","brightness","100"},{"light.turn_on","kelvin","2800","brightness","255"}}'
   light_entities_count_1: "2"
   
 esphome:
@@ -206,7 +206,7 @@ number:
                                 entity_key_value.value = "light.${sys_name}" + std::to_string(++light_index);
                                 resp.data.push_back(entity_key_value);
                                 int attribute_index = 0;
-                                while(attribute_index < 2) {
+                                while(attribute_index < attributes.size()) {
                                     HomeassistantServiceMap attribute_key_value;
                                     attribute_key_value.key = attributes[++attribute_index];
                                     attribute_key_value.value = attributes[++attribute_index]; 
