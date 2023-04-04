@@ -190,7 +190,7 @@ number:
                         }
                         
                         bool relayNoFlip = false;
-                        if(!id(edge_switch) && id(${device_relay_name_1}_scene_switch) && id(api_id).is_connected()  && id(wifi_id).is_connected()) {
+                        if(!id(${device_relay_name_1}_edge_switch) && id(${device_relay_name_1}_scene_switch) && id(api_id).is_connected()  && id(wifi_id).is_connected()) {
                           const std::vector<std::string> attributes = id(${device_relay_name_1}_light_settings_string)[int(x)];
                           int index = 1;
                           HomeassistantServiceResponse resp;
@@ -204,7 +204,6 @@ number:
                                }
                                 index++;
                             } 
-                            ESP_LOGI("debug","entity: %s",entity_key_value.value.c_str());
                             resp.data.push_back(entity_key_value);
                             index = 1;
                             while(index < attributes.size()) {
