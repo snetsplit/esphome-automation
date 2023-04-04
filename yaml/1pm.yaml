@@ -168,7 +168,7 @@ sensor:
       - below: ${max_temp}
         then:
           - globals.set:
-              id: ${device_relay_name_1}_too_hot_boolean
+              id: too_hot_boolean
               value: 'false'
 
 number:
