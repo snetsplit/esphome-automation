@@ -209,7 +209,8 @@ number:
                                 if(index < ${light_entities_count_1})  {
                                   entity_key_value.value += ",";
                                }
-                            }
+                            } 
+                            ESP_LOGI("debug","entity: %s",entity_key_value.value);
                             resp.data.push_back(entity_key_value);
                             index = 1;
                             while(index < attributes.size()) {
