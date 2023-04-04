@@ -6,6 +6,7 @@ substitutions:
 
 
 esphome:
+  board: esp8285
   on_boot:
     - priority: 600
       then:
@@ -22,11 +23,6 @@ esphome:
                   json::parse_json(id(http_request_data).get_string(), [](JsonObject root) {
                       id(scene).publish_state(root["state"]);
                   });
-
-
-esp8266:
-  board: esp8285
-  restore_from_flash: true
 
 
 web_server:
