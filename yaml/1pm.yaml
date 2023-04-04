@@ -306,7 +306,7 @@ packages:
   base: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/pm-esp8266.yaml
-    refresh: 1s
+    refresh: 1d
   sun: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/sun.yaml
