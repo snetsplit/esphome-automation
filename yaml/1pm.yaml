@@ -282,7 +282,7 @@ sun:
              then:
                - number.set:
                    id: "${device_relay_name_1}_scene"
-                   value: !lambda return id(${device_relay_name_1}_sunrise_scene);
+                   value: !lambda return id(${device_relay_name_1}_sunrise_scene).state;
 
   on_sunset:
     - elevation: ${day_elevation} 
@@ -293,7 +293,7 @@ sun:
              then:
                - number.set:
                    id: "${device_relay_name_1}_scene"
-                   value: !lambda return id(${device_relay_name_1}_sunset_scene);
+                   value: !lambda return id(${device_relay_name_1}_sunset_scene).state;
 
 packages:
   base: 
