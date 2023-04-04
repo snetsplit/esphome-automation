@@ -7,6 +7,7 @@ esphome:
   platform: ESP8266
   board: esp01_1m
 
+
 sensor:
   - platform: resistance
     id: temp_resistance_reading
@@ -22,4 +23,4 @@ packages:
   base: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/base.yaml
-    refresh: 1d
+    refresh: 1s

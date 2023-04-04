@@ -5,53 +5,56 @@ substitutions:
   device_type_nice: "Switch"
   max_temp: "60.0"
   max_power: "1600.0"
-  restore_mode: RESTORE_DEFAULT_ON
-  light_automation_input_number_max: '2'
+  restore_mode_1: RESTORE_DEFAULT_ON
+  light_automation_input_number_max_1: '2'
   scene_light_host_string_1: ""
   scene_master_host_1: ""
   light_settings_string_1: '{{"light.turn_off"},{"light.turn_on","kelvin","2700","brightness_pct","30"},{"light.turn_on","kelvin","4587","brightness_pct","100"}}'
   light_entities_count_1: "2"
-  scene_icon: "mdi:ceiling-light-outline"
+  scene_icon_1: "mdi:ceiling-light-outline"
+  relay_id_1: ""
+  friendly_relay_name_1: "${friendly_name}"
+  device_relay_name:_1: "${device_name}"
 
 globals:
    - id: too_hot_boolean
      type: bool
      restore_value: true
      initial_value: 'false'
-   - id: scene_light_index_1
+   - id: ${device_relay_name_1}_scene_light_index
      type: unsigned int
      restore_value: no
      initial_value: '0'
-   - id: sunrise_scene
+   - id: ${device_relay_name_1}_sunrise_scene
      type: unsigned int
      restore_value: true
      initial_value: '0'
-   - id: sunset_scene
+   - id: ${device_relay_name_1}_sunset_scene
      type: unsigned int
      restore_value: true
      initial_value: '1'
-   - id: scene_light_host_string_1
+   - id: ${device_relay_name_1}_scene_light_host_string
      type: const std::vector<std::string>
      initial_value: ${scene_light_host_string_1}
-   - id: light_settings_string_1
+   - id: ${device_relay_name_1}_light_settings_string
      type: const std::vector<std::vector<std::string>>
      initial_value: ${light_settings_string_1}
-   - id: scene_master_host_1
+   - id: ${device_relay_name_1}_scene_master_host
      type: std::string
      initial_value: ${scene_master_host_1}
-   - id: edge_switch
+   - id: ${device_relay_name_1}_edge_switch
      type: bool
      restore_value: true
      initial_value: 'false'
-   - id: scene_switch
+   - id: ${device_relay_name_1}_scene_switch
      type: bool
      restore_value: true
      initial_value: 'false'
-   - id: http_switch
+   - id: ${device_relay_name_1}_http_switch
      type: bool
      restore_value: true
      initial_value: 'false'
-   - id: auto_off_timer
+   - id: ${device_relay_name_1}_auto_off_timer
      type: bool
      restore_value: false
      initial_value: 'false'
@@ -62,90 +65,90 @@ esphome:
     then:
        - if:
             condition:
-              - lambda: return (0.0 != id(${device_name}_scene).state);
+              - lambda: return (0.0 != id(${device_relay_name_1}_scene).state);
             then:
-              - switch.turn_on: shelly_relay_1
+              - switch.turn_on: ${device_relay_name_1}_shelly_relay
 
 switch:
   - platform: gpio
-    name: "${friendly_name} Relay"
+    name: "${friendly_relay_name_1} Relay"
     pin: GPIO15
-    id: shelly_relay_1
+    id: ${device_relay_name_1}_shelly_relay
     icon: "mdi:electric-switch"
     restore_mode: ${restore_mode}
     on_turn_on:
       - if:
            condition:
-             - lambda: return (id(auto_off_timer) && (0.0 == id(${device_name}_scene).state));
+             - lambda: return (id(${device_relay_name_1}_auto_off_timer) && (0.0 == id(${device_relay_name_1}_scene).state));
            then:
              - number.set:
-                 id: "${device_name}_scene"
+                 id: "${device_relay_name_1}_scene"
                  value: 1
   - platform: template
-    name: "${friendly_name} Edge Mode"
-    id: "basic_edge_switch_toggle_switch"
+    name: "${friendly_relay_name_1} Edge Mode"
+    id: "${device_relay_name_1}_basic_edge_switch_toggle_switch"
     optimistic: false
     restore_state: true
     turn_on_action:
       - globals.set:
-          id: edge_switch
+          id: ${device_relay_name_1}_edge_switch
           value: 'true'
     turn_off_action:
       - globals.set:
-          id: edge_switch
+          id: ${device_relay_name_1}_edge_switch
           value: 'false'
     lambda: |-
-      return id(edge_switch);
+      return id(${device_relay_name_1}_edge_switch);
   - platform: template
-    name: "${friendly_name} HA Lights"
-    id: "scene_switch_toggle"
+    name: "${friendly_relay_name_1} HA Lights"
+    id: "${device_relay_name_1}_scene_switch_toggle"
     optimistic: false
     restore_state: true
     turn_on_action:
       - globals.set:
-          id: scene_switch
+          id: ${device_relay_name_1}_scene_switch
           value: 'true'
     turn_off_action:
       - globals.set:
-          id: scene_switch
+          id: ${device_relay_name_1}_scene_switch
           value: 'false'
     lambda: |-
-      return id(scene_switch);
+      return id(${device_relay_name_1}_scene_switch);
   - platform: template
-    name: "${friendly_name} http control"
-    id: "http_switch_toggle"
+    name: "${friendly_relay_name_1} http control"
+    id: "${device_relay_name_1}_http_switch_toggle"
     optimistic: false
     restore_state: true
     turn_on_action:
       - globals.set:
-          id: http_switch
+          id: ${device_relay_name_1}_http_switch
           value: 'true'
     turn_off_action:
       - globals.set:
-          id: http_switch
+          id: ${device_relay_name_1}_http_switch
           value: 'false'
     lambda: |-
-      return id(http_switch);
+      return id(${device_relay_name_1}_http_switch);
   - platform: template
-    name: "${friendly_name} Auto Off"
-    id: "auto_off_switch_toggle"
+    name: "${friendly_relay_name_1} Auto Off"
+    id: "${device_relay_name_1}_auto_off_switch_toggle"
     optimistic: false
     restore_state: true
     turn_on_action:
       - globals.set:
-          id: auto_off_timer
+          id: ${device_relay_name_1}_auto_off_timer
           value: 'true'
     turn_off_action:
       - globals.set:
-          id: auto_off_timer
+          id: ${device_relay_name_1}_auto_off_timer
           value: 'false'
     lambda: |-
-      return id(auto_off_timer);
+      return id(${device_relay_name_1}_auto_off_timer);
 
 sensor:
   - platform: ntc
     sensor: temp_resistance_reading
-    name: "${friendly_name} Shelly Temperature"
+    name: "${friendly_relay_name_1} Shelly Temperature"
     unit_of_measurement: "°c"
     accuracy_decimals: 1
     device_class: temperature
@@ -158,9 +161,9 @@ sensor:
       - above: ${max_temp}
         then:
           - globals.set:
-              id: too_hot_boolean
+              id: ${device_relay_name_1}_too_hot_boolean
               value: 'true'
-          - switch.turn_off: shelly_relay_1
+          - switch.turn_off: ${device_relay_name_1}_shelly_relay
           - homeassistant.service:
               service: persistent_notification.create
               data:
@@ -170,34 +173,34 @@ sensor:
           - homeassistant.event:
               event: esphome.overheat
               data:
-                title: "${friendly_name} has overheated."
+                title: "${friendly_relay_name_1} has overheated."
       - below: ${max_temp}
         then:
           - globals.set:
-              id: too_hot_boolean
+              id: ${device_relay_name_1}_too_hot_boolean
               value: 'false'
 
 number:
   - platform: template
-    name: "${friendly_name} Scene"
-    id: "${device_name}_scene"
-    icon: "${scene_icon}"
+    name: "${friendly_relay_name_1} Scene"
+    id: "${device_relay_name_1}_scene"
+    icon: "${scene_icon_1}"
     optimistic: true
     min_value: 0
-    max_value: ${light_automation_input_number_max}
+    max_value: ${light_automation_input_number_max_1}
     restore_value: true
     step: 1
     on_value:
       then:
           - lambda: |-
-                        if(id(sun_enabled) && (id(sun_id).elevation() > ${day_elevation}) && (1 == x) && (id(${device_name}_scene).traits.get_max_value() > 1)) {
-                           id(${device_name}_scene).make_call().number_increment(false).perform();
+                        if(id(sun_enabled) && (id(sun_id).elevation() > ${day_elevation}) && (1 == x) && (id(${device_relay_name_1}_scene).traits.get_max_value() > 1)) {
+                           id(${device_relay_name_1}_scene).make_call().number_increment(false).perform();
                            return;
                         }
-                                    ESP_LOGI("woo","key %f",x);
+                        
                         bool relayNoFlip = false;
-                        if(!id(edge_switch) && id(scene_switch) && id(api_id).is_connected()  && id(wifi_id).is_connected()) {
-                          const std::vector<std::string> attributes = id(light_settings_string_1)[int(x)];
+                        if(!id(edge_switch) && id(${device_relay_name_1}_scene_switch) && id(api_id).is_connected()  && id(wifi_id).is_connected()) {
+                          const std::vector<std::string> attributes = id(${device_relay_name_1}_light_settings_string)[int(x)];
                           int index = 1;
                           HomeassistantServiceResponse resp;
                           resp.service = attributes[0];
@@ -222,10 +225,10 @@ number:
                             id(api_id).send_homeassistant_service_call(resp);
                             relayNoFlip = true;
                          }
-                         if (!id(edge_switch) && id(http_switch)  && id(wifi_id).is_connected()) {
+                         if (!id(${device_relay_name_1}_edge_switch) && id(http_switch)  && id(wifi_id).is_connected()) {
                             esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                             httpRequestComponent.set_method("POST");
-                            for(std::string host_path : id(scene_light_host_string_1)) {
+                            for(std::string host_path : id(${device_relay_name_1}_scene_light_host_string)) {
                                 httpRequestComponent.set_url("http://" +host_path + "/set?value=" + std::to_string(int(x)));
                                 httpRequestComponent.send({});
                             }
@@ -234,25 +237,25 @@ number:
                         }
                         
                         if(!relayNoFlip && (0 == x)) {
-                                id(shelly_relay_1).turn_off();
-                        }else if(!relayNoFlip && (id(${device_name}_scene).traits.get_max_value() == x)) {
-                                id(shelly_relay_1).turn_on();
+                                id(${device_relay_name_1}_shelly_relay).turn_off();
+                        }else if(!relayNoFlip && (id(${device_relay_name_1}_scene).traits.get_max_value() == x)) {
+                                id(${device_relay_name_1}_shelly_relay).turn_on();
                         } else if(!relayNoFlip) {
-                                id(${device_name}_scene).make_call().number_to_max().perform();
+                                id(${device_relay_name_1}_scene).make_call().number_to_max().perform();
                                 return;
                         }
           - if:
                condition:
-                 - lambda: return (id(auto_off_timer) && (0.0 < id(${device_name}_scene).state));
+                 - lambda: return (id(${device_relay_name_1}_auto_off_timer) && (0.0 < id(${device_relay_name_1}_scene).state));
                then:
-                 - delay: !lambda return int(id(${device_name}_auto_off_seconds).state) * 1000;
+                 - delay: !lambda return int(id(${device_relay_name_1}_auto_off_seconds).state) * 1000;
                  - number.set:
-                     id: "${device_name}_scene"
+                     id: "${device_relay_name_1}_scene"
                      value: 0
   - platform: template
     icon: "mdi:clock"
-    name: "${friendly_name} Auto Off Seconds"
-    id: "${device_name}_auto_off_seconds"
+    name: "${friendly_relay_name_1} Auto Off Seconds"
+    id: "${device_relay_name_1}_auto_off_seconds"
     optimistic: true
     min_value: 0
     max_value: 8640
@@ -262,8 +265,8 @@ number:
     step: 1
   - platform: template
     icon: "mdi:clock"
-    name: "${friendly_name} Sunrise Scene"
-    id: "${device_name}_sunrise_scene"
+    name: "${friendly_relay_name_1} Sunrise Scene"
+    id: "${device_relay_name_1}_sunrise_scene"
     optimistic: true
     min_value: 0
     max_value: ${light_automation_input_number_max}
@@ -271,8 +274,8 @@ number:
     step: 1
   - platform: template
     icon: "mdi:clock"
-    name: "${friendly_name} Sunset Scene"
-    id: "${device_name}_sunset_scene"
+    name: "${friendly_relay_name_1} Sunset Scene"
+    id: "${device_relay_name_1}_sunset_scene"
     optimistic: true
     min_value: 0
     max_value: ${light_automation_input_number_max}
@@ -285,22 +288,22 @@ sun:
       then: 
         - if:
              condition:
-               - lambda: return  id(sunrise_enabled);
+               - lambda: return  id(${device_relay_name_1}_sunrise_enabled);
              then:
                - number.set:
-                   id: "${device_name}_scene"
-                   value: !lambda return id(sunrise_scene);
+                   id: "${device_relay_name_1}_scene"
+                   value: !lambda return id(${device_relay_name_1}_sunrise_scene);
 
   on_sunset:
     - elevation: ${day_elevation} 
       then: 
         - if:
              condition:
-               - lambda: return  id(sunset_enabled);
+               - lambda: return  id(${device_relay_name_1}_sunset_enabled);
              then:
                - number.set:
-                   id: "${device_name}_scene"
-                   value: !lambda return id(sunset_scene);
+                   id: "${device_relay_name_1}_scene"
+                   value: !lambda return id(${device_relay_name_1}_sunset_scene);
 
 packages:
   base: 

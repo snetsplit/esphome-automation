@@ -26,7 +26,7 @@ packages:
   time: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/time.yaml
-    refresh: 1d
+    refresh: 1s
   network: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/network.yaml
