@@ -206,7 +206,7 @@ number:
                                 entity_id_kv.value = "${sys_name}" + std::to_string(++light_index);
                                 resp.data.push_back(entity_id_kv);
                                 int attribute_index = 0;
-                                while(attribute_index < attributes.length) {
+                                while(attribute_index < attributes.size()) {
                                     entity_id_kv.key = attributes[++attribute_index];
                                     entity_id_kv.value = attributes[++attribute_index];
                                     resp.data.push_back(entity_id_kv);
