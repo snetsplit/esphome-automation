@@ -1,9 +1,6 @@
 #source for orginal: https://www.esphome-devices.com/devices/Shelly-1PM
 #NOT COMPLETE. NOT WARRENTIED. USE AT OWN RISK.
 substitutions:
-  device_type: "switch"
-  device_type_nice: "Switch"
-  max_temp: "60.0"
   max_power: "1000.0"
   restore_mode_2: RESTORE_DEFAULT_ON
   light_automation_input_number_max_2: '2'
