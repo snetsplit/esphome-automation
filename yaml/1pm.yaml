@@ -14,7 +14,7 @@ substitutions:
   scene_icon_1: "mdi:ceiling-light-outline"
   relay_id_1: ""
   friendly_relay_name_1: "${friendly_name}"
-  device_relay_name:_1: "${device_name}"
+  device_relay_name_1: "${device_name}"
 
 globals:
    - id: too_hot_boolean
