@@ -1,4 +1,6 @@
 substitutions:
+  device_type: "light"
+  device_type_nice: "Light"
   light_automation_1_input_number_min: "0"
   light_automation_1_input_number_max: "3"
   light_restore_mode: ALWAYS_ON
