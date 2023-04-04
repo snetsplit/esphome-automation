@@ -1,4 +1,6 @@
 substitutions:
+  device_type: "heatpump"
+  device_type_nice: "Heatpump"
   heat_on: "-2"
   cool_on: "4"
   heat_turbo_on: "-2"
