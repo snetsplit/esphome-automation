@@ -194,7 +194,7 @@ number:
                            id(${device_name}_scene).make_call().number_increment(false).perform();
                            return;
                         }
-                                    ESP_LOGI("woo","key %d",x);
+                                    ESP_LOGI("woo","key %f",x);
                         bool relayNoFlip = false;
                         if(!id(edge_switch) && id(scene_switch) && id(api_id).is_connected()  && id(wifi_id).is_connected()) {
                           int light_index = 1;
