@@ -137,7 +137,7 @@ switch:
 sensor:
   - platform: ntc
     sensor: temp_resistance_reading
-    name: "${friendly_relay_name_1} Shelly Temperature"
+    name: "${friendly_name} Shelly Temperature"
     unit_of_measurement: "°c"
     accuracy_decimals: 1
     device_class: temperature
