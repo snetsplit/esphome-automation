@@ -205,10 +205,10 @@ number:
                           entity_key_value.key = "entity_id";
                           while(index <= ${light_entities_count_1}) {
                                 entity_key_value.value += "light.${sys_name}" + std::to_string(index);
-                                index++;
                                 if(index < ${light_entities_count_1})  {
                                   entity_key_value.value += ",";
                                }
+                                index++;
                             } 
                             ESP_LOGI("debug","entity: %s",entity_key_value.value.c_str());
                             resp.data.push_back(entity_key_value);
