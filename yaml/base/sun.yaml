@@ -97,7 +97,7 @@ switch:
           id: ${device_relay_name_1}_sun_enabled
           value: 'false'
     lambda: |-
-      return id(${device_relay_name_1}sun_enabled);
+      return id(${device_relay_name_1}_sun_enabled);
   - platform: template
     name: "${friendly_relay_name_1} Sunrise Enabled"
     id: "${device_relay_name_1}_sunrise_switch_toggle"
