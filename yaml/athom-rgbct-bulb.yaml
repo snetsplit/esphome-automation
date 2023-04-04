@@ -227,5 +227,5 @@ number:
 packages:
   base: 
     url: https://github.com/snetsplit/esphome-automation
-    file: yaml/base/base.yaml
+    file: yaml/base/esp8266.yaml
     refresh: 1d
