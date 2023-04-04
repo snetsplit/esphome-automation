@@ -222,7 +222,7 @@ number:
     id: "${device_relay_name_2}_sunrise_scene"
     optimistic: true
     min_value: 0
-    max_value: ${light_automation_input_number_max}
+    max_value: ${light_automation_input_number_max_2}
     restore_value: true
     step: 1
   - platform: template
@@ -231,7 +231,7 @@ number:
     id: "${device_relay_name_2}_sunset_scene"
     optimistic: true
     min_value: 0
-    max_value: ${light_automation_input_number_max}
+    max_value: ${light_automation_input_number_max_2}
     restore_value: true
     step: 1
 
