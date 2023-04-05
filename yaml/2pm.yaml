@@ -237,6 +237,30 @@ binary_sensor:
           id: "${device_relay_name_2}_scene"
           cycle: true
 
+
+# Example configuration entry
+debug:
+  update_interval: 30s
+
+text_sensor:
+  - platform: debug
+    device:
+      name: "Device Info"
+    reset_reason:
+      name: "Reset Reason"
+
+sensor:
+  - platform: debug
+    free:
+      name: "Heap Free"
+    fragmentation:
+      name: "Heap Fragmentation"
+    block:
+      name: "Heap Max Block"
+    loop_time:
+      name: "Loop Time"
+
+
 packages:
   base: 
     url: https://github.com/snetsplit/esphome-automation
