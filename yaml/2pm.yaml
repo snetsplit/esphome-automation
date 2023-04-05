@@ -181,9 +181,6 @@ binary_sensor:
           id: "${device_relay_name_2}_scene"
           cycle: true
 
-debug:
-  update_interval: 30s
-
 packages:
   base: 
     url: https://github.com/snetsplit/esphome-automation
