@@ -34,18 +34,6 @@ globals:
      type: bool
      restore_value: true
      initial_value: 'false'
-   - id: ${device_relay_name_2}_scene_switch
-     type: bool
-     restore_value: true
-     initial_value: 'false'
-   - id: ${device_relay_name_2}_http_switch
-     type: bool
-     restore_value: true
-     initial_value: 'false'
-   - id: ${device_relay_name_2}_auto_off_timer
-     type: bool
-     restore_value: false
-     initial_value: 'false'
 
 esphome:
   on_boot:
@@ -79,52 +67,6 @@ switch:
           value: 'false'
     lambda: |-
       return id(${device_relay_name_2}_edge_switch);
-
-  - platform: template
-    name: "${friendly_relay_name_2} HA Lights"
-    id: "${device_relay_name_2}_scene_switch_toggle"
-    optimistic: false
-    restore_state: true
-    turn_on_action:
-      - globals.set:
-          id: ${device_relay_name_2}_scene_switch
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: ${device_relay_name_2}_scene_switch
-          value: 'false'
-    lambda: |-
-      return id(${device_relay_name_2}_scene_switch);
-  - platform: template
-    name: "${friendly_relay_name_2} http control"
-    id: "${device_relay_name_2}_http_switch_toggle"
-    optimistic: false
-    restore_state: true
-    turn_on_action:
-      - globals.set:
-          id: ${device_relay_name_2}_http_switch
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: ${device_relay_name_2}_http_switch
-          value: 'false'
-    lambda: |-
-      return id(${device_relay_name_2}_http_switch);
-  - platform: template
-    name: "${friendly_relay_name_2} Auto Off"
-    id: "${device_relay_name_2}_auto_off_switch_toggle"
-    optimistic: false
-    restore_state: true
-    turn_on_action:
-      - globals.set:
-          id: ${device_relay_name_2}_auto_off_timer
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: ${device_relay_name_2}_auto_off_timer
-          value: 'false'
-    lambda: |-
-      return id(${device_relay_name_2}_auto_off_timer);
 
 number:
   - platform: template
