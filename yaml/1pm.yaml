@@ -13,6 +13,7 @@ substitutions:
   light_entities_count_1: "2"
   scene_icon_1: "mdi:ceiling-light-outline"
   external_switch_gpio_1: "GPIO4"
+  relay_gpio_1: "GPIO15"
 
 globals:
    - id: too_hot_boolean
@@ -62,7 +63,7 @@ esphome:
 switch:
   - platform: gpio
     name: "${friendly_relay_name_1} Relay"
-    pin: GPIO15
+    pin: ${relay_gpio_1}
     id: ${device_relay_name_1}_shelly_relay
     icon: "mdi:electric-switch"
     restore_mode: ${restore_mode_1}

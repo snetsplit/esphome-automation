@@ -12,6 +12,8 @@ substitutions:
   friendly_relay_name_2: "${friendly_name} B"
   device_relay_name_2: "${device_name}_b"
   external_switch_gpio_2: "GPIO5"
+  relay_gpio_2: "GPIO15"
+  relay_gpio_1: "GPIO4"
   external_switch_gpio_1: "GPIO13"
   friendly_relay_name_1: "${friendly_name} A"
   device_relay_name_1: "${device_name}_a"
@@ -48,7 +50,7 @@ esphome:
 switch:
   - platform: gpio
     name: "${friendly_relay_name_2} Relay"
-    pin: GPIO4
+    pin: ${relay_gpio_2}
     id: ${device_relay_name_2}_shelly_relay
     icon: "mdi:electric-switch"
     restore_mode: ${restore_mode_2}
@@ -178,30 +180,6 @@ binary_sensor:
       - number.increment:
           id: "${device_relay_name_2}_scene"
           cycle: true
-
-
-# Example configuration entry
-debug:
-  update_interval: 30s
-
-text_sensor:
-  - platform: debug
-    device:
-      name: "Device Info"
-    reset_reason:
-      name: "Reset Reason"
-
-sensor:
-  - platform: debug
-    free:
-      name: "Heap Free"
-    fragmentation:
-      name: "Heap Fragmentation"
-    block:
-      name: "Heap Max Block"
-    loop_time:
-      name: "Loop Time"
-
 
 packages:
   base: 
