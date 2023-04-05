@@ -9,12 +9,12 @@ substitutions:
   light_settings_string_2: '{{"light.turn_off"},{"light.turn_on","kelvin","2700","brightness_pct","30"},{"light.turn_on","kelvin","4587","brightness_pct","100"}}'
   light_entities_count_2: "2"
   scene_icon_2: "mdi:ceiling-light-outline"
-  friendly_relay_name_1: "${friendly_name} A"
-  device_relay_name_1: "${device_name}_a"
   friendly_relay_name_2: "${friendly_name} B"
   device_relay_name_2: "${device_name}_b"
-  external_switch_gpio_1: "GPIO13"
   external_switch_gpio_2: "GPIO5"
+  external_switch_gpio_1: "GPIO13"
+  friendly_relay_name_1: "${friendly_name} A"
+  device_relay_name_1: "${device_name}_a"
 
 globals:
    - id: ${device_relay_name_2}_scene_light_index
@@ -79,6 +79,52 @@ switch:
           value: 'false'
     lambda: |-
       return id(${device_relay_name_2}_edge_switch);
+
+  - platform: template
+    name: "${friendly_relay_name_2} HA Lights"
+    id: "${device_relay_name_2}_scene_switch_toggle"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: ${device_relay_name_2}_scene_switch
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: ${device_relay_name_2}_scene_switch
+          value: 'false'
+    lambda: |-
+      return id(${device_relay_name_2}_scene_switch);
+  - platform: template
+    name: "${friendly_relay_name_2} http control"
+    id: "${device_relay_name_2}_http_switch_toggle"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: ${device_relay_name_2}_http_switch
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: ${device_relay_name_2}_http_switch
+          value: 'false'
+    lambda: |-
+      return id(${device_relay_name_2}_http_switch);
+  - platform: template
+    name: "${friendly_relay_name_2} Auto Off"
+    id: "${device_relay_name_2}_auto_off_switch_toggle"
+    optimistic: false
+    restore_state: true
+    turn_on_action:
+      - globals.set:
+          id: ${device_relay_name_2}_auto_off_timer
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: ${device_relay_name_2}_auto_off_timer
+          value: 'false'
+    lambda: |-
+      return id(${device_relay_name_2}_auto_off_timer);
 
 number:
   - platform: template
