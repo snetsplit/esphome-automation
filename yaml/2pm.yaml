@@ -50,14 +50,6 @@ switch:
     id: ${device_relay_name_2}_shelly_relay
     icon: "mdi:electric-switch"
     restore_mode: ${restore_mode_2}
-    on_turn_on:
-      - if:
-           condition:
-             - lambda: return (id(${device_relay_name_2}_auto_off_timer) && (0.0 == id(${device_relay_name_2}_scene).state));
-           then:
-             - number.set:
-                 id: "${device_relay_name_2}_scene"
-                 value: 1
   - platform: template
     name: "${friendly_relay_name_2} Edge Mode"
     id: "${device_relay_name_2}_basic_edge_switch_toggle_switch"
