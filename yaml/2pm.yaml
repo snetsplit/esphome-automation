@@ -13,6 +13,8 @@ substitutions:
   device_relay_name_1: "${device_name}_a"
   friendly_relay_name_2: "${friendly_name} B"
   device_relay_name_2: "${device_name}_b"
+  external_switch_gpio_1: "GPIO13"
+  external_switch_gpio_1: "GPIO5"
 
 globals:
    - id: ${device_relay_name_2}_scene_light_index
@@ -161,6 +163,21 @@ sun:
         - number.set:
             id: "${device_relay_name_2}_scene"
             value: !lambda return id(${device_relay_name_2}_sunset_scene).state;
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: ${external_switch_gpio_2}
+    filters:
+      - delayed_on_off: 50ms # small delay to prevent debouncing
+    name: "${friendly_relay_name_2} External Switch"
+    internal: false
+    id: "${device_relay_name_2}_actual_switch"
+    on_state:
+      then:
+      - number.increment:
+          id: "${device_relay_name_2}_scene"
+          cycle: true
 
 packages:
   base: 

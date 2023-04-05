@@ -12,6 +12,7 @@ substitutions:
   light_settings_string_1: '{{"light.turn_off"},{"light.turn_on","kelvin","2700","brightness_pct","30"},{"light.turn_on","kelvin","4587","brightness_pct","100"}}'
   light_entities_count_1: "2"
   scene_icon_1: "mdi:ceiling-light-outline"
+  external_switch_gpio_1: "GPIO4"
 
 globals:
    - id: too_hot_boolean
@@ -297,7 +298,7 @@ sun:
 binary_sensor:
   - platform: gpio
     pin:
-      number: GPIO4
+      number: ${external_switch_gpio_1}
     filters:
       - delayed_on_off: 50ms # small delay to prevent debouncing
     name: "${friendly_relay_name_1} External Switch"
