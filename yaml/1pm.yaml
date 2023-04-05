@@ -294,6 +294,21 @@ sun:
                    id: "${device_relay_name_1}_scene"
                    value: !lambda return id(${device_relay_name_1}_sunset_scene).state;
 
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO4
+    filters:
+      - delayed_on_off: 50ms # small delay to prevent debouncing
+    name: "${friendly_relay_name_1} External Switch"
+    internal: false
+    id: "${device_relay_name_1}_actual_switch"
+    on_state:
+      then:
+      - number.increment:
+          id: "${device_relay_name_1}_scene"
+          cycle: true
+
 packages:
   base: 
     url: https://github.com/snetsplit/esphome-automation

@@ -55,14 +55,6 @@ binary_sensor:
     pin: GPIO16
     name: "ade7953 IRQ pin"
     internal: true
-  - platform: gpio
-    pin:
-      number: GPIO4
-    filters:
-      - delayed_on_off: 50ms # small delay to prevent debouncing
-    name: "${friendly_name} External Switch"
-    internal: false
-    id: switchid
 
 packages:
   device-base: 
