@@ -34,7 +34,36 @@ globals:
      type: bool
      restore_value: true
      initial_value: 'false'
-     
+   - id: ${device_relay_name_1}_scene_light_index
+     type: unsigned int
+     restore_value: no
+     initial_value: '0'
+   - id: ${device_relay_name_1}_scene_light_host_string
+     type: const std::vector<std::string>
+     initial_value: ${scene_light_host_string_1}
+   - id: ${device_relay_name_1}_light_settings_string
+     type: const std::vector<std::vector<std::string>>
+     initial_value: ${light_settings_string_1}
+   - id: ${device_relay_name_1}_scene_master_host
+     type: std::string
+     initial_value: ${scene_master_host_1}
+   - id: ${device_relay_name_1}_edge_switch
+     type: bool
+     restore_value: true
+     initial_value: 'false'
+   - id: ${device_relay_name_1}_scene_switch
+     type: bool
+     restore_value: true
+     initial_value: 'false'
+   - id: ${device_relay_name_1}_http_switch
+     type: bool
+     restore_value: true
+     initial_value: 'false'
+   - id: ${device_relay_name_1}_auto_off_timer
+     type: bool
+     restore_value: false
+     initial_value: 'false'
+
 esphome:
   on_boot:
     priority: 200
