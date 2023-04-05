@@ -14,7 +14,7 @@ substitutions:
   friendly_relay_name_2: "${friendly_name} B"
   device_relay_name_2: "${device_name}_b"
   external_switch_gpio_1: "GPIO13"
-  external_switch_gpio_1: "GPIO5"
+  external_switch_gpio_2: "GPIO5"
 
 globals:
    - id: ${device_relay_name_2}_scene_light_index
