@@ -32,32 +32,7 @@ globals:
      type: bool
      restore_value: true
      initial_value: 'false'
-   - id: ${device_relay_name_2}_scene_switch
-     type: bool
-     restore_value: true
-     initial_value: 'false'
-   - id: ${device_relay_name_2}_http_switch
-     type: bool
-     restore_value: true
-     initial_value: 'false'
-   - id: ${device_relay_name_2}_auto_off_timer
-     type: bool
-     restore_value: false
-     initial_value: 'false'
-
-   - id: ${device_relay_name_2}_sun_enabled
-     type: bool
-     restore_value: true
-     initial_value: 'false'
-   - id: ${device_relay_name_2}_sunrise_enabled
-     type: bool
-     restore_value: true
-     initial_value: 'false'
-   - id: ${device_relay_name_2}_sunset_enabled
-     type: bool
-     restore_value: true
-     initial_value: 'false'
-
+     
 esphome:
   on_boot:
     priority: 200
@@ -98,101 +73,6 @@ switch:
           value: 'false'
     lambda: |-
       return id(${device_relay_name_2}_edge_switch);
-  - platform: template
-    name: "${friendly_relay_name_2} HA Lights"
-    id: "${device_relay_name_2}_scene_switch_toggle"
-    optimistic: false
-    restore_state: true
-    turn_on_action:
-      - globals.set:
-          id: ${device_relay_name_2}_scene_switch
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: ${device_relay_name_2}_scene_switch
-          value: 'false'
-    lambda: |-
-      return id(${device_relay_name_2}_scene_switch);
-  - platform: template
-    name: "${friendly_relay_name_2} http control"
-    id: "${device_relay_name_2}_http_switch_toggle"
-    optimistic: false
-    restore_state: true
-    turn_on_action:
-      - globals.set:
-          id: ${device_relay_name_2}_http_switch
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: ${device_relay_name_2}_http_switch
-          value: 'false'
-    lambda: |-
-      return id(${device_relay_name_2}_http_switch);
-  - platform: template
-    name: "${friendly_relay_name_2} Auto Off"
-    id: "${device_relay_name_2}_auto_off_switch_toggle"
-    optimistic: false
-    restore_state: true
-    turn_on_action:
-      - globals.set:
-          id: ${device_relay_name_2}_auto_off_timer
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: ${device_relay_name_2}_auto_off_timer
-          value: 'false'
-    lambda: |-
-      return id(${device_relay_name_2}_auto_off_timer);
-
-  - platform: template
-    name: "${friendly_relay_name_2} Sun Enabled"
-    id: "${device_relay_name_2}_sun_switch_toggle"
-    icon: "mdi:weather-sunny"
-    optimistic: false
-    restore_state: true
-    turn_on_action:
-      - globals.set:
-          id: ${device_relay_name_2}_sun_enabled
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: ${device_relay_name_2}_sun_enabled
-          value: 'false'
-    lambda: |-
-      return id(${device_relay_name_2}_sun_enabled);
-  - platform: template
-    name: "${friendly_relay_name_2} Sunrise Enabled"
-    id: "${device_relay_name_2}_sunrise_switch_toggle"
-    icon: "mdi:weather-sunset-up"
-    optimistic: false
-    restore_state: true
-    turn_on_action:
-      - globals.set:
-          id: ${device_relay_name_2}_sunrise_enabled
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: ${device_relay_name_2}_sunrise_enabled
-          value: 'false'
-    lambda: |-
-      return id(${device_relay_name_2}_sunrise_enabled);
-  - platform: template
-    name: "${friendly_relay_name_2} Sunset Enabled"
-    id: "${device_relay_name_2}_sunset_switch_toggle"
-    icon: "mdi:weather-sunset-down"
-    optimistic: false
-    restore_state: true
-    turn_on_action:
-      - globals.set:
-          id: ${device_relay_name_2}_sunset_enabled
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: ${device_relay_name_2}_sunset_enabled
-          value: 'false'
-    lambda: |-
-      return id(${device_relay_name_2}_sunset_enabled);
-
 
 number:
   - platform: template
@@ -207,13 +87,13 @@ number:
     on_value:
       then:
           - lambda: |-
-                        if(id(${device_relay_name_2}_sun_enabled) && (id(sun_id).elevation() > ${day_elevation}) && (1 == x) && (id(${device_relay_name_2}_scene).traits.get_max_value() > 1)) {
+                        if(id((id(sun_id).elevation() > ${day_elevation}) && (1 == x) && (id(${device_relay_name_2}_scene).traits.get_max_value() > 1)) {
                            id(${device_relay_name_2}_scene).make_call().number_increment(false).perform();
                            return;
                         }
                         
                         bool relayNoFlip = false;
-                        if(!id(${device_relay_name_2}_edge_switch) && id(${device_relay_name_2}_scene_switch) && id(api_id).is_connected()  && id(wifi_id).is_connected()) {
+                        if(!id(${device_relay_name_2}_edge_switch) && id(api_id).is_connected()  && id(wifi_id).is_connected()) {
                           const std::vector<std::string> attributes = id(${device_relay_name_2}_light_settings_string)[int(x)];
                           int index = 1;
                           HomeassistantServiceResponse resp;
@@ -238,7 +118,7 @@ number:
                             id(api_id).send_homeassistant_service_call(resp);
                             relayNoFlip = true;
                          }
-                         if (!id(${device_relay_name_2}_edge_switch) && id(${device_relay_name_2}_http_switch)  && id(wifi_id).is_connected()) {
+                         if (!id(${device_relay_name_2}_edge_switch) && id(wifi_id).is_connected()) {
                             esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                             httpRequestComponent.set_method("POST");
                             for(std::string host_path : id(${device_relay_name_2}_scene_light_host_string)) {
@@ -257,25 +137,6 @@ number:
                                 id(${device_relay_name_2}_scene).make_call().number_to_max().perform();
                                 return;
                         }
-          - if:
-               condition:
-                 - lambda: return (id(${device_relay_name_2}_auto_off_timer) && (0.0 < id(${device_relay_name_2}_scene).state));
-               then:
-                 - delay: !lambda return int(id(${device_relay_name_2}_auto_off_seconds).state) * 1000;
-                 - number.set:
-                     id: "${device_relay_name_2}_scene"
-                     value: 0
-  - platform: template
-    icon: "mdi:clock"
-    name: "${friendly_relay_name_2} Auto Off Seconds"
-    id: "${device_relay_name_2}_auto_off_seconds"
-    optimistic: true
-    min_value: 0
-    max_value: 8640
-    mode: box
-    unit_of_measurement: "s"
-    restore_value: true
-    step: 1
   - platform: template
     icon: "mdi:clock"
     name: "${friendly_relay_name_2} Sunrise Scene"
@@ -299,24 +160,16 @@ sun:
   on_sunrise:
     - elevation: ${day_elevation} 
       then: 
-        - if:
-             condition:
-               - lambda: return  id(${device_relay_name_2}_sunrise_enabled);
-             then:
-               - number.set:
-                   id: "${device_relay_name_2}_scene"
-                   value: !lambda return id(${device_relay_name_2}_sunrise_scene).state;
-
+        - number.set:
+            id: "${device_relay_name_2}_scene"
+            value: !lambda return id(${device_relay_name_2}_sunrise_scene).state;
   on_sunset:
     - elevation: ${day_elevation} 
       then: 
         - if:
-             condition:
-               - lambda: return  id(${device_relay_name_2}_sunset_enabled);
-             then:
-               - number.set:
-                   id: "${device_relay_name_2}_scene"
-                   value: !lambda return id(${device_relay_name_2}_sunset_scene).state;
+        - number.set:
+            id: "${device_relay_name_2}_scene"
+            value: !lambda return id(${device_relay_name_2}_sunset_scene).state;
 
 packages:
   base: 
