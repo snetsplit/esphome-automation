@@ -166,7 +166,6 @@ sun:
   on_sunset:
     - elevation: ${day_elevation} 
       then: 
-        - if:
         - number.set:
             id: "${device_relay_name_2}_scene"
             value: !lambda return id(${device_relay_name_2}_sunset_scene).state;
