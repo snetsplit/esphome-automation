@@ -314,7 +314,8 @@ sensor:
       - lambda: if (x < 2) return 0; else return x;
     update_interval: 10s
   - platform: total_daily_energy
-    name: "${friendly_relay_name_1}_watts_24_hours"
+    name: "${friendly_relay_name_1} 24 Hours"
+    id: "${device_relay_name_1}_watts_24_hours"
     power_id: "${device_relay_name_1}_watts"
     device_class: energy
     icon: "mdi:lightning-bolt-outline"
