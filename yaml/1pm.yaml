@@ -62,6 +62,10 @@ esphome:
 
 switch:
   - platform: gpio
+    pin: GPIO16
+    name: "ade7953 IRQ pin"
+    internal: true
+  - platform: gpio
     name: "${friendly_relay_name_1} Relay"
     pin: ${relay_gpio_1}
     id: ${device_relay_name_1}_shelly_relay
@@ -136,41 +140,6 @@ switch:
     lambda: |-
       return id(${device_relay_name_1}_auto_off_timer);
 
-sensor:
-  - platform: ntc
-    sensor: temp_resistance_reading
-    name: "${friendly_name} Shelly Temperature"
-    unit_of_measurement: "°c"
-    accuracy_decimals: 1
-    device_class: temperature
-    icon: "mdi:thermometer"
-    calibration:
-      b_constant: 3350
-      reference_resistance: 10kOhm
-      reference_temperature: 298.15K
-    on_value_range:
-      - above: ${max_temp}
-        then:
-          - globals.set:
-              id: too_hot_boolean
-              value: 'true'
-          - switch.turn_off: ${device_relay_name_1}_shelly_relay
-          - switch.turn_off: ${device_relay_name_2}_shelly_relay
-          - homeassistant.service:
-              service: persistent_notification.create
-              data:
-                title: Message from ${friendly_name}
-              data_template:
-                message: Switch turned off because temperature exceeded ${max_temp}°C
-          - homeassistant.event:
-              event: esphome.overheat
-              data:
-                title: "${friendly_name} has overheated."
-      - below: ${max_temp}
-        then:
-          - globals.set:
-              id: too_hot_boolean
-              value: 'false'
 
 number:
   - platform: template
@@ -279,21 +248,6 @@ sun:
                    id: "${device_relay_name_1}_scene"
                    value: !lambda return id(${device_name}_sunset_scene).state;
 
-binary_sensor:
-  - platform: gpio
-    pin:
-      number: ${external_switch_gpio_1}
-    filters:
-      - delayed_on_off: 50ms # small delay to prevent debouncing
-    name: "${friendly_relay_name_1} External Switch"
-    internal: false
-    id: "${device_relay_name_1}_actual_switch"
-    on_state:
-      then:
-      - number.increment:
-          id: "${device_relay_name_1}_scene"
-          cycle: true
-
 i2c:
   sda: GPIO12
   scl: GPIO14
@@ -307,7 +261,7 @@ sensor:
       name: "${friendly_relay_name_1} Watts"
       unit_of_measurement: W
       icon: "mdi:lightning-bolt-outline"
-      id: "${device_relay_name_1}_watts_24_hours"
+      id: "${device_relay_name_1}_watts"
       device_class: power
       state_class: measurement
       accuracy_decimals: 0
@@ -326,10 +280,44 @@ sensor:
       - lambda: if (x < 2) return 0; else return x;
     update_interval: 10s
 
+  - platform: ntc
+    sensor: temp_resistance_reading
+    name: "${friendly_name} Shelly Temperature"
+    unit_of_measurement: "°c"
+    accuracy_decimals: 1
+    device_class: temperature
+    icon: "mdi:thermometer"
+    calibration:
+      b_constant: 3350
+      reference_resistance: 10kOhm
+      reference_temperature: 298.15K
+    on_value_range:
+      - above: ${max_temp}
+        then:
+          - globals.set:
+              id: too_hot_boolean
+              value: 'true'
+          - switch.turn_off: ${device_relay_name_1}_shelly_relay
+          - switch.turn_off: ${device_relay_name_2}_shelly_relay
+          - homeassistant.service:
+              service: persistent_notification.create
+              data:
+                title: Message from ${friendly_name}
+              data_template:
+                message: Switch turned off because temperature exceeded ${max_temp}°C
+          - homeassistant.event:
+              event: esphome.overheat
+              data:
+                title: "${friendly_name} has overheated."
+      - below: ${max_temp}
+        then:
+          - globals.set:
+              id: too_hot_boolean
+              value: 'false'
+
   - platform: total_daily_energy
-    name: "${friendly_relay_name_1} Watts Last 24 hours"
     name: "${device_relay_name_1}_watts_24_hours"
-    power_id:"${device_relay_name_1}_watts"
+    power_id: "${device_relay_name_1}_watts"
     device_class: energy
     icon: "mdi:lightning-bolt-outline"
     state_class: measurement
@@ -344,12 +332,21 @@ output:
       number: GPIO00
       inverted: true
 
-
 binary_sensor:
   - platform: gpio
-    pin: GPIO16
-    name: "ade7953 IRQ pin"
-    internal: true
+    pin:
+      number: ${external_switch_gpio_1}
+    filters:
+      - delayed_on_off: 50ms # small delay to prevent debouncing
+    name: "${friendly_relay_name_1} External Switch"
+    internal: false
+    id: "${device_relay_name_1}_actual_switch"
+    on_state:
+      then:
+      - number.increment:
+          id: "${device_relay_name_1}_scene"
+          cycle: true
+
 
 packages:
   base: 
