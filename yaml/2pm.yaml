@@ -33,10 +33,6 @@ globals:
    - id: ${device_relay_name_2}_scene_master_host
      type: std::string
      initial_value: ${scene_master_host_2}
-   - id: ${device_relay_name_2}_edge_switch
-     type: bool
-     restore_value: true
-     initial_value: 'false'
 
 esphome:
   on_boot:
@@ -55,21 +51,6 @@ switch:
     id: ${device_relay_name_2}_shelly_relay
     icon: "mdi:electric-switch"
     restore_mode: ${restore_mode_2}
-  - platform: template
-    name: "${friendly_relay_name_2} Edge Mode"
-    id: "${device_relay_name_2}_basic_edge_switch_toggle_switch"
-    optimistic: false
-    restore_state: true
-    turn_on_action:
-      - globals.set:
-          id: ${device_relay_name_2}_edge_switch
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: ${device_relay_name_2}_edge_switch
-          value: 'false'
-    lambda: |-
-      return id(${device_relay_name_2}_edge_switch);
 
 sensor:
   - platform: ade7953
@@ -133,7 +114,7 @@ number:
                         }
                         
                         bool relayNoFlip = false;
-                        if(!id(${device_relay_name_2}_edge_switch) && id(api_id).is_connected()  && id(wifi_id).is_connected()) {
+                        if(id(api_id).is_connected()  && id(wifi_id).is_connected()) {
                           const std::vector<std::string> attributes = id(${device_relay_name_2}_light_settings_string)[int(x)];
                           int index = 1;
                           HomeassistantServiceResponse resp;
@@ -158,7 +139,7 @@ number:
                             id(api_id).send_homeassistant_service_call(resp);
                             relayNoFlip = true;
                          }
-                         if (!id(${device_relay_name_2}_edge_switch) && id(wifi_id).is_connected()) {
+                         if (id(wifi_id).is_connected()) {
                             esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                             httpRequestComponent.set_method("POST");
                             for(std::string host_path : id(${device_relay_name_2}_scene_light_host_string)) {
