@@ -255,24 +255,6 @@ number:
     unit_of_measurement: "s"
     restore_value: true
     step: 1
-  - platform: template
-    icon: "mdi:clock"
-    name: "${friendly_relay_name_1} Sunrise Scene"
-    id: "${device_relay_name_1}_sunrise_scene"
-    optimistic: true
-    min_value: 0
-    max_value: ${light_automation_input_number_max_1}
-    restore_value: true
-    step: 1
-  - platform: template
-    icon: "mdi:clock"
-    name: "${friendly_relay_name_1} Sunset Scene"
-    id: "${device_relay_name_1}_sunset_scene"
-    optimistic: true
-    min_value: 0
-    max_value: ${light_automation_input_number_max_1}
-    restore_value: true
-    step: 1
 
 sun:
   on_sunrise:
@@ -280,22 +262,22 @@ sun:
       then: 
         - if:
              condition:
-               - lambda: return  id(${device_relay_name_1}_sunrise_enabled);
+               - lambda: return  id(${device_name}_sunrise_enabled);
              then:
                - number.set:
                    id: "${device_relay_name_1}_scene"
-                   value: !lambda return id(${device_relay_name_1}_sunrise_scene).state;
+                   value: !lambda return id(${device_name}_sunrise_scene).state;
 
   on_sunset:
     - elevation: ${day_elevation} 
       then: 
         - if:
              condition:
-               - lambda: return  id(${device_relay_name_1}_sunset_enabled);
+               - lambda: return  id(${device_name}_sunset_enabled);
              then:
                - number.set:
                    id: "${device_relay_name_1}_scene"
-                   value: !lambda return id(${device_relay_name_1}_sunset_scene).state;
+                   value: !lambda return id(${device_name}_sunset_scene).state;
 
 binary_sensor:
   - platform: gpio

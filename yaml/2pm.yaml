@@ -158,13 +158,13 @@ sun:
       then: 
         - number.set:
             id: "${device_relay_name_2}_scene"
-            value: !lambda return id(${device_relay_name_2}_sunrise_scene).state;
+            value: !lambda return id(${device_name}_sunrise_scene).state;
   on_sunset:
     - elevation: ${day_elevation} 
       then: 
         - number.set:
             id: "${device_relay_name_2}_scene"
-            value: !lambda return id(${device_relay_name_2}_sunset_scene).state;
+            value: !lambda return id(${device_name}_sunset_scene).state;
 
 binary_sensor:
   - platform: gpio
