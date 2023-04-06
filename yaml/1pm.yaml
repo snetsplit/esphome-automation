@@ -45,10 +45,6 @@ globals:
      type: bool
      restore_value: true
      initial_value: 'false'
-   - id: ${device_relay_name_1}_auto_off_timer
-     type: bool
-     restore_value: false
-     initial_value: 'false'
 
 esphome:
   on_boot:
@@ -124,22 +120,6 @@ switch:
           value: 'false'
     lambda: |-
       return id(${device_relay_name_1}_http_switch);
-  - platform: template
-    name: "${friendly_relay_name_1} Auto Off"
-    id: "${device_relay_name_1}_auto_off_switch_toggle"
-    optimistic: false
-    restore_state: true
-    turn_on_action:
-      - globals.set:
-          id: ${device_relay_name_1}_auto_off_timer
-          value: 'true'
-    turn_off_action:
-      - globals.set:
-          id: ${device_relay_name_1}_auto_off_timer
-          value: 'false'
-    lambda: |-
-      return id(${device_relay_name_1}_auto_off_timer);
-
 
 number:
   - platform: template
@@ -205,14 +185,6 @@ number:
                                 id(${device_relay_name_1}_scene).make_call().number_to_max().perform();
                                 return;
                         }
-          - if:
-               condition:
-                 - lambda: return (id(${device_relay_name_1}_auto_off_timer) && (0.0 < id(${device_relay_name_1}_scene).state));
-               then:
-                 - delay: !lambda return int(id(${device_relay_name_1}_auto_off_seconds).state) * 1000;
-                 - number.set:
-                     id: "${device_relay_name_1}_scene"
-                     value: 0
   - platform: template
     icon: "mdi:clock"
     name: "${friendly_relay_name_1} Auto Off Seconds"
