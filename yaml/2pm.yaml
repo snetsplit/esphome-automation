@@ -197,5 +197,5 @@ binary_sensor:
 packages:
   base: 
     url: https://github.com/snetsplit/esphome-automation
-    file: yaml/1pm.yaml
+    file: yaml/base/pm-esp8266.yaml
     refresh: 1s

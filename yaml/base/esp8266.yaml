@@ -1,11 +1,20 @@
 #NOT COMPLETE. NOT WARRENTIED. USE AT OWN RISK.
 #provided as is, but feel free to learn, copy, and use, but at own risk.
 #this file has stuff used in pretty much every ESP8266 yaml file I have.
+substitutions:
+  esp_board: "esp01_1m"
+
 esphome:
   name: ${name}
   comment: ${friendly_name}
   platform: ESP8266
-  board: esp01_1m
+  board: ${esp_board}
+
+esp8266:
+  board: ${esp_board}
+  restore_from_flash: true
+  framework:
+    version: recommended
 
 
 sensor:
