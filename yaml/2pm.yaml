@@ -99,7 +99,7 @@ sensor:
     update_interval: 10s
 
   - platform: total_daily_energy
-    name: "${device_relay_name_2}_watts_24_hours"
+    name: "${friendly_relay_name_2}_watts_24_hours"
     power_id: "${device_relay_name_2}_watts"
     device_class: energy
     icon: "mdi:lightning-bolt-outline"
