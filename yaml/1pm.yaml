@@ -4,7 +4,7 @@ substitutions:
   device_type: "switch"
   device_type_nice: "Switch"
   max_temp: "60.0"
-  max_power: "1600.0"
+  max_power_1: "1600.0"
   restore_mode_1: RESTORE_DEFAULT_ON
   light_automation_input_number_max_1: '2'
   scene_light_host_string_1: ""
@@ -293,23 +293,26 @@ sensor:
     irq_pin: GPIO16 # Prevent overheating by setting this
     voltage:
       name: ${friendly_name} Voltage
-    # On the Shelly 2.5 channels are mixed ch1=B ch2=A
-    current_a:
-      name:${friendly_relay_name_2} current
+    current_b:
+      name: ${friendly_relay_name_1} current
       internal: true
-    active_power_a:
-      name: "${switch_2_friendly_name} Watts"
-      id: power_channel_2
+    active_power_b:
+      name: "${friendly_relay_name_1} Watts"
+      id: power_channel_1
+      # active_power_b is inverted, so multiply by -1
+      filters:
+      - multiply: -1
       on_value_range:
-        - above: ${max_power_2}
+        - above: ${max_power_1}
           then:
-            - switch.turn_off: shelly_relay_2
+            - switch.turn_off: ${device_relay_name_1}_shelly_relay
             - homeassistant.service:
                 service: persistent_notification.create
                 data:
-                  title: Message from  ${friendly_name} - ${friendly_relay_name_2}
+                  title: Message from  ${friendly_name} - ${friendly_relay_name_1}
                 data_template:
-                  message: Switch turned off because power exceeded ${max_power_2}W
+                  message: Switch turned off because power exceeded ${max_power_1}W
+
     update_interval: 30s
 output:
   - platform: esp8266_pwm
