@@ -101,7 +101,7 @@ sensor:
   - platform: total_daily_energy
     name: "${friendly_relay_name_2} Watts Last 24 hours"
     name: "${device_relay_name_2}_watts_24_hours"
-    power_id:"${device_relay_name_2}_watts"
+    power_id: "${device_relay_name_2}_watts"
     device_class: energy
     icon: "mdi:lightning-bolt-outline"
     state_class: measurement
