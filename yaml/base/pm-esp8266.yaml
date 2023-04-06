@@ -118,13 +118,13 @@ number:
                           HomeassistantServiceMap entity_key_value;
                           entity_key_value.key = "entity_id";
                           while(index <= ${light_entities_count_1}) {
-                                ESP_LOGI("web", "%s%s","light.${device_relay_name_1}" ,std::to_string(index);
                                 entity_key_value.value += "light.${device_relay_name_1}" + std::to_string(index);
                                 if(index < ${light_entities_count_1})  {
                                   entity_key_value.value += ",";
                                }
                                 index++;
                             } 
+                                    ESP_LOGI("woo","value %s",entity_key_value.value.c_str());
                             resp.data.push_back(entity_key_value);
                             index = 1;
                             while(index < attributes.size()) {
@@ -133,6 +133,7 @@ number:
                                 attribute_key_value.value = attributes[index++]; 
                                 resp.data.push_back(attribute_key_value);
                             }
+                                    ESP_LOGI("woo","value %s",attribute_key_value.value.c_str());
                             id(api_id).send_homeassistant_service_call(resp);
                             relayNoFlip = true;
                          }
