@@ -118,7 +118,7 @@ number:
                           HomeassistantServiceMap entity_key_value;
                           entity_key_value.key = "entity_id";
                           while(index <= ${light_entities_count_1}) {
-                                ESP_LOGI("web", "%slight.${device_relay_name_1}" + std::to_string(index)," ");
+                                ESP_LOGI("web", "light.${device_relay_name_1}%s" ,std::to_string(index);
                                 entity_key_value.value += "light.${device_relay_name_1}" + std::to_string(index);
                                 if(index < ${light_entities_count_1})  {
                                   entity_key_value.value += ",";
@@ -140,7 +140,6 @@ number:
                             esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                             httpRequestComponent.set_method("POST");
                             for(std::string host_path : id(${device_relay_name_1}_scene_light_host_string)) {
-                                ESP_LOGI("web", "http://" +host_path + "/set?value=%s" + std::to_string(int(x)),"");
                                 httpRequestComponent.set_url("http://" +host_path + "/set?value=" + std::to_string(int(x)));
                                 httpRequestComponent.send({});
                             }
