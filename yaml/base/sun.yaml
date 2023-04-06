@@ -129,7 +129,8 @@ switch:
     lambda: |-
       return id(${device_name}_sunset_enabled);
 
-number:  - platform: template
+number:
+  - platform: template
     icon: "mdi:clock"
     name: "${friendly_name} Sunrise Scene"
     id: "${device_name}_sunrise_scene"
