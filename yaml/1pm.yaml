@@ -322,10 +322,6 @@ sensor:
     filters:
       - multiply: 0.001
     unit_of_measurement: kWh
-  - platform: ade7953
-    irq_pin: GPIO16 # Prevent overheating by setting this
-    voltage:
-      name: ${friendly_name} Voltage
 
 output:
   - platform: esp8266_pwm
