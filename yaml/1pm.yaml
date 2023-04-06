@@ -287,43 +287,30 @@ sensor:
           - globals.set:
               id: too_hot_boolean
               value: 'false'
-  - platform: hlw8012
-    cf_pin: GPIO05
-    cf1_pin: GPIO13 # not used because it is not available on the 1PM but it is needed to compile
-    sel_pin: GPIO14 # not used because it is not available on the 1PM but it is needed to compile
-    power:
-      name: "${friendly_relay_name_1} Watts"
-      unit_of_measurement: W
-      icon: "mdi:lightning-bolt-outline"
-      id: "${device_relay_name_1}_watts"
-      device_class: power
-      state_class: measurement
-      accuracy_decimals: 0
-      filters:
-      # Map from sensor -> measured value
-      - calibrate_linear:
-          - 0.0 -> 1.0
-          - 110.33186 -> 20.62
-          - 131.01909 -> 24.32
-          - 341.33920 -> 62.08
-          - 5561.41553 -> 1000.0
-          - 2975.51221 -> 535.7
-          - 9612.66309 -> 1720.0
-          - 14891.35352 -> 2679.0
-      # Make everything below 2W appear as just 0W.
-      - lambda: if (x < 2) return 0; else return x;
-    update_interval: 10s
-  - platform: total_daily_energy
-    name: "${friendly_relay_name_1} 24 Hours"
-    id: "${device_relay_name_1}_watts_24_hours"
-    power_id: "${device_relay_name_1}_watts"
-    device_class: energy
-    icon: "mdi:lightning-bolt-outline"
-    state_class: measurement
-    filters:
-      - multiply: 0.001
-    unit_of_measurement: kWh
 
+
+  - platform: ade7953
+    irq_pin: GPIO16 # Prevent overheating by setting this
+    voltage:
+      name: ${friendly_name} Voltage
+    # On the Shelly 2.5 channels are mixed ch1=B ch2=A
+    current_a:
+      name:${friendly_relay_name_2} current
+      internal: true
+    active_power_a:
+      name: "${switch_2_friendly_name} Watts"
+      id: power_channel_2
+      on_value_range:
+        - above: ${max_power_2}
+          then:
+            - switch.turn_off: shelly_relay_2
+            - homeassistant.service:
+                service: persistent_notification.create
+                data:
+                  title: Message from  ${friendly_name} - ${friendly_relay_name_2}
+                data_template:
+                  message: Switch turned off because power exceeded ${max_power_2}W
+    update_interval: 30s
 output:
   - platform: esp8266_pwm
     id: state_led
