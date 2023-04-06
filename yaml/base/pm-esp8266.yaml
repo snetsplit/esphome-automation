@@ -124,7 +124,7 @@ number:
           - lambda: |-
                         if(id(${device_name}_sun_enabled) && (id(sun_id).elevation() > ${day_elevation}) && (1 == x) && (id(${device_relay_name_1}_scene).traits.get_max_value() > 1)) {
                            id(${device_relay_name_1}_scene).make_call().number_increment(false).perform();
-                           return x;
+                           return;
                         }
                         
                         bool relayNoFlip = false;
