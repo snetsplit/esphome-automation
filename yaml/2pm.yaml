@@ -133,38 +133,7 @@ number:
                                 id(${device_relay_name_2}_scene).make_call().number_to_max().perform();
                                 return;
                         }
-  - platform: template
-    icon: "mdi:clock"
-    name: "${friendly_relay_name_2} Sunrise Scene"
-    id: "${device_relay_name_2}_sunrise_scene"
-    optimistic: true
-    min_value: 0
-    max_value: ${light_automation_input_number_max_2}
-    restore_value: true
-    step: 1
-  - platform: template
-    icon: "mdi:clock"
-    name: "${friendly_relay_name_2} Sunset Scene"
-    id: "${device_relay_name_2}_sunset_scene"
-    optimistic: true
-    min_value: 0
-    max_value: ${light_automation_input_number_max_2}
-    restore_value: true
-    step: 1
 
-sun:
-  on_sunrise:
-    - elevation: ${day_elevation} 
-      then: 
-        - number.set:
-            id: "${device_relay_name_2}_scene"
-            value: !lambda return id(${device_name}_sunrise_scene).state;
-  on_sunset:
-    - elevation: ${day_elevation} 
-      then: 
-        - number.set:
-            id: "${device_relay_name_2}_scene"
-            value: !lambda return id(${device_name}_sunset_scene).state;
 
 binary_sensor:
   - platform: gpio
