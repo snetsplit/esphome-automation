@@ -287,7 +287,6 @@ sensor:
           - globals.set:
               id: too_hot_boolean
               value: 'false'
-
   - platform: hlw8012
     cf_pin: GPIO05
     cf1_pin: GPIO13 # not used because it is not available on the 1PM but it is needed to compile
@@ -323,6 +322,10 @@ sensor:
     filters:
       - multiply: 0.001
     unit_of_measurement: kWh
+  - platform: ade7953
+    irq_pin: GPIO16 # Prevent overheating by setting this
+    voltage:
+      name: ${friendly_name} Voltage
 
 output:
   - platform: esp8266_pwm
