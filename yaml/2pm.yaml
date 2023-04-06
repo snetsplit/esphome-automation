@@ -12,13 +12,15 @@ substitutions:
   scene_icon_2: "mdi:ceiling-light-outline"
   friendly_relay_name_2: "${friendly_name} B"
   device_relay_name_2: "${device_name}_b"
+  relay_gpio_2: "GPIO15"
   external_switch_gpio_1: "GPIO5"
   relay_gpio_1: "GPIO4"
-  relay_gpio_2: "GPIO15"
   external_switch_gpio_2: "GPIO13"
   friendly_relay_name_1: "${friendly_name} A"
   device_relay_name_1: "${device_name}_a"
-
+  light_name_1: "light.${device_relay_name_1}"
+  light_name_2: "light.${device_relay_name_2}"
+  
 globals:
    - id: ${device_relay_name_2}_scene_light_index
      type: unsigned int
@@ -94,7 +96,7 @@ sensor:
                   message: Switch turned off because power exceeded ${max_power_1}W
 
     update_interval: 30s
-    
+
 number:
   - platform: template
     name: "${friendly_relay_name_2} Scene"
@@ -103,18 +105,20 @@ number:
     optimistic: true
     min_value: 0
     max_value: ${light_automation_input_number_max_2}
-    restore_value: true
+    restore_value: false
+    initial_value: 1
     step: 1
     on_value:
       then:
           - lambda: |-
-                        if((id(sun_id).elevation() > ${day_elevation}) && (1 == x) && (id(${device_relay_name_2}_scene).traits.get_max_value() > 1)) {
+                        if(id(${device_name}_sun_enabled) && (id(sun_id).elevation() > ${day_elevation}) && (1 == x) && (id(${device_relay_name_2}_scene).traits.get_max_value() > 1)) {
                            id(${device_relay_name_2}_scene).make_call().number_increment(false).perform();
                            return;
                         }
                         
                         bool relayNoFlip = false;
-                        if(id(api_id).is_connected()  && id(wifi_id).is_connected()) {
+                        if(id(id(api_id).is_connected()  && id(wifi_id).is_connected()) {
+                          id(${device_relay_name_2}_shelly_relay).turn_on();
                           const std::vector<std::string> attributes = id(${device_relay_name_2}_light_settings_string)[int(x)];
                           int index = 1;
                           HomeassistantServiceResponse resp;
@@ -122,8 +126,7 @@ number:
                           HomeassistantServiceMap entity_key_value;
                           entity_key_value.key = "entity_id";
                           while(index <= ${light_entities_count_2}) {
-                                ESP_LOGI("web", "light.${device_relay_name_1}" + std::to_string(index),"");
-                                entity_key_value.value += "light.${device_relay_name_2}" + std::to_string(index);
+                                entity_key_value.value += "${light_name_2}" + std::to_string(index);
                                 if(index < ${light_entities_count_2})  {
                                   entity_key_value.value += ",";
                                }
@@ -140,11 +143,10 @@ number:
                             id(api_id).send_homeassistant_service_call(resp);
                             relayNoFlip = true;
                          }
-                         if (id(wifi_id).is_connected()) {
+                         if (( id(${device_relay_name_2}_scene_light_host_string).size() > 0)  && id(wifi_id).is_connected()) {
                             esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                             httpRequestComponent.set_method("POST");
                             for(std::string host_path : id(${device_relay_name_2}_scene_light_host_string)) {
-                                ESP_LOGI("web", "http://" +host_path + "/set?value=%s" + std::to_string(int(x)),"");
                                 httpRequestComponent.set_url("http://" +host_path + "/set?value=" + std::to_string(int(x)));
                                 httpRequestComponent.send({});
                             }

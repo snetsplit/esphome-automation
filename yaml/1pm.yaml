@@ -1,6 +1,5 @@
 #source for orginal: https://www.esphome-devices.com/devices/Shelly-1PM
 #NOT COMPLETE. NOT WARRENTIED. USE AT OWN RISK.
-substitutions:
 
 sensor:
   - platform: hlw8012

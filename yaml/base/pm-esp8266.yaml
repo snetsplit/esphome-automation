@@ -14,6 +14,7 @@ substitutions:
   scene_icon_1: "mdi:ceiling-light-outline"
   external_switch_gpio_1: "GPIO4"
   relay_gpio_1: "GPIO15"
+  light_name_1: "light.${sys_name}"
 
 globals:
    - id: too_hot_boolean
@@ -119,7 +120,7 @@ number:
                           HomeassistantServiceMap entity_key_value;
                           entity_key_value.key = "entity_id";
                           while(index <= ${light_entities_count_1}) {
-                                entity_key_value.value += "light.${sys_name}" + std::to_string(index);
+                                entity_key_value.value += "${light_name_1}" + std::to_string(index);
                                 if(index < ${light_entities_count_1})  {
                                   entity_key_value.value += ",";
                                }
