@@ -125,8 +125,7 @@ number:
                                   entity_key_value.value += ",";
                                }
                                 index++;
-                            } 
-                                    ESP_LOGI("woo","value %s",entity_key_value.value.c_str());
+                            }
                             resp.data.push_back(entity_key_value);
                             index = 1;
                             while(index < attributes.size()) {
