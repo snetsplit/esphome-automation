@@ -5,7 +5,7 @@ substitutions:
   device_type_nice: "Switch"
   max_temp: "60.0"
   max_power_1: "1600.0"
-  restore_mode_1: RESTORE_DEFAULT_ON
+  restore_mode_1: "ALWAYS_ON"
   light_automation_input_number_max_1: '2'
   scene_light_host_string_1: ""
   scene_master_host_1: ""
@@ -98,7 +98,8 @@ number:
     optimistic: true
     min_value: 0
     max_value: ${light_automation_input_number_max_1}
-    restore_value: true
+    restore_value: false
+    initial_value: 1
     step: 1
     on_value:
       then:
