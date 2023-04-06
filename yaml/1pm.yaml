@@ -11,7 +11,6 @@ sensor:
       name: "${friendly_relay_name_1} Watts"
       id: "${device_relay_name_1}_watts"
       unit_of_measurement: W
-      id: "shelly1pm_power"
       device_class: power
       state_class: measurement
       accuracy_decimals: 0
@@ -31,8 +30,8 @@ sensor:
     update_interval: 10s
 
   - platform: total_daily_energy
-    name: "${friendly_relay_name_1} 24 Hour Watts  "
-    id: "${friendly_relay_name_1}_24_hour_watts  "
+    name: "${friendly_relay_name_1} 24 Hour Watts"
+    id: "${device_relay_name_1}_24_hour_watts"
     power_id: "${device_relay_name_1}_watts"
     device_class: energy
     state_class: measurement
