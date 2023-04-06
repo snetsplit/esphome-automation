@@ -72,7 +72,7 @@ switch:
       return id(${device_relay_name_2}_edge_switch);
 
 sensor:
-  - platform: ade7953]
+  - platform: ade7953
     voltage:
       name: ${friendly_name} Voltage
     current_a:
