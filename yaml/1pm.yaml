@@ -240,31 +240,33 @@ sensor:
           - globals.set:
               id: too_hot_boolean
               value: 'false'
-
-
-  - platform: ade7953
-    irq_pin: GPIO16 # Prevent overheating by setting this
-    current_b:
-      name: ${friendly_relay_name_1} current
-      internal: true
-    active_power_b:
+  - platform: hlw8012
+    cf_pin: GPIO05
+    cf1_pin: GPIO13 # not used because it is not available on the 1PM but it is needed to compile
+    sel_pin: GPIO14 # not used because it is not available on the 1PM but it is needed to compile
+    power:
       name: "${friendly_relay_name_1} Watts"
-      id: power_channel_1
-      # active_power_b is inverted, so multiply by -1
+      unit_of_measurement: W
+      id: "shelly1pm_power"
+      device_class: power
+      state_class: measurement
+      accuracy_decimals: 0
       filters:
-      - multiply: -1
-      on_value_range:
-        - above: ${max_power_1}
-          then:
-            - switch.turn_off: ${device_relay_name_1}_shelly_relay
-            - homeassistant.service:
-                service: persistent_notification.create
-                data:
-                  title: Message from  ${friendly_name} - ${friendly_relay_name_1}
-                data_template:
-                  message: Switch turned off because power exceeded ${max_power_1}W
+      # Map from sensor -> measured value
+      - calibrate_linear:
+          - 0.0 -> 1.0
+          - 110.33186 -> 20.62
+          - 131.01909 -> 24.32
+          - 341.33920 -> 62.08
+          - 5561.41553 -> 1000.0
+          - 2975.51221 -> 535.7
+          - 9612.66309 -> 1720.0
+          - 14891.35352 -> 2679.0
+      # Make everything below 2W appear as just 0W.
+      - lambda: if (x < 2) return 0; else return x;
+    update_interval: 10s
 
-    update_interval: 30s
+
 output:
   - platform: esp8266_pwm
     id: state_led

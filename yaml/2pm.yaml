@@ -73,6 +73,7 @@ switch:
 
 sensor:
   - platform: ade7953
+    irq_pin: GPIO16 # Prevent overheating by setting this
     voltage:
       name: ${friendly_name} Voltage
     current_a:
@@ -91,6 +92,26 @@ sensor:
                   title: Message from  ${friendly_name} - ${friendly_relay_name_2}
                 data_template:
                   message: Switch turned off because power exceeded ${max_power_2}W
+    current_b:
+      name: ${friendly_relay_name_1} current
+      internal: true
+    active_power_b:
+      name: "${friendly_relay_name_1} Watts"
+      id: power_channel_1
+      # active_power_b is inverted, so multiply by -1
+      filters:
+      - multiply: -1
+      on_value_range:
+        - above: ${max_power_1}
+          then:
+            - switch.turn_off: ${device_relay_name_1}_shelly_relay
+            - homeassistant.service:
+                service: persistent_notification.create
+                data:
+                  title: Message from  ${friendly_name} - ${friendly_relay_name_1}
+                data_template:
+                  message: Switch turned off because power exceeded ${max_power_1}W
+
     update_interval: 30s
     
 number:
