@@ -109,7 +109,7 @@ number:
                         }
                         
                         bool relayNoFlip = false;
-                        if( id(${device_relay_name_1}_scene_switch) && id(api_id).is_connected()  && id(wifi_id).is_connected()) {
+                        if(id(${device_relay_name_1}_scene_switch) && () && id(api_id).is_connected()  && id(wifi_id).is_connected()) {
                           id(${device_relay_name_1}_shelly_relay).turn_on();
                           const std::vector<std::string> attributes = id(${device_relay_name_1}_light_settings_string)[int(x)];
                           int index = 1;
@@ -118,6 +118,7 @@ number:
                           HomeassistantServiceMap entity_key_value;
                           entity_key_value.key = "entity_id";
                           while(index <= ${light_entities_count_1}) {
+                                ESP_LOGI("web", "light.${device_relay_name_1}" + std::to_string(index),"");
                                 entity_key_value.value += "light.${device_relay_name_1}" + std::to_string(index);
                                 if(index < ${light_entities_count_1})  {
                                   entity_key_value.value += ",";
@@ -135,15 +136,18 @@ number:
                             id(api_id).send_homeassistant_service_call(resp);
                             relayNoFlip = true;
                          }
-                         if ( id(${device_relay_name_1}_http_switch)  && id(wifi_id).is_connected()) {
+                         if (( id(${device_relay_name_1}_scene_light_host_string).size() > 0)  && id(wifi_id).is_connected()) {
                             esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                             httpRequestComponent.set_method("POST");
                             for(std::string host_path : id(${device_relay_name_1}_scene_light_host_string)) {
+                                ESP_LOGI("web", "http://" +host_path + "/set?value=%s" + std::to_string(int(x)),"");
                                 httpRequestComponent.set_url("http://" +host_path + "/set?value=" + std::to_string(int(x)));
                                 httpRequestComponent.send({});
                             }
                             httpRequestComponent.close();
-                            relayNoFlip = true;
+                            if( id(${device_relay_name_1}_http_switch)) {
+                               relayNoFlip = true;
+                           }
                         }
                         
                         if(!relayNoFlip && (0 == x)) {
