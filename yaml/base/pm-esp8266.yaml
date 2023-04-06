@@ -7,7 +7,7 @@ substitutions:
   max_power_1: "1600.0"
   restore_mode_1: "ALWAYS_ON"
   light_automation_input_number_max_1: '2'
-  scene_light_host_string_1: "{}"
+  scene_light_host_string_1: ""
   scene_master_host_1: ""
   light_settings_string_1: '{{"light.turn_off"},{"light.turn_on","kelvin","2700","brightness_pct","30"},{"light.turn_on","kelvin","4587","brightness_pct","100"}}'
   light_entities_count_1: "2"
