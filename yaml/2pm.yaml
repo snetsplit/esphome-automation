@@ -72,15 +72,14 @@ switch:
       return id(${device_relay_name_2}_edge_switch);
 
 sensor:
-  - platform: ade7953
-    irq_pin: GPIO16 # Prevent overheating by setting this
+  - platform: ade7953]
     voltage:
       name: ${friendly_name} Voltage
     current_a:
       name: ${friendly_relay_name_2} current
       internal: true
     active_power_a:
-      name: "${friendly_relay_name_1} Watts"
+      name: "${friendly_relay_name_2} Watts"
       id: power_channel_2
       on_value_range:
         - above: ${max_power_2}
