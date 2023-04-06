@@ -119,7 +119,7 @@ number:
                           HomeassistantServiceMap entity_key_value;
                           entity_key_value.key = "entity_id";
                           while(index <= ${light_entities_count_1}) {
-                                entity_key_value.value += "light.${device_relay_name_1}" + std::to_string(index);
+                                entity_key_value.value += "light.${sys_name}" + std::to_string(index);
                                 if(index < ${light_entities_count_1})  {
                                   entity_key_value.value += ",";
                                }
