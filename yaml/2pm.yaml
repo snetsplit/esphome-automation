@@ -70,6 +70,45 @@ switch:
     lambda: |-
       return id(${device_relay_name_2}_edge_switch);
 
+sensor:
+  - platform: hlw8012
+    cf_pin: GPIO05
+    cf1_pin: GPIO13 # not used because it is not available on the 1PM but it is needed to compile
+    sel_pin: GPIO14 # not used because it is not available on the 1PM but it is needed to compile
+    power:
+      name: "${friendly_relay_name_2} Watts"
+      unit_of_measurement: W
+      icon: "mdi:lightning-bolt-outline"
+      id: "${device_relay_name_2}_watts_24_hours"
+      device_class: power
+      state_class: measurement
+      accuracy_decimals: 0
+      filters:
+      # Map from sensor -> measured value
+      - calibrate_linear:
+          - 0.0 -> 1.0
+          - 110.33186 -> 20.62
+          - 131.01909 -> 24.32
+          - 341.33920 -> 62.08
+          - 5561.41553 -> 1000.0
+          - 2975.51221 -> 535.7
+          - 9612.66309 -> 1720.0
+          - 14891.35352 -> 2679.0
+      # Make everything below 2W appear as just 0W.
+      - lambda: if (x < 2) return 0; else return x;
+    update_interval: 10s
+
+  - platform: total_daily_energy
+    name: "${friendly_relay_name_2} Watts Last 24 hours"
+    name: "${device_relay_name_2}_watts_24_hours"
+    power_id:"${device_relay_name_2}_watts"
+    device_class: energy
+    icon: "mdi:lightning-bolt-outline"
+    state_class: measurement
+    filters:
+      - multiply: 0.001
+    unit_of_measurement: kWh
+
 number:
   - platform: template
     name: "${friendly_relay_name_2} Scene"
@@ -97,7 +136,7 @@ number:
                           HomeassistantServiceMap entity_key_value;
                           entity_key_value.key = "entity_id";
                           while(index <= ${light_entities_count_2}) {
-                                entity_key_value.value += "light.${device_relay_name_1}" + std::to_string(index);
+                                entity_key_value.value += "light.${device_relay_name_2}" + std::to_string(index);
                                 if(index < ${light_entities_count_2})  {
                                   entity_key_value.value += ",";
                                }
