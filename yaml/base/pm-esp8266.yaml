@@ -133,7 +133,6 @@ number:
                                 attribute_key_value.value = attributes[index++]; 
                                 resp.data.push_back(attribute_key_value);
                             }
-                                    ESP_LOGI("woo","value %s",attribute_key_value.value.c_str());
                             id(api_id).send_homeassistant_service_call(resp);
                             relayNoFlip = true;
                          }
