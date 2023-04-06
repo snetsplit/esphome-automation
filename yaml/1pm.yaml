@@ -67,14 +67,6 @@ switch:
     id: ${device_relay_name_1}_shelly_relay
     icon: "mdi:electric-switch"
     restore_mode: ${restore_mode_1}
-    on_turn_on:
-      - if:
-           condition:
-             - lambda: return (id(${device_relay_name_1}_auto_off_timer) && (0.0 == id(${device_relay_name_1}_scene).state));
-           then:
-             - number.set:
-                 id: "${device_relay_name_1}_scene"
-                 value: 1
   - platform: template
     name: "${friendly_relay_name_1} Edge Mode"
     id: "${device_relay_name_1}_basic_edge_switch_toggle_switch"
@@ -185,17 +177,6 @@ number:
                                 id(${device_relay_name_1}_scene).make_call().number_to_max().perform();
                                 return;
                         }
-  - platform: template
-    icon: "mdi:clock"
-    name: "${friendly_relay_name_1} Auto Off Seconds"
-    id: "${device_relay_name_1}_auto_off_seconds"
-    optimistic: true
-    min_value: 0
-    max_value: 8640
-    mode: box
-    unit_of_measurement: "s"
-    restore_value: true
-    step: 1
 
 sun:
   on_sunrise:
