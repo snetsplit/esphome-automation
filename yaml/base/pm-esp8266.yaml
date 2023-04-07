@@ -145,6 +145,7 @@ number:
                             }
                             id(api_id).send_homeassistant_service_call(resp);
                             id(home_assistant_light_update_sent) = id(sntp_time).now().timestamp;
+                            ESP_LOGI("woo","s %d r %d",id(home_assistant_light_update_sent),id(home_assistant_light_update_received));
                             relayNoFlip = true;
                          }
                          if (( id(${device_relay_name_1}_scene_light_host_string).size() > 0)  && id(wifi_id).is_connected()) {
