@@ -265,7 +265,6 @@ binary_sensor:
             lambda: |-
              id(home_assistant_light_update_received) = id(sntp_time).now().timestamp;
              ESP_LOGI("woo","s %d r %d",id(home_assistant_light_update_sent),id(home_assistant_light_update_received));
-                                    ESP_LOGI("woo","value %s",attribute_key_value.value);
 
 
 packages:
