@@ -91,16 +91,6 @@ switch:
     lambda: |-
       return id(${device_relay_name_1}_http_switch);
 
-binary_sensor:
-  - platform: homeassistant
-    name: "${friendly_relay_name_1} test"
-    id: "${device_relay_name_1}_test"
-    entity_id: "light.${sys_name}1"
-  - platform: homeassistant
-    name: "${friendly_relay_name_1} test2"
-    id: "${device_relay_name_1}_test2"
-    entity_id: "light.${sys_name}5"
-
 number:
   - platform: template
     name: "${friendly_relay_name_1} Scene"
@@ -251,6 +241,14 @@ binary_sensor:
       - number.increment:
           id: "${device_relay_name_1}_scene"
           cycle: true
+  - platform: homeassistant
+    name: "${friendly_relay_name_1} test"
+    id: "${device_relay_name_1}_test"
+    entity_id: "light.${sys_name}1"
+  - platform: homeassistant
+    name: "${friendly_relay_name_1} test2"
+    id: "${device_relay_name_1}_test2"
+    entity_id: "light.${sys_name}5"
 
 
 packages:
