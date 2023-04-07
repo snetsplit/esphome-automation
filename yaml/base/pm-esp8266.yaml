@@ -34,6 +34,10 @@ globals:
      type: bool
      restore_value: true
      initial_value: 'false'
+   - id: old_x
+     type: int
+     restore_value: true
+     initial_value: 'false'
 
 esphome:
   on_boot:
@@ -86,9 +90,10 @@ number:
     on_value:
       then:
           - lambda: |-
-                        if(id(${device_relay_name_1}_scene).state ==x) {
+                        if(id(${device_relay_name_1}_scene).state == id(old_x)) {
                            return;
                         }
+                        id(old_x) = x;
                         if(id(${device_name}_sun_enabled) && (id(sun_id).elevation() > ${day_elevation}) && (1 == x) && (id(${device_relay_name_1}_scene).traits.get_max_value() > 1)) {
                            id(${device_relay_name_1}_scene).make_call().number_increment(false).perform();
                            return;
