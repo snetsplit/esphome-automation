@@ -91,7 +91,7 @@ switch:
     lambda: |-
       return id(${device_relay_name_1}_http_switch);
 
-text_sensor:
+binary_sensor:
   - platform: homeassistant
     name: "${friendly_relay_name_1} test"
     id: "${device_relay_name_1}_test"
