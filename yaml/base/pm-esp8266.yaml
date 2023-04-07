@@ -40,11 +40,11 @@ globals:
      restore_value: true
      initial_value: 'false'
    - id: home_assistant_light_update_received
-     type: int
+     type: long
      restore_value: true
      initial_value: '1'
    - id: home_assistant_light_update_sent
-     type: int
+     type: long
      restore_value: true
      initial_value: '1'
 
@@ -266,6 +266,7 @@ binary_sensor:
     on_state:
       then:
             lambda: |-
+             id(home_assistant_light_update_received) = id(sntp_time).now().timestamp;
              ESP_LOGI("woo","s %d r %d",id(home_assistant_light_update_sent),id(home_assistant_light_update_received));
 
 
