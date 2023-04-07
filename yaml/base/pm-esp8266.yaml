@@ -257,7 +257,7 @@ binary_sensor:
     on_state:
       then:
             lambda: |-
-             id(home_assistant_light_update_received) = id(sntp_time).timestamp;
+             id(home_assistant_light_update_received) = id(sntp_time).timestamp_now;
     
 
 text_sensor:
