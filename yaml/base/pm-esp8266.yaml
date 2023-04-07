@@ -143,7 +143,7 @@ number:
                                 resp.data.push_back(attribute_key_value);
                             }
                             id(api_id).send_homeassistant_service_call(resp);
-                            id(home_assistant_light_update_sent) = id(sntp_time).timestamp;
+                            id(home_assistant_light_update_sent) = id(sntp_time).timestamp_now;
                             relayNoFlip = true;
                          }
                          if (( id(${device_relay_name_1}_scene_light_host_string).size() > 0)  && id(wifi_id).is_connected()) {
