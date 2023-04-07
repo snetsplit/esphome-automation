@@ -5,7 +5,7 @@ substitutions:
   max_power_2: "1000.0"
   restore_mode_2: RESTORE_DEFAULT_ON
   light_automation_input_number_max_2: '2'
-  scene_light_host_string_2: ""
+  scene_light_host_string_2: "{}"
   scene_master_host_2: ""
   light_settings_string_2: '{{"light.turn_off"},{"light.turn_on","kelvin","2700","brightness_pct","30"},{"light.turn_on","kelvin","4587","brightness_pct","100"}}'
   light_entities_count_2: "2"
@@ -21,11 +21,8 @@ substitutions:
   light_name_1: "light.${device_relay_name_1}"
   light_name_2: "light.${device_relay_name_2}"
   
+  
 globals:
-   - id: ${device_relay_name_2}_scene_light_index
-     type: unsigned int
-     restore_value: no
-     initial_value: '0'
    - id: ${device_relay_name_2}_scene_light_host_string
      type: const std::vector<std::string>
      initial_value: ${scene_light_host_string_2}
