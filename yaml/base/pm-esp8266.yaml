@@ -86,7 +86,7 @@ number:
     on_value:
       then:
           - lambda: |-
-                        if(id(${device_relay_name_1}_scene).state = x) {
+                        if(id(${device_relay_name_1}_scene).state ==x) {
                            return;
                         }
                         if(id(${device_name}_sun_enabled) && (id(sun_id).elevation() > ${day_elevation}) && (1 == x) && (id(${device_relay_name_1}_scene).traits.get_max_value() > 1)) {
