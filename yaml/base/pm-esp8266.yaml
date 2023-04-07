@@ -15,7 +15,7 @@ substitutions:
   external_switch_gpio_1: "GPIO4"
   relay_gpio_1: "GPIO15"
   light_name_1: "light.${sys_name}"
-  light_name_1_1: "${light_name_1_1}"
+  light_name_1_1: "${light_name_1}1"
 
 globals:
    - id: too_hot_boolean
