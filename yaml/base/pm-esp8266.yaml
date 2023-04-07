@@ -30,6 +30,10 @@ globals:
    - id: ${device_relay_name_1}_scene_master_host
      type: std::string
      initial_value: ${scene_master_host_1}
+   - id: edge_switch_1
+     type: bool
+     restore_value: true
+     initial_value: 'false'
 
 esphome:
   on_boot:
@@ -52,6 +56,21 @@ switch:
     id: ${device_relay_name_1}_shelly_relay
     icon: "mdi:electric-switch"
     restore_mode: ${restore_mode_1}
+  - platform: template
+    name: "${switch_1_friendly_name} Switch Edge Mode"
+    id: "basic_edge_switch_toggle_switch_1"
+    optimistic: false
+    restore_state: false
+    turn_on_action:
+      - globals.set:
+          id: edge_switch_1
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: edge_switch_1
+          value: 'false'
+    lambda: |-
+      return id(edge_switch_1);
 
 number:
   - platform: template
@@ -110,7 +129,7 @@ number:
                             relayNoFlip = true;
                         }
                         
-                        if(!relayNoFlip && (0 == x)) {
+                        if((!relayNoFlip && (0 == x)) || id(edge_switch_1)) {
                                 id(${device_relay_name_1}_shelly_relay).turn_off();
                         }else if(!relayNoFlip && (id(${device_relay_name_1}_scene).traits.get_max_value() == x)) {
                                 id(${device_relay_name_1}_shelly_relay).turn_on();
