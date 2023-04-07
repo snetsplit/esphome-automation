@@ -15,6 +15,7 @@ substitutions:
   external_switch_gpio_1: "GPIO4"
   relay_gpio_1: "GPIO15"
   light_name_1: "light.${sys_name}"
+  light_name_1_1: "${light_name_1_1}"
 
 globals:
    - id: too_hot_boolean
@@ -258,7 +259,7 @@ binary_sensor:
              return (id(home_assistant_light_update_received) > id(home_assistant_light_update_sent));
   - platform: homeassistant
     id: "${device_relay_name_1}_alive"
-    entity_id: "${light_name_1}1"
+    entity_id: "${light_name_1_1}"
     attribute: "state"
     on_state:
       then:
