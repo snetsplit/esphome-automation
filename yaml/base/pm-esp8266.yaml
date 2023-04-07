@@ -15,7 +15,6 @@ substitutions:
   external_switch_gpio_1: "GPIO4"
   relay_gpio_1: "GPIO15"
   light_name_1: "light.${sys_name}"
-  light_name_1_1: "${light_name_1}1"
 
 globals:
    - id: too_hot_boolean
@@ -39,14 +38,6 @@ globals:
      type: bool
      restore_value: true
      initial_value: 'false'
-   - id: home_assistant_light_update_received
-     type: long
-     restore_value: true
-     initial_value: '1'
-   - id: home_assistant_light_update_sent
-     type: long
-     restore_value: true
-     initial_value: '1'
 
 esphome:
   on_boot:
@@ -144,8 +135,6 @@ number:
                                 resp.data.push_back(attribute_key_value);
                             }
                             id(api_id).send_homeassistant_service_call(resp);
-                            id(home_assistant_light_update_sent) = id(sntp_time).now().timestamp;
-                            ESP_LOGI("woo","s %d r %d",id(home_assistant_light_update_sent),id(home_assistant_light_update_received));
                             relayNoFlip = true;
                          }
                          if (( id(${device_relay_name_1}_scene_light_host_string).size() > 0)  && id(wifi_id).is_connected()) {
@@ -252,22 +241,6 @@ binary_sensor:
       - number.increment:
           id: "${device_relay_name_1}_scene"
           cycle: true
-  - platform: template
-    name: "${friendly_name} Home Assistant Connected"
-    id: "${device_name}_home_assistant_connected"
-    icon: "mdi:house"
-    lambda: |-
-             return (id(home_assistant_light_update_received) > id(home_assistant_light_update_sent));
-  - platform: homeassistant
-    id: "${device_relay_name_1}_alive"
-    internal: true
-    entity_id: "${light_name_1_1}"
-    attribute: "state"
-    on_state:
-      then:
-            lambda: |-
-             id(home_assistant_light_update_received) = id(sntp_time).now().timestamp;
-             ESP_LOGI("woo","s %d r %d",id(home_assistant_light_update_sent),id(home_assistant_light_update_received));
 
 
 packages:
