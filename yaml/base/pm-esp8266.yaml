@@ -39,11 +39,11 @@ globals:
      restore_value: true
      initial_value: 'false'
    - id: home_assistant_light_update_received
-     type: int
+     type: time_t
      restore_value: true
      initial_value: '1'
    - id: home_assistant_light_update_sent
-     type: int
+     type: time_t
      restore_value: true
      initial_value: '1'
 
