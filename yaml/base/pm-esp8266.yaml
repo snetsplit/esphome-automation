@@ -38,6 +38,14 @@ globals:
      type: bool
      restore_value: true
      initial_value: 'false'
+   - id: home_assistant_light_update_received
+     type: int
+     restore_value: true
+     initial_value: '1'
+   - id: home_assistant_light_update_sent
+     type: int
+     restore_value: true
+     initial_value: '1'
 
 esphome:
   on_boot:
@@ -135,6 +143,7 @@ number:
                                 resp.data.push_back(attribute_key_value);
                             }
                             id(api_id).send_homeassistant_service_call(resp);
+                            id(home_assistant_light_update_sent) = id(sntp_time).timestamp;
                             relayNoFlip = true;
                          }
                          if (( id(${device_relay_name_1}_scene_light_host_string).size() > 0)  && id(wifi_id).is_connected()) {
@@ -242,14 +251,22 @@ binary_sensor:
           id: "${device_relay_name_1}_scene"
           cycle: true
   - platform: homeassistant
-    name: "${friendly_relay_name_1} test"
     id: "${device_relay_name_1}_test"
-    entity_id: "light.${sys_name}1"
-  - platform: homeassistant
-    name: "${friendly_relay_name_1} test2"
-    id: "${device_relay_name_1}_test2"
-    entity_id: "light.${sys_name}5"
+    entity_id: "${light_name_1}1"
+    attribute: "state"
+    on_state:
+      then:
+            lambda: |-
+             id(home_assistant_light_update_received) = id(sntp_time).timestamp;
+    
 
+text_sensor:
+  - platform: template
+    name: "${friendly_name} Home Assistant Connected"
+    id: "${device_name}_home_assistant_connected"
+    icon: "mdi:house"
+    lambda: |-
+      return ((id(home_assistant_light_update_received).state > id(home_assistant_light_update_sent))?"responding":"not respoding");
 
 packages:
   base: 
