@@ -260,6 +260,7 @@ binary_sensor:
              return (id(home_assistant_light_update_received) > id(home_assistant_light_update_sent));
   - platform: homeassistant
     id: "${device_relay_name_1}_alive"
+    internal: true
     entity_id: "${light_name_1_1}"
     attribute: "state"
     on_state:
