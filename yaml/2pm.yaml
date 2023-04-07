@@ -46,6 +46,10 @@ esphome:
             then:
               - switch.turn_on: ${device_relay_name_2}_shelly_relay
 
+i2c:
+  sda: GPIO12
+  scl: GPIO14
+  
 switch:
   - platform: gpio
     name: "${friendly_relay_name_2} Relay"
@@ -131,7 +135,7 @@ number:
                                   entity_key_value.value += ",";
                                }
                                 index++;
-                            } 
+                            }
                             resp.data.push_back(entity_key_value);
                             index = 1;
                             while(index < attributes.size()) {

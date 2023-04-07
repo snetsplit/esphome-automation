@@ -142,10 +142,6 @@ sun:
                    id: "${device_relay_name_1}_scene"
                    value: !lambda return id(${device_name}_sunset_scene).state;
 
-i2c:
-  sda: GPIO12
-  scl: GPIO14
-
 sensor:
   - platform: ntc
     sensor: temp_resistance_reading
