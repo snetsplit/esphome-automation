@@ -257,7 +257,7 @@ binary_sensor:
     lambda: |-
              return (id(home_assistant_light_update_received) > id(home_assistant_light_update_sent));
   - platform: homeassistant
-    id: "${device_relay_name_1}_test"
+    id: "${device_relay_name_1}_alive
     entity_id: "${light_name_1}1"
     attribute: "state"
     on_state:
