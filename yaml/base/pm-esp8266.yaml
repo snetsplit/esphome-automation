@@ -258,16 +258,12 @@ binary_sensor:
       then:
             lambda: |-
              id(home_assistant_light_update_received) = id(sntp_time).now().timestamp;
-    
-
-text_sensor:
   - platform: template
     name: "${friendly_name} Home Assistant Connected"
     id: "${device_name}_home_assistant_connected"
     icon: "mdi:house"
     lambda: |-
-                          return ((id(home_assistant_light_update_received) > id(home_assistant_light_update_sent))?"responding":"not respoding").c_str();
-
+                          return (id(home_assistant_light_update_received) > id(home_assistant_light_update_sent));
 packages:
   base: 
     url: https://github.com/snetsplit/esphome-automation
