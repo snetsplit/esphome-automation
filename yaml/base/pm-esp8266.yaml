@@ -250,6 +250,12 @@ binary_sensor:
       - number.increment:
           id: "${device_relay_name_1}_scene"
           cycle: true
+  - platform: template
+    name: "${friendly_name} Home Assistant Connected"
+    id: "${device_name}_home_assistant_connected"
+    icon: "mdi:house"
+    lambda: |-
+             return (id(home_assistant_light_update_received) > id(home_assistant_light_update_sent));
   - platform: homeassistant
     id: "${device_relay_name_1}_test"
     entity_id: "${light_name_1}1"
@@ -258,12 +264,8 @@ binary_sensor:
       then:
             lambda: |-
              id(home_assistant_light_update_received) = id(sntp_time).now().timestamp;
-  - platform: template
-    name: "${friendly_name} Home Assistant Connected"
-    id: "${device_name}_home_assistant_connected"
-    icon: "mdi:house"
-    lambda: |-
-                          return (id(home_assistant_light_update_received) > id(home_assistant_light_update_sent));
+
+
 packages:
   base: 
     url: https://github.com/snetsplit/esphome-automation
