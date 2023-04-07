@@ -73,7 +73,7 @@ number:
                         }
                         
                         bool relayNoFlip = false;
-                        if((${light_entities_count_1} > 0) && id(api_id).is_connected()  && id(wifi_id).is_connected()) {
+                        if((${light_entities_count_1} > 0) && id(api_id).is_connected()) {
                           id(${device_relay_name_1}_shelly_relay).turn_on();
                           const std::vector<std::string> attributes = id(${device_relay_name_1}_light_settings_string)[int(x)];
                           int index = 1;
