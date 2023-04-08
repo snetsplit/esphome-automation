@@ -184,7 +184,7 @@ number:
                             httpRequestComponent.set_method("POST");
                             int index = 1;
                             while(index <= ${light_hosts_count_2}) {
-                                  httpRequestComponent.set_url("http://${light_name_2}-light"+ std::to_string(int(index)) + ".${domain}/${light_name_2}_light"+ std::to_string(int(index)) +"/set?value=" + std::to_string(int(x)));
+                                  httpRequestComponent.set_url("http://${device_relay_name_2}-light"+ std::to_string(int(index)) + "${domain}/${device_relay_name_2}_light"+ std::to_string(int(index)) +"/set?value=" + std::to_string(int(x)));
                                   httpRequestComponent.send({});
                                   index++;
                               }
