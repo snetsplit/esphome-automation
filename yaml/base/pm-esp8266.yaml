@@ -132,11 +132,11 @@ number:
                          if (( id(${device_relay_name_1}_scene_light_host_string).size() > 0)  && id(wifi_id).is_connected()) {
                             esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                             httpRequestComponent.set_method("POST");
-                            index2 = 1;
-                            while(index2 <= ${light_hosts_count_1}) {
-                                  httpRequestComponent.set_url("http://${light_name_1}-light"+ std::to_string(int(index2)) + ".${domain}/${light_name_1}_light"+ std::to_string(int(index2)) +"/set?value=" + std::to_string(int(x)));
+                            int index = 1;
+                            while(index <= ${light_hosts_count_1}) {
+                                  httpRequestComponent.set_url("http://${light_name_1}-light"+ std::to_string(int(index)) + ".${domain}/${light_name_1}_light"+ std::to_string(int(index)) +"/set?value=" + std::to_string(int(x)));
                                   httpRequestComponent.send({});
-                                  index2++;
+                                  index++;
                               }
                             for(std::string host_path : id(${device_relay_name_1}_scene_light_host_string)) {
                                 httpRequestComponent.set_url("http://" +host_path + "/set?value=" + std::to_string(int(x)));
