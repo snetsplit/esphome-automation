@@ -4,7 +4,7 @@ substitutions:
   input_number_max: "2"
   light_restore_mode: ALWAYS_ON
   color_interlock: 'true'
-  light_settings_brightness: '{0,30,100}'
+  light_settings_brightness: '{0,0.3,1}'
   light_settings_color_temp: '{"2700 K","2700 K","4587 K"}'
   esp_board: esp8285
 
@@ -15,6 +15,7 @@ globals:
    - id: light_settings_color_temp
      type: const std::vector<std::string>
      initial_value: ${light_settings_color_temp}
+
 
 web_server:
   port: 80
