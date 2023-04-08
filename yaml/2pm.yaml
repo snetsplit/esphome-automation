@@ -20,6 +20,7 @@ substitutions:
   device_relay_name_1: "${device_name}_a"
   light_name_1: "light.${device_relay_name_1}"
   light_name_2: "light.${device_relay_name_2}"
+  light_hosts_count_2: "0"
   
   
 globals:
@@ -154,11 +155,11 @@ number:
                         if((${light_entities_count_2} > 0) && id(api_id).is_connected()) {
                           id(${device_relay_name_2}_shelly_relay).turn_on();
                           const std::vector<std::string> attributes = id(${device_relay_name_2}_light_settings_string)[int(x)];
-                          int index = 1;
                           HomeassistantServiceResponse resp;
                           resp.service = attributes[0];
                           HomeassistantServiceMap entity_key_value;
                           entity_key_value.key = "entity_id";
+                          int index = 1;
                           while(index <= ${light_entities_count_2}) {
                                 entity_key_value.value += "${light_name_2}" + std::to_string(index);
                                 if(index < ${light_entities_count_2})  {
@@ -181,6 +182,12 @@ number:
                          if (( id(${device_relay_name_2}_scene_light_host_string).size() > 0)  && id(wifi_id).is_connected()) {
                             esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                             httpRequestComponent.set_method("POST");
+                          int index = 1;
+                          while(index <= ${light_hosts_count_2}) {
+                                httpRequestComponent.set_url("http://${light_name_2}-light"+ std::to_string(int(index)) + ".${domain}/${light_name_2}_light"+ std::to_string(int(index)) +"/set?value=" + std::to_string(int(x)));
+                                httpRequestComponent.send({});
+                                index++;
+                            }
                             for(std::string host_path : id(${device_relay_name_2}_scene_light_host_string)) {
                                 httpRequestComponent.set_url("http://" +host_path + "/set?value=" + std::to_string(int(x)));
                                 httpRequestComponent.send({});
