@@ -108,7 +108,7 @@ number:
               - light.turn_on:
                   id: "${device_name}_rgbct_light"
                   color_mode: "COLOR_TEMPERATURE"
-                  color_temperature: !lambda return id(light_settings_color_temp)[x][0];
+                  color_temperature: !lambda return id(light_settings_color_temp)[x];
                   brightness: !lambda return  id(light_settings_brightness)[x];
   - platform: template
     id: "color_brightness"
