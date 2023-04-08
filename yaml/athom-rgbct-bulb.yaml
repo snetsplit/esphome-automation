@@ -4,7 +4,7 @@ substitutions:
   input_number_max: "2"
   light_restore_mode: ALWAYS_ON
   color_interlock: 'true'
-  light_settings_string: '{{"",""},{"2700","30"},{"4587","100"}}'
+  light_settings_string: '{{"",""},{"2700 K","30"},{"4587 K","100"}}'
   esp_board: esp8285
 
 globals:
@@ -104,7 +104,7 @@ number:
               - light.turn_on:
                   id: "${device_name}_rgbct_light"
                   color_mode: "COLOR_TEMPERATURE"
-                  color_temperature: !lambda return  id(light_settings_string)[x][0];
+                  color_temperature: !lambda return id(light_settings_string)[x][0];
                   brightness: !lambda return  id(light_settings_string)[x][1];
   - platform: template
     id: "color_brightness"
