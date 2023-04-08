@@ -41,6 +41,11 @@ globals:
      restore_value: true
      initial_value: 'false'
 
+   - id: old_x_2
+     type: int
+     restore_value: true
+     initial_value: 'false'
+
 esphome:
   on_boot:
     priority: 200
@@ -135,11 +140,16 @@ number:
     on_value:
       then:
           - lambda: |-
+                        if(id(${device_relay_name_2}_scene).state == id(old_x_2)) {
+                           return;
+                        }
+
+                        id(old_x_2) = x;
                         if(id(${device_name}_sun_enabled) && (id(sun_id).elevation() > ${day_elevation}) && (1 == x) && (id(${device_relay_name_2}_scene).traits.get_max_value() > 1)) {
                            id(${device_relay_name_2}_scene).make_call().number_increment(false).perform();
                            return;
                         }
-                        
+
                         bool relayNoFlip = false;
                         if((${light_entities_count_2} > 0) && id(api_id).is_connected()) {
                           id(${device_relay_name_2}_shelly_relay).turn_on();
@@ -167,6 +177,7 @@ number:
                             id(api_id).send_homeassistant_service_call(resp);
                             relayNoFlip = true;
                          }
+
                          if (( id(${device_relay_name_2}_scene_light_host_string).size() > 0)  && id(wifi_id).is_connected()) {
                             esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                             httpRequestComponent.set_method("POST");
@@ -177,14 +188,15 @@ number:
                             httpRequestComponent.close();
                             relayNoFlip = true;
                         }
-                        
+
                         if((!relayNoFlip && (0 == x)) || id(edge_switch_2)) {
-                                id(${device_relay_name_2}_shelly_relay).turn_off();
-                        }else if(!relayNoFlip && (id(${device_relay_name_2}_scene).traits.get_max_value() == x)) {
-                                id(${device_relay_name_2}_shelly_relay).turn_on();
-                        } else if(!relayNoFlip) {
-                                id(${device_relay_name_2}_scene).make_call().number_to_max().perform();
-                                return;
+                            if(0 == x) {
+                                    id(${device_relay_name_2}_shelly_relay).turn_off();
+                            }else if(d(${device_relay_name_2}_scene).traits.get_max_value() == x) {
+                                    id(${device_relay_name_2}_shelly_relay).turn_on();
+                            } else {
+                                    id(${device_relay_name_2}_scene).make_call().number_to_max().perform();
+                            }
                         }
 
 
