@@ -7,6 +7,10 @@ substitutions:
   light_settings_string: '{{"",""},{"2700","30"},{"4587","100"}}'
   esp_board: esp8285
 
+globals:
+   - id: light_settings_string
+     type: const std::vector<std::vector<std::string>>
+     initial_value: ${light_settings_string}
 
 web_server:
   port: 80
