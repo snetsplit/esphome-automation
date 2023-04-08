@@ -16,6 +16,25 @@ globals:
      type: const std::vector<std::string>
      initial_value: ${light_settings_color_temp}
 
+esphome:
+  on_boot:
+    - priority: 600
+      then:
+      - number.set:
+          id: "scene"
+          value: 1
+    - priority: 200
+      then:
+      - http_request.get:
+          url: ${scene_master_host}
+          on_response:
+            then:
+             - lambda: |-
+                  json::parse_json(id(http_request_data).get_string(), [](JsonObject root) {
+                      id(scene).publish_state(root["state"]);
+                  });
+
+
 web_server:
   port: 80
   local: true
@@ -36,22 +55,6 @@ sensor:
       b_constant: 3350
       reference_resistance: 10kOhm
       reference_temperature: 298.15K
-
-button:
-    platform: template
-    id: test
-    name: "${friendly_name} Test"
-    on_press:
-      then:
-      - http_request.get:
-          url: ${scene_master_host}
-          on_response:
-            then:
-             - lambda: |-
-                  json::parse_json(id(http_request_data).get_string(), [](JsonObject root) {
-                      id(scene).publish_state(root["state"]);
-                  });
-
 
 output:
   - platform: esp8266_pwm
@@ -108,7 +111,7 @@ number:
               - light.turn_on:
                   id: "${device_name}_rgbct_light"
                   color_mode: "COLOR_TEMPERATURE"
-                  color_temperature: !lambda return id(light_settings_string)[x][0];
+                  color_temperature: !lambda return id(light_settings_color_temp)[x][0];
                   brightness: !lambda return  id(light_settings_brightness)[x];
   - platform: template
     id: "color_brightness"
