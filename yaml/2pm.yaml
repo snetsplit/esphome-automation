@@ -4,7 +4,6 @@ substitutions:
   max_power_1: "1000.0"
   max_power_2: "1000.0"
   restore_mode_2: RESTORE_DEFAULT_ON
-  scene_icon_2: "mdi:ceiling-light-outline"
   friendly_relay_name_2: "${friendly_name} B"
   device_relay_name_2: "${device_name}_b"
   relay_gpio_2: "GPIO15"
