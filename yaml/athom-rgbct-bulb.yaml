@@ -16,25 +16,6 @@ globals:
      type: const int[]
      initial_value: ${light_settings_brightness}
 
-esphome:
-  on_boot:
-    - priority: 600
-      then:
-      - number.set:
-          id: "scene"
-          value: 1
-    - priority: 200
-      then:
-      - http_request.get:
-          url: ${scene_master_host}
-          on_response:
-            then:
-             - lambda: |-
-                  json::parse_json(id(http_request_data).get_string(), [](JsonObject root) {
-                      id(scene).publish_state(root["state"]);
-                  });
-
-
 web_server:
   port: 80
   local: true
