@@ -231,6 +231,9 @@ binary_sensor:
 
 
 packages:
+    url: https://github.com/snetsplit/esphome-automation
+    file: yaml/base/light_settings.yaml
+    refresh: 1s
   base: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/esp8266.yaml
@@ -240,6 +243,3 @@ packages:
     file: yaml/base/sun.yaml
     refresh: 1s
   light_settings: 
-    url: https://github.com/snetsplit/esphome-automation
-    file: yaml/base/light_settings.yaml
-    refresh: 1s
