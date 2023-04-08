@@ -10,12 +10,11 @@ substitutions:
 
 globals:
    - id: light_settings_brightness
-     type: const std::vector<int>
+     type: const std::vector<float>
      initial_value: ${light_settings_brightness}
    - id: light_settings_color_temp
      type: const std::vector<std::string>
      initial_value: ${light_settings_color_temp}
-
 
 web_server:
   port: 80
