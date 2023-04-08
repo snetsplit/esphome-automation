@@ -36,6 +36,10 @@ globals:
      type: bool
      restore_value: true
      initial_value: 'false'
+   - id: edge_switch_2
+     type: bool
+     restore_value: true
+     initial_value: 'false'
 
 esphome:
   on_boot:
