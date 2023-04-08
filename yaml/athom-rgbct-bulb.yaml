@@ -16,7 +16,6 @@ globals:
      type: const std::vector<int>
      initial_value: ${light_settings_color_temp}
 
-
 web_server:
   port: 80
   local: true
