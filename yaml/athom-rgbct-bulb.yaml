@@ -9,12 +9,12 @@ substitutions:
   esp_board: esp8285
 
 globals:
-   - id: light_settings_color_temp
-     type: const std::string[]
-     initial_value: ${light_settings_color_temp}
    - id: light_settings_brightness
-     type: const int[]
+     type: const std::vector<std::int>
      initial_value: ${light_settings_brightness}
+   - id: light_settings_color_temp
+     type: const std::vector<std::string>
+     initial_value: ${light_settings_color_temp}
 
 web_server:
   port: 80
@@ -108,7 +108,7 @@ number:
               - light.turn_on:
                   id: "${device_name}_rgbct_light"
                   color_mode: "COLOR_TEMPERATURE"
-                  color_temperature: !lambda return id(light_settings_color_temp)[x][0];
+                  color_temperature: !lambda return id(light_settings_string)[x][0];
                   brightness: !lambda return  id(light_settings_brightness)[x];
   - platform: template
     id: "color_brightness"
