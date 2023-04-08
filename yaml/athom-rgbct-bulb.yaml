@@ -1,11 +1,10 @@
 substitutions:
   device_type: "light"
   device_type_nice: "Light"
-  light_automation_1_input_number_min: "0"
-  light_automation_1_input_number_max: "3"
+  input_number_max: "2"
   light_restore_mode: ALWAYS_ON
   color_interlock: 'true'
-  light_settings_string: '{{},{"2700","30"},{"4587","100"}}'
+  light_settings_string: '{{"",""},{"2700","30"},{"4587","100"}}'
   esp_board: esp8285
 
 
@@ -84,8 +83,8 @@ number:
     id: "scene"
     name: "${friendly_name} Scene"
     optimistic: true
-    min_value: ${light_automation_1_input_number_min}
-    max_value: ${light_automation_1_input_number_max}
+    min_value: 0
+    max_value: ${input_number_max}
     restore_value: false
     step: 1
     on_value:
@@ -97,33 +96,12 @@ number:
               - light.turn_off:
                   id: "${device_name}_rgbct_light"
                   transition_length: 1s
-        - if:
-            condition:
-              - lambda: return (1.0 < x);
-            then:
+            else:
               - light.turn_on:
                   id: "${device_name}_rgbct_light"
                   color_mode: "COLOR_TEMPERATURE"
-                  brightness: !lambda return  id(light_settings_string)[x][5];
-                  color_temperature: 2600 K
-        - if:
-            condition:
-              - lambda: return (2.0 == x);
-            then:
-              - light.turn_on:
-                  id: "${device_name}_rgbct_light"
-                  color_mode: "COLOR_TEMPERATURE"
-                  brightness: 100%
-                  color_temperature: 3000 K
-        - if:
-            condition:
-              - lambda: return (3.0 == x);
-            then:
-              - light.turn_on:
-                  id: "${device_name}_rgbct_light"
-                  color_mode: "COLOR_TEMPERATURE"
-                  brightness: 100%
-                  color_temperature: 6500 K
+                  color_temperature: !lambda return  id(light_settings_string)[x][0];
+                  brightness: !lambda return  id(light_settings_string)[x][1];
   - platform: template
     id: "color_brightness"
     name: "${friendly_name} Color Brightness"
