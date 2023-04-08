@@ -10,30 +10,11 @@ substitutions:
 
 globals:
    - id: light_settings_brightness
-     type: const std::vector<std::int>
+     type: const std::vector<int>
      initial_value: ${light_settings_brightness}
    - id: light_settings_color_temp
      type: const std::vector<std::string>
      initial_value: ${light_settings_color_temp}
-
-esphome:
-  on_boot:
-    - priority: 600
-      then:
-      - number.set:
-          id: "scene"
-          value: 1
-    - priority: 200
-      then:
-      - http_request.get:
-          url: ${scene_master_host}
-          on_response:
-            then:
-             - lambda: |-
-                  json::parse_json(id(http_request_data).get_string(), [](JsonObject root) {
-                      id(scene).publish_state(root["state"]);
-                  });
-
 
 web_server:
   port: 80
@@ -55,6 +36,22 @@ sensor:
       b_constant: 3350
       reference_resistance: 10kOhm
       reference_temperature: 298.15K
+
+button:
+    platform: template
+    id: test
+    name: "${friendly_name} Test"
+    on_press:
+      then:
+      - http_request.get:
+          url: ${scene_master_host}
+          on_response:
+            then:
+             - lambda: |-
+                  json::parse_json(id(http_request_data).get_string(), [](JsonObject root) {
+                      id(scene).publish_state(root["state"]);
+                  });
+
 
 output:
   - platform: esp8266_pwm
