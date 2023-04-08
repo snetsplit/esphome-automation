@@ -4,13 +4,17 @@ substitutions:
   input_number_max: "2"
   light_restore_mode: ALWAYS_ON
   color_interlock: 'true'
-  light_settings_string: '{{"",""},{"2700 K","30"},{"4587 K","100"}}'
+  light_settings_brightness: '{0,30,100}'
+  light_settings_color_temp: '{"2700 K","2700 K","4587 K"}'
   esp_board: esp8285
 
 globals:
-   - id: light_settings_string
-     type: const std::vector<std::vector<std::string>>
-     initial_value: ${light_settings_string}
+   - id: light_settings_color_temp
+     type: const std::string[]
+     initial_value: ${light_settings_color_temp}
+   - id: light_settings_brightness
+     type: const int[]
+     initial_value: ${light_settings_brightness}
 
 web_server:
   port: 80
@@ -105,7 +109,7 @@ number:
                   id: "${device_name}_rgbct_light"
                   color_mode: "COLOR_TEMPERATURE"
                   color_temperature: !lambda return id(light_settings_string)[x][0];
-                  brightness: !lambda return  id(light_settings_string)[x][1];
+                  brightness: !lambda return  id(light_settings_brightness)[x];
   - platform: template
     id: "color_brightness"
     name: "${friendly_name} Color Brightness"
