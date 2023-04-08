@@ -192,7 +192,7 @@ number:
                         if((!relayNoFlip && (0 == x)) || id(edge_switch_2)) {
                             if(0 == x) {
                                     id(${device_relay_name_2}_shelly_relay).turn_off();
-                            }else if(d(${device_relay_name_2}_scene).traits.get_max_value() == x) {
+                            }else if(id(${device_relay_name_2}_scene).traits.get_max_value() == x) {
                                     id(${device_relay_name_2}_shelly_relay).turn_on();
                             } else {
                                     id(${device_relay_name_2}_scene).make_call().number_to_max().perform();
