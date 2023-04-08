@@ -1,11 +1,8 @@
 substitutions:
   device_type: "light"
   device_type_nice: "Light"
-  input_number_max: "2"
   light_restore_mode: ALWAYS_ON
   color_interlock: 'true'
-  light_settings_brightness: '{0,0.3,1}'
-  light_settings_color_temp: '{371,371,218}'
   esp_board: esp8285
 
 globals:
@@ -15,6 +12,25 @@ globals:
    - id: light_settings_color_temp
      type: const std::vector<int>
      initial_value: ${light_settings_color_temp}
+
+esphome:
+  on_boot:
+    - priority: 600
+      then:
+      - number.set:
+          id: "scene"
+          value: 1
+    - priority: 200
+      then:
+      - http_request.get:
+          url: ${scene_master_host}
+          on_response:
+            then:
+             - lambda: |-
+                  json::parse_json(id(http_request_data).get_string(), [](JsonObject root) {
+                      id(scene).publish_state(root["state"]);
+                  });
+
 
 web_server:
   port: 80
@@ -92,7 +108,7 @@ number:
     name: "${friendly_name} Scene"
     optimistic: true
     min_value: 0
-    max_value: ${input_number_max}
+    max_value: ${light_automation_input_number_max_1}
     restore_value: false
     step: 1
     on_value:
@@ -110,94 +126,13 @@ number:
                   color_mode: "COLOR_TEMPERATURE"
                   color_temperature: !lambda return id(light_settings_color_temp)[x];
                   brightness: !lambda return  id(light_settings_brightness)[x];
-  - platform: template
-    id: "color_brightness"
-    name: "${friendly_name} Color Brightness"
-    optimistic: true
-    min_value: 0
-    max_value: 100
-    restore_value: true
-    step: 1
-    on_value:
-      then:
-        - light.turn_on:
-            id: "${device_name}_rgbct_light"
-            color_mode: "RGB"
-            color_brightness: !lambda 'return x/100.0;'
-  - platform: template
-    id: "white_brightness"
-    name: "${friendly_name} White Brightness"
-    optimistic: true
-    min_value: 0
-    max_value: 100
-    restore_value: true
-    step: 1
-    on_value:
-      then:
-        - light.turn_on:
-            id: "${device_name}_rgbct_light"
-            color_mode: "WHITE"
-            brightness: !lambda 'return x/100.0;'
-  - platform: template
-    id: "color_tempreture"
-    name: "${friendly_name} Color Tempreture"
-    optimistic: true
-    min_value: 154
-    max_value: 500
-    restore_value: true
-    step: 1
-    on_value:
-      then:
-        - light.turn_on:
-            id: "${device_name}_rgbct_light"
-            color_mode: "COLOR_TEMPERATURE"
-            color_temperature: !lambda 'return x;'
-  - platform: template
-    id: "red"
-    name: "${friendly_name} Red"
-    optimistic: true
-    min_value: 0
-    max_value: 100
-    restore_value: true
-    step: 1
-    on_value:
-      then:
-        - light.turn_on:
-            id: "${device_name}_rgbct_light"
-            color_mode: "RGB"
-            red: !lambda 'return x/100.0;'
-  - platform: template
-    id: "green"
-    name: "${friendly_name} Green"
-    optimistic: true
-    min_value: 0
-    max_value: 100
-    restore_value: true
-    step: 1
-    on_value:
-      then:
-        - light.turn_on:
-            id: "${device_name}_rgbct_light"
-            color_mode: "RGB"
-            green: !lambda 'return x/100.0;'
-  - platform: template
-    id: "blue"
-    name: "${friendly_name} Blue"
-    optimistic: true
-    min_value: 0
-    max_value: 100
-    restore_value: true
-    step: 1
-    on_value:
-      then:
-        - light.turn_on:
-            id: "${device_name}_rgbct_light"
-            color_mode: "RGB"
-            blue: !lambda 'return x/100.0;'
-
 
 packages:
   base: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/esp8266.yaml
+    refresh: 1s
+  light_settings: 
+    url: https://github.com/snetsplit/esphome-automation
+    file: yaml/base/light_settings.yaml
     refresh: 1s

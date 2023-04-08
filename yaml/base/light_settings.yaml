@@ -1,0 +1,19 @@
+substitutions:
+  light_automation_input_number_max_1: '2'
+  light_automation_input_number_max_2: '2'
+  light_settings_brightness: '{0,0.3,1}'
+  light_settings_color_temp: '{371,371,218}'
+  scene_light_host_string_1: ""
+  scene_master_host_1: ""
+  light_settings_string_1: '{{"light.turn_off"},{"light.turn_on","kelvin","2700","brightness_pct","30"},{"light.turn_on","kelvin","4587","brightness_pct","100"}}'
+  light_entities_count_1: "2"
+  scene_icon_1: "mdi:ceiling-light-outline"
+  light_name_1: "light.${sys_name}"
+  light_hosts_count_1: "0"
+  light_name_2: "light.${device_relay_name_2}"
+  light_hosts_count_2: "0"
+  light_automation_input_number_max_2: '2'
+  scene_light_host_string_2: ""
+  scene_master_host_2: ""
+  light_settings_string_2: '{{"light.turn_off"},{"light.turn_on","kelvin","2700","brightness_pct","30"},{"light.turn_on","kelvin","4587","brightness_pct","100"}}'
+  light_entities_count_2: "2"
