@@ -129,7 +129,7 @@ number:
                             relayNoFlip = true;
                          }
 
-                         if ((( id(${device_relay_name_1}_scene_light_host_string).size() > 0) || ((${light_entities_count_1} > 0) > 0))  && id(wifi_id).is_connected()) {
+                         if ((( id(${device_relay_name_1}_scene_light_host_string).size() > 0) || ((${light_hosts_count_1} > 0) > 0))  && id(wifi_id).is_connected()) {
                             esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
                             httpRequestComponent.set_method("POST");
                             int index = 1;
