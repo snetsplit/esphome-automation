@@ -1,0 +1,165 @@
+#source for orginal: https://www.esphome-devices.com/devices/Shelly-1PM
+#NOT COMPLETE. NOT WARRENTIED. USE AT OWN RISK.
+substitutions:
+  restore_mode_2: RESTORE_DEFAULT_ON
+  friendly_relay_name_2: "${friendly_name} B"
+  device_relay_name_2: "${device_name}_b"
+  relay_gpio_2: "GPIO15"
+  external_switch_gpio_1: "GPIO5"
+  relay_gpio_1: "GPIO4"
+  external_switch_gpio_2: "GPIO13"
+  friendly_relay_name_1: "${friendly_name} A"
+  device_relay_name_1: "${device_name}_a"
+  light_name_1: "light.${device_relay_name_1}"
+  
+  
+globals:
+   - id: ${device_relay_name_2}_scene_light_host_string
+     type: const std::vector<std::string>
+     initial_value: ${scene_light_host_string_2}
+   - id: ${device_relay_name_2}_light_settings_string
+     type: const std::vector<std::vector<std::string>>
+     initial_value: ${light_settings_string_2}
+   - id: ${device_relay_name_2}_scene_master_host
+     type: std::string
+     initial_value: ${scene_master_host_2}
+   - id: edge_switch_2
+     type: bool
+     restore_value: true
+     initial_value: 'false'
+   - id: old_x_2
+     type: int
+     restore_value: true
+     initial_value: 'false'
+
+esphome:
+  on_boot:
+    priority: 200
+    then:
+       - if:
+            condition:
+              - lambda: return (0.0 != id(${device_relay_name_2}_scene).state);
+            then:
+              - switch.turn_on: ${device_relay_name_2}_shelly_relay
+
+i2c:
+  sda: GPIO12
+  scl: GPIO14
+  
+switch:
+  - platform: gpio
+    name: "${friendly_relay_name_2} Relay"
+    pin: ${relay_gpio_2}
+    id: ${device_relay_name_2}_shelly_relay
+    icon: "mdi:electric-switch"
+    restore_mode: ${restore_mode_2}
+  - platform: template
+    name: "${friendly_relay_name_2} Switch Edge Mode"
+    id: "${device_relay_name_2}_switch_edge_mode"
+    optimistic: false
+    restore_state: false
+    turn_on_action:
+      - globals.set:
+          id: edge_switch_2
+          value: 'true'
+    turn_off_action:
+      - globals.set:
+          id: edge_switch_2
+          value: 'false'
+    lambda: |-
+      return id(edge_switch_2);
+
+number:
+  - platform: template
+    name: "${friendly_relay_name_2} Scene"
+    id: "${device_relay_name_2}_scene"
+    icon: "${scene_icon_2}"
+    optimistic: true
+    min_value: 0
+    max_value: ${light_automation_input_number_max_2}
+    restore_value: false
+    initial_value: 1
+    step: 1
+    on_value:
+      then:
+          - lambda: |-
+                        if(id(${device_relay_name_2}_scene).state == id(old_x_2)) {
+                           return;
+                        }
+
+                        id(old_x_2) = x;
+                        if(id(${device_name}_sun_enabled) && (id(sun_id).elevation() > ${day_elevation}) && (1 == x) && (id(${device_relay_name_2}_scene).traits.get_max_value() > 1)) {
+                           id(${device_relay_name_2}_scene).make_call().number_increment(false).perform();
+                           return;
+                        }
+
+                        bool relayNoFlip = false;
+                        if((${light_entities_count_2} > 0) && id(api_id).is_connected()) {
+                          id(${device_relay_name_2}_shelly_relay).turn_on();
+                          const std::vector<std::string> attributes = id(${device_relay_name_2}_light_settings_string)[int(x)];
+                          HomeassistantServiceResponse resp;
+                          resp.service = attributes[0];
+                          HomeassistantServiceMap entity_key_value;
+                          entity_key_value.key = "entity_id";
+                          int index = 1;
+                          while(index <= ${light_entities_count_2}) {
+                                entity_key_value.value += "${light_name_2}" + std::to_string(index);
+                                if(index < ${light_entities_count_2})  {
+                                  entity_key_value.value += ",";
+                               }
+                                index++;
+                            }
+                            resp.data.push_back(entity_key_value);
+                            index = 1;
+                            while(index < attributes.size()) {
+                                HomeassistantServiceMap attribute_key_value;
+                                attribute_key_value.key = attributes[index++];
+                                attribute_key_value.value = attributes[index++]; 
+                                resp.data.push_back(attribute_key_value);
+                            }
+                            id(api_id).send_homeassistant_service_call(resp);
+                            relayNoFlip = true;
+                         }
+
+                         if ((( id(${device_relay_name_2}_scene_light_host_string).size() > 0) || ((${light_hosts_count_2} > 0) > 0))  && id(wifi_id).is_connected()) {
+                            esphome::http_request::HttpRequestComponent httpRequestComponent = esphome::http_request::HttpRequestComponent();
+                            httpRequestComponent.set_method("POST");
+                            int index = 1;
+                            while(index <= ${light_hosts_count_2}) {
+                                  httpRequestComponent.set_url("http://${device_relay_name_2}"+ std::to_string(int(index)) + "-light${domain}/number/${device_relay_name_2}"+ std::to_string(int(index)) +"_light_scene/set?value=" + std::to_string(int(x)));
+                                  httpRequestComponent.send({});
+                                  index++;
+                              }
+                            for(std::string host_path : id(${device_relay_name_2}_scene_light_host_string)) {
+                                httpRequestComponent.set_url("http://" +host_path + "/set?value=" + std::to_string(int(x)));
+                                httpRequestComponent.send({});
+                            }
+                            httpRequestComponent.close();
+                            relayNoFlip = true;
+                        }
+
+                        if((!relayNoFlip && (0 == x)) || id(edge_switch_2)) {
+                            if(0 == x) {
+                                    id(${device_relay_name_2}_shelly_relay).turn_off();
+                            }else if(id(${device_relay_name_2}_scene).traits.get_max_value() == x) {
+                                    id(${device_relay_name_2}_shelly_relay).turn_on();
+                            } else {
+                                    id(${device_relay_name_2}_scene).make_call().number_to_max().perform();
+                            }
+                        }
+
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: ${external_switch_gpio_2}
+    filters:
+      - delayed_on_off: 50ms # small delay to prevent debouncing
+    name: "${friendly_relay_name_2} External Switch"
+    internal: false
+    id: "${device_relay_name_2}_actual_switch"
+    on_state:
+      then:
+      - number.increment:
+          id: "${device_relay_name_2}_scene"
+          cycle: true

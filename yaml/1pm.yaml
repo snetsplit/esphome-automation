@@ -1,46 +1,12 @@
 #source for orginal: https://www.esphome-devices.com/devices/Shelly-1PM
 #NOT COMPLETE. NOT WARRENTIED. USE AT OWN RISK.
 
-sensor:
-  - platform: hlw8012
-    cf_pin: GPIO05
-    cf1_pin: GPIO13 # not used because it is not available on the 1PM but it is needed to compile
-    sel_pin: GPIO14 # not used because it is not available on the 1PM but it is needed to compile
-    power:
-      name: "${friendly_relay_name_1} Watts"
-      id: "${device_relay_name_1}_watts"
-      unit_of_measurement: W
-      device_class: power
-      state_class: measurement
-      accuracy_decimals: 0
-      filters:
-      # Map from sensor -> measured value
-      - calibrate_linear:
-          - 0.0 -> 1.0
-          - 110.33186 -> 20.62
-          - 131.01909 -> 24.32
-          - 341.33920 -> 62.08
-          - 5561.41553 -> 1000.0
-          - 2975.51221 -> 535.7
-          - 9612.66309 -> 1720.0
-          - 14891.35352 -> 2679.0
-      # Make everything below 2W appear as just 0W.
-      - lambda: if (x < 2) return 0; else return x;
-    update_interval: 10s
-
-  - platform: total_daily_energy
-    name: "${friendly_relay_name_1} 24 Hour Watts"
-    id: "${device_relay_name_1}_24_hour_watts"
-    power_id: "${device_relay_name_1}_watts"
-    device_class: energy
-    state_class: measurement
-    filters:
-      - multiply: 0.001
-    unit_of_measurement: kWh
-
-
 packages:
-  base: 
+  1pm-base: 
     url: https://github.com/snetsplit/esphome-automation
-    file: yaml/base/pm-esp8266.yaml
+    file: yaml/base/1pm-base.yaml
+    refresh: 1s
+  1pm-switches: 
+    url: https://github.com/snetsplit/esphome-automation
+    file: yaml/base/1pm-switches.yaml
     refresh: 1s
