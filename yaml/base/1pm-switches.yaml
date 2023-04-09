@@ -1,12 +1,5 @@
 #source for orginal: https://www.esphome-devices.com/devices/Shelly-1PM
 #NOT COMPLETE. NOT WARRENTIED. USE AT OWN RISK.
-substitutions:
-  max_temp: "70.0"
-  max_power_1: "1600.0"
-  restore_mode_1: "ALWAYS_ON"
-  external_switch_gpio_1: "GPIO4"
-  relay_gpio_1: "GPIO15"
-
 globals:
    - id: ${device_relay_name_1}_scene_light_host_string
      type: const std::vector<std::string>

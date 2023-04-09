@@ -3,6 +3,10 @@
 substitutions:
   max_power_1: "1000.0"
   max_power_2: "1000.0"
+  friendly_relay_name_2: "${friendly_name} B"
+  device_relay_name_2: "${device_name}_b"
+  friendly_relay_name_1: "${friendly_name} A"
+  device_relay_name_1: "${device_name}_a"
   relay_gpio_2: "GPIO15"
   external_switch_gpio_1: "GPIO5"
   relay_gpio_1: "GPIO4"

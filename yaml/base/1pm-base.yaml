@@ -3,6 +3,8 @@
 substitutions:
   external_switch_gpio_1: "GPIO4"
   relay_gpio_1: "GPIO15"
+  friendly_relay_name_1: "${friendly_name}"
+  device_relay_name_1: "${device_name}"
 
 sensor:
   - platform: hlw8012
