@@ -4,10 +4,6 @@ substitutions:
   restore_mode_2: RESTORE_DEFAULT_ON
   friendly_relay_name_2: "${friendly_name} B"
   device_relay_name_2: "${device_name}_b"
-  relay_gpio_2: "GPIO15"
-  external_switch_gpio_1: "GPIO5"
-  relay_gpio_1: "GPIO4"
-  external_switch_gpio_2: "GPIO13"
   friendly_relay_name_1: "${friendly_name} A"
   device_relay_name_1: "${device_name}_a"
   light_name_1: "light.${device_relay_name_1}"

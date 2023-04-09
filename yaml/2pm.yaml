@@ -2,15 +2,15 @@
 #NOT COMPLETE. NOT WARRENTIED. USE AT OWN RISK.
 
 packages:
-  base: 
+  2pm-base: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/2pm-base.yaml
-    refresh: 1s
-  1pm-base: 
-    url: https://github.com/snetsplit/esphome-automation
-    file: yaml/base/1pm-switches.yaml
     refresh: 1s
   1pm-switches: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/2pm-switches.yaml
+    refresh: 1s
+  1pm-base: 
+    url: https://github.com/snetsplit/esphome-automation
+    file: yaml/base/1pm-switches.yaml
     refresh: 1s

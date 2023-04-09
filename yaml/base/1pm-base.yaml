@@ -1,5 +1,8 @@
 #source for orginal: https://www.esphome-devices.com/devices/Shelly-1PM
 #NOT COMPLETE. NOT WARRENTIED. USE AT OWN RISK.
+substitutions:
+  external_switch_gpio_1: "GPIO4"
+  relay_gpio_1: "GPIO15"
 
 sensor:
   - platform: hlw8012
