@@ -20,7 +20,7 @@ dallas:
 sensor:
   - platform: dallas
     address: ${dallas_address}
-    name: ${friendly_name}
+    name: ${friendly_name} Temperature
     id: ${device_name}
     icon: mdi:thermometer
     dallas_id: ${device_name}_pin
