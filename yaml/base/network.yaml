@@ -4,6 +4,10 @@ substitutions:
   password: "ewwwwwwwww"
   domain: ".local"
   power_save_mode: "high"
+<<<<<<< HEAD
+=======
+  http_request_timeout: "2s"
+>>>>>>> e30ac66ac6bb0f667d5c86cb56d768e0ef1de227
   ota_password: "wouldn't you like to know?"
 
 api:
@@ -28,12 +32,6 @@ wifi:
 
 web_server:
   port: ${web_server_port}
-
-http_request:
-  id: http_request_data
-  useragent: esphome/device
-  timeout: ${http_request_timeout}
-  esp8266_disable_ssl_support: ${esp8266_disable_ssl_support}
 
 sensor:
   - platform: wifi_signal
