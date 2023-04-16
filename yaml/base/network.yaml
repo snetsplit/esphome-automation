@@ -6,19 +6,6 @@ substitutions:
   power_save_mode: "high"
   ota_password: "wouldn't you like to know?"
 
-
-esphome:
-  name: ${name}
-  comment: ${friendly_name}
-
-
-esp8266:
-  board: ${esp_board}
-  restore_from_flash: true
-  framework:
-    version: recommended
-
-
 api:
   id: api_id
 
@@ -76,10 +63,3 @@ text_sensor:
       name: ${friendly_name} APs Available
       id: ${device_name}_scan
       icon: mdi:wifi
-
-
-packages:
-  names: 
-    url: https://github.com/snetsplit/esphome-automation
-    file: yaml/base/names.yaml
-    refresh: 1s
