@@ -3,6 +3,8 @@
 #this file has stuff used in pretty much every ESP8266 yaml file I have.
 substitutions:
   esp_board: "esp01_1m"
+  esp8266_disable_ssl_support: "true"
+  http_request_timeout: "2s"
 
 esphome:
   name: ${name}
