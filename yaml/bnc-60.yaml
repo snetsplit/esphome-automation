@@ -1,10 +1,11 @@
 substitutions:
-  nice_name: "BNC-60 Outlet"
-  sys_name: "bnc60_outlet"
+  nice_name: "BNC-60"
+  sys_name: "bnc60"
   device_type: "outlet"
   device_type_nice: "Outlet"
   current_res: "0.00243"
   voltage_div: "755"
+  restore_mode: "RESTORE_DEFAULT_ON"
 
 binary_sensor:
   - platform: gpio
@@ -24,9 +25,9 @@ switch:
     pin: GPIO14
     restore_mode: ${restore_mode}
     on_turn_on:
-      - switch.turn_on: "led_blue"
+      - switch.turn_on: "${device_name}_led_blue"
     on_turn_off:
-      - switch.turn_off: "led_blue"
+      - switch.turn_off: "${device_name}_led_blue"
     
   - platform: gpio
     name: "${friendly_name}  LED Blue"
@@ -93,8 +94,8 @@ sensor:
     
   - platform: total_daily_energy
     name: "${friendly_name} Total Daily Energy"
-    "${device_name}_daily_watts"
-    power_id: "wattage"
+    id: "${device_name}_daily_watts"
+    power_id: "${device_name}_wattage"
     filters:
         # Multiplication factor from W to kW is 0.001
         - multiply: 0.001
