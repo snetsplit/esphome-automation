@@ -1,0 +1,107 @@
+substitutions:
+  nice_name: "BNC-60 Outlet"
+  sys_name: "bnc60_outlet"
+  device_type: "outlet"
+  device_type_nice: "Outlet"
+  current_res: "0.00243"
+  voltage_div: "755"
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO3
+      inverted: True
+    name: "${friendly_name} Power Button"
+    id: "${device_name}_power_button"
+    on_press:
+      then:
+        - switch.toggle: "${device_name}_relay"
+
+switch:
+  - platform: gpio
+    name: "${friendly_name} Relay"
+    id: "${device_name}_relay"
+    pin: GPIO14
+    restore_mode: ${restore_mode}
+    on_turn_on:
+      - switch.turn_on: "led_blue"
+    on_turn_off:
+      - switch.turn_off: "led_blue"
+    
+  - platform: gpio
+    name: "${friendly_name}  LED Blue"
+    id: "${device_name}_led_blue"
+    pin: GPIO13
+    inverted: True
+    restore_mode: ${restore_mode} # Matches relay
+  
+  # Red LED used for ESPHome status below, but this could be
+  # reconfigured for other purposes!
+  # - platform: gpio
+  #   name: "${friendly_name}  LED Red"
+  #   id: "${device_name}_led_red"
+  #   pin: GPIO1
+  #   inverted: True
+  #   restore_mode: ALWAYS_OFF
+
+status_led:
+  pin:
+    number: GPIO1
+    inverted: True
+  
+sensor:
+  - platform: hlw8012
+    sel_pin:
+      number: GPIO12
+      inverted: True
+    cf_pin: GPIO4
+    cf1_pin: GPIO5
+    current_resistor: ${current_res}
+    voltage_divider: ${voltage_div}
+    current:
+      name: "${friendly_name} Amperage"
+      id: "${device_name}_amps"
+      unit_of_measurement: A
+      filters:
+        # - calibrate_linear:
+        #   # Map X (from sensor) to Y (true value)
+        #   # At least 2 data points required
+        #   - 0.0 -> 0.0
+        #   - 1.0 -> 1.0 #load was on
+    voltage:
+      name: "${friendly_name}  Voltage"
+      id: "${device_name}_voltage"
+      unit_of_measurement: V
+      filters:
+        # - calibrate_linear:
+        #   # Map X (from sensor) to Y (true value)
+        #   # At least 2 data points required
+        #   - 0.0 -> 0.0
+        #   - 1.0 -> 1.0 #load was on
+    power:
+      id: "${device_name}_wattage"
+      name: "${friendly_name} Wattage"
+      unit_of_measurement: W
+      filters:
+        # - calibrate_linear:
+        #   # Map X (from sensor) to Y (true value)
+        #   # At least 2 data points required
+        #   - 0.0 -> 0.0
+        #   - 1.0 -> 1.0 #load was on
+    change_mode_every: 8
+    update_interval: 3s # Longer interval gives better accuracy
+    
+  - platform: total_daily_energy
+    name: "${friendly_name} Total Daily Energy"
+    "${device_name}_daily_watts"
+    power_id: "wattage"
+    filters:
+        # Multiplication factor from W to kW is 0.001
+        - multiply: 0.001
+    unit_of_measurement: kWh
+
+packages:
+  base: 
+    url: https://github.com/snetsplit/esphome-automation
+    file: yaml/base/esp8266.yaml
+    refresh: 1s
