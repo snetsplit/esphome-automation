@@ -15,6 +15,9 @@ esp8266:
     version: recommended
 
 
+http_request:
+  esp8266_disable_ssl_support: ${esp8266_disable_ssl_support}
+
 sensor:
   - platform: resistance
     id: temp_resistance_reading
