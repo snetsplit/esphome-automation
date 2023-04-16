@@ -16,6 +16,9 @@ esp8266:
 
 
 http_request:
+  id: http_request_data
+  useragent: esphome/device
+  timeout: ${http_request_timeout}
   esp8266_disable_ssl_support: ${esp8266_disable_ssl_support}
 
 sensor:
