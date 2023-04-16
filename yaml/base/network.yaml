@@ -4,11 +4,20 @@ substitutions:
   password: "ewwwwwwwww"
   domain: ".local"
   power_save_mode: "high"
-<<<<<<< HEAD
-=======
-  http_request_timeout: "2s"
->>>>>>> e30ac66ac6bb0f667d5c86cb56d768e0ef1de227
   ota_password: "wouldn't you like to know?"
+
+
+esphome:
+  name: ${name}
+  comment: ${friendly_name}
+
+
+esp8266:
+  board: ${esp_board}
+  restore_from_flash: true
+  framework:
+    version: recommended
+
 
 api:
   id: api_id
@@ -41,6 +50,11 @@ sensor:
     update_interval: 60s
 
 text_sensor:
+  - platform: template
+    name: "${friendly_name} Hostname"
+    id: ${device_name}_hostname
+    icon: mdi:ip-network
+    lambda: return {"${name}${domain}"};
   - platform: wifi_info
     ip_address:
       name: ${friendly_name} IP Address
@@ -62,8 +76,10 @@ text_sensor:
       name: ${friendly_name} APs Available
       id: ${device_name}_scan
       icon: mdi:wifi
-  - platform: template
-    name: "${friendly_name} Hostname"
-    id: ${device_name}_hostname
-    icon: mdi:ip-network
-    lambda: return {"${name}${domain}"};
+
+
+packages:
+  names: 
+    url: https://github.com/snetsplit/esphome-automation
+    file: yaml/base/names.yaml
+    refresh: 1s

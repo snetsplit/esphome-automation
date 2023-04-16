@@ -17,6 +17,12 @@ esp8266:
     version: recommended
 
 
+packages:
+  base: 
+    url: https://github.com/snetsplit/esphome-automation
+    file: yaml/base/base.yaml
+    refresh: 1s
+
 http_request:
   id: http_request_data
   useragent: esphome/device
@@ -33,9 +39,3 @@ sensor:
     id: temp_analog_reading
     pin: A0
 
-
-packages:
-  base: 
-    url: https://github.com/snetsplit/esphome-automation
-    file: yaml/base/base.yaml
-    refresh: 1s
