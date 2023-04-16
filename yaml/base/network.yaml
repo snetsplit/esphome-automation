@@ -30,11 +30,6 @@ wifi:
 web_server:
   port: ${web_server_port}
 
-http_request:
-  id: http_request_data
-  useragent: esphome/device
-  timeout: ${http_request_timeout}
-
 sensor:
   - platform: wifi_signal
     name: ${friendly_name} WiFi Signal
