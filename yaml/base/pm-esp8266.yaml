@@ -6,12 +6,22 @@ substitutions:
   max_temp: "70.0"
   max_power_1: "1600.0"
   restore_mode_1: "ALWAYS_ON"
+  relay_gpio_1: "GPIO15"
 
 globals:
    - id: too_hot_boolean
      type: bool
      restore_value: true
      initial_value: 'false'
+
+
+switch:
+  - platform: gpio
+    name: "${friendly_relay_name_1} Relay"
+    pin: ${relay_gpio_1}
+    id: ${device_relay_name_1}_shelly_relay
+    icon: "mdi:electric-switch"
+    restore_mode: ${restore_mode_1}
 
 sensor:
   - platform: ntc
