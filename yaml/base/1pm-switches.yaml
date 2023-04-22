@@ -52,7 +52,7 @@ number:
     id: "${device_relay_name_1}_scene"
     icon: "${scene_icon_1}"
     optimistic: true
-	mode: slider
+    mode: slider
     min_value: 0
     max_value: ${light_automation_input_number_max_1}
     restore_value: false
