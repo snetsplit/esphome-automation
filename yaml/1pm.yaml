@@ -6,11 +6,11 @@ packages:
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/1pm-base.yaml
     refresh: 1s
-  1pm-switches: 
-    url: https://github.com/snetsplit/esphome-automation
-    file: yaml/base/1pm-switches.yaml
-    refresh: 1s
   sun: 
     url: https://github.com/snetsplit/esphome-automation
     file: yaml/base/sun.yaml
+    refresh: 1s
+  1pm-switches: 
+    url: https://github.com/snetsplit/esphome-automation
+    file: yaml/base/1pm-switches.yaml
     refresh: 1s
