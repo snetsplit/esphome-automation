@@ -46,8 +46,8 @@ switch:
     icon: "mdi:electric-switch"
     restore_mode: ${restore_mode_2}
   - platform: template
-    name: "${friendly_relay_name_2} Switch Edge Mode"
-    id: "${device_relay_name_2}_switch_edge_mode"
+    name: "${friendly_relay_name_2} Edge Mode"
+    id: "${device_relay_name_2}_edge_mode"
     optimistic: false
     restore_state: false
     turn_on_action:
