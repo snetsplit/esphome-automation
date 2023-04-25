@@ -73,6 +73,7 @@ light:
   - platform: rgbct
     name: "${nice_name}"
     id: "${device_name}_rgbct_light"
+    icon: "mdi:lightbulb"
     restore_mode: ${light_restore_mode}
     red: red_output
     green: green_output
