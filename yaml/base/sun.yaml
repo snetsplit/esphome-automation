@@ -27,7 +27,7 @@ sensor:
     name: "${friendly_name} Sun Azimuth"
     id: "${sys_name}_azimuth"
     type: azimuth
-    icon: "mdi:sun-angle"
+    icon: "mdi:sun-compass"
 
 text_sensor:
   - platform: sun
