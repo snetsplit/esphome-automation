@@ -40,8 +40,6 @@ dashboard_import:
   package_import_url: github://athom-tech/athom-configs/athom-rgbct-light.yaml
 
 sensor:
-  - platform: uptime
-    name: "${friendly_name} Uptime"
   - platform: ntc
     sensor: temp_resistance_reading
     name: "${friendly_name} ESP Temperature"
@@ -52,22 +50,6 @@ sensor:
       b_constant: 3350
       reference_resistance: 10kOhm
       reference_temperature: 298.15K
-
-button:
-    platform: template
-    id: test
-    name: "${friendly_name} Test"
-    on_press:
-      then:
-      - http_request.get:
-          url: ${scene_master_host}
-          on_response:
-            then:
-             - lambda: |-
-                  json::parse_json(id(http_request_data).get_string(), [](JsonObject root) {
-                      id(scene).publish_state(root["state"]);
-                  });
-
 
 output:
   - platform: esp8266_pwm
