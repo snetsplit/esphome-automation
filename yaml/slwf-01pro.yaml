@@ -65,6 +65,9 @@ globals:
 ota:
 
 logger:
+  logs:
+    AirConditioner: INFO
+    ApplianceBase: INFO
 
 sensor:
   - platform: ntc
