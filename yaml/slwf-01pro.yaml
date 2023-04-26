@@ -209,54 +209,6 @@ button:
                              }
                   }
 
-
-select:
-  - platform: template
-    id: ${device_name}_my_climate_preset
-    name: "${friendly_name} Preset"
-    optimistic: true
-    options:
-      - "None"
-      - Boost
-      - Eco
-      - Sleep
-    initial_option: "None"
-    on_value:
-      then:
-      - lambda: |-
-           if(x == "None") {
-            id(${device_name}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_NONE).perform();
-           }
-           id(${device_name}_my_climate).make_call().set_preset(x).perform();
-  - platform: template
-    id: ${device_name}_my_climate_swing_mode
-    name: "${friendly_name} Swing Mode"
-    optimistic: true
-    options:
-      - "Off"
-      - Vertical
-    initial_option: "Off"
-    on_value:
-      then:
-      - lambda: |-
-           id(${device_name}_my_climate).make_call().set_swing_mode(x).perform();
-  - platform: template
-    id: ${device_name}_my_climate_fan_mode
-    name: "${friendly_name} Fan Mode"
-    optimistic: true
-    options:
-      - Auto
-      - Low
-      - Medium
-      - High
-      - Silent
-      - Turbo
-    initial_option: Auto
-    on_value:
-      then:
-      - lambda: |-
-           id(${device_name}_my_climate).make_call().set_fan_mode(x).perform();
-
 number:
   - platform: template
     icon: "mdi:thermometer"
