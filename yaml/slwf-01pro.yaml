@@ -65,7 +65,6 @@ globals:
 ota:
 
 logger:
-  level: WARN
 
 sensor:
   - platform: ntc
