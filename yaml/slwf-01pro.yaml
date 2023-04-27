@@ -235,7 +235,7 @@ uart:
 
 climate:
   - platform: midea
-    icon: "mdi:heatpump"
+    icon: "mdi:heat-pump-outline"
     id: ${device_name}_my_climate
     name: ${friendly_name}
     supported_modes:
