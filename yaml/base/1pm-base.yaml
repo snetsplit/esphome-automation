@@ -13,6 +13,7 @@ sensor:
     power:
       name: "${friendly_relay_name_1} Watts"
       id: "${device_relay_name_1}_watts"
+      icon: "mdi:flash"
       unit_of_measurement: W
       device_class: power
       state_class: measurement
@@ -36,6 +37,7 @@ sensor:
     name: "${friendly_relay_name_1} 24 Hour Watts"
     id: "${device_relay_name_1}_24_hour_watts"
     power_id: "${device_relay_name_1}_watts"
+    icon: "mdi:flash"
     device_class: energy
     state_class: measurement
     filters:
