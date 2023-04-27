@@ -151,6 +151,7 @@ sun:
 
 binary_sensor:
   - platform: gpio
+    icon: "mdi:electric-switch"
     pin:
       number: ${external_switch_gpio_1}
     filters:
