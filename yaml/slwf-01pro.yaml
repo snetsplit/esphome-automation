@@ -169,8 +169,8 @@ button:
                        if (
                               (id(${device_name}_room_temperature).state < id(cool_on_temp))
                               && !id(cooling_room)
-                              && (id(${device_name}_outside_tempreture).state > id(outside_temp_minimum)) 
-                              && (id(${device_name}_outside_tempreture).state < id(outside_temp_maximum))
+                              && (id(${device_name}_outside_temperature).state > id(outside_temp_minimum)) 
+                              && (id(${device_name}_outside_temperature).state < id(outside_temp_maximum))
                           ) {
                            if (ClimateMode::CLIMATE_MODE_OFF != id(${device_name}_my_climate).mode) {
                               id(${device_name}_my_climate).make_call().set_preset(ClimatePreset::CLIMATE_PRESET_NONE).perform();
@@ -255,8 +255,8 @@ climate:
     supported_swing_modes:
       - VERTICAL
     outdoor_temperature:
-      id: ${device_name}_outside_tempreture
-      name: ${friendly_name} Outside Tempreture
+      id: ${device_name}_outside_temperature
+      name: ${friendly_name} Outside temperature
       unit_of_measurement: °C
       on_value:
       - lambda: |-
