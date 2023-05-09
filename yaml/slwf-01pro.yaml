@@ -9,6 +9,7 @@ substitutions:
   cool_turbo_off: "0"
   outside_temp_minimum_difference: "5.4"
   outside_temp_maximum_difference: "3"
+
 esphome:
   on_boot:
     priority: 600
@@ -214,7 +215,7 @@ button:
 number:
   - platform: template
     icon: "mdi:thermometer"
-    name: ${friendly_name} Room Tempreture
+    name: ${friendly_name} Room Temperature
     id: ${device_name}_room_temperature
     optimistic: true
     min_value: -40

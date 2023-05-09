@@ -19,6 +19,32 @@ globals:
      restore_value: true
      initial_value: 'false'
 
+climate:
+  - platform: midea
+    icon: "mdi:heat-pump-outline"
+    id: ${device_name}_my_climate
+    name: ${friendly_name}
+    supported_modes:
+      - COOL
+      - HEAT
+      - DRY
+    supported_presets:
+      - ECO
+      - BOOST
+      - SLEEP
+    custom_fan_modes:
+      - TURBO
+      - SILENT
+    custom_presets:
+      - FREEZE_PROTECTION
+    supported_swing_modes:
+      - VERTICAL
+    outdoor_temperature:
+      id: ${device_name}_outside_tempreture
+      name: ${friendly_name} Outside Tempreture
+      unit_of_measurement: °C
+
+
 esphome:
   on_boot:
     priority: 200
