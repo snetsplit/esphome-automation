@@ -12,6 +12,7 @@ api:
 ota:
   password:  ${ota_password}
   id: ota_id
+  platform: esphome
 
 captive_portal:
   id: capitive_portal_id
