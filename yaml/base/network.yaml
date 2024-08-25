@@ -20,10 +20,44 @@ wifi:
   password: ${password}
   domain: ${domain}
   ap:
-    ssid: "${friendly_name}"
+    ssid: ${friendly_name}
     password: ${password}
   power_save_mode: ${power_save_mode}
 
 web_server:
   port: ${web_server_port}
 
+sensor:
+  - platform: wifi_signal
+    name: ${friendly_name} WiFi Signal
+    id: ${sys_name}_${device_type}_wifi_signal
+    icon: mdi:wifi
+    update_interval: 60s
+
+text_sensor:
+  - platform: template
+    name: "${friendly_name} Hostname"
+    id: ${device_name}_hostname
+    icon: mdi:ip-network
+    lambda: return {"${name}${domain}"};
+  - platform: wifi_info
+    ip_address:
+      name: ${friendly_name} IP Address
+      id: ${device_name}_ip_address
+      icon: mdi:wifi
+    ssid:
+      name: ${friendly_name} AP
+      id: ${device_name}_ssid
+      icon: mdi:wifi
+    bssid:
+      name: ${friendly_name} AP MAC
+      id: ${device_name}_bssid
+      icon: mdi:wifi
+    mac_address:
+      name: ${friendly_name} MAC Address
+      id: ${device_name}_mac
+      icon: mdi:ip-network
+    scan_results:
+      name: ${friendly_name} APs Available
+      id: ${device_name}_scan
+      icon: mdi:wifi
