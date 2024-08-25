@@ -4,6 +4,7 @@ substitutions:
   device_type: "device"
   device_type_nice: "Device"
   device_name: ${sys_name}_${device_type}
+  id: ${device_name}
   name: ${sys_name}-${device_type}
   friendly_name: "${nice_name} ${device_type_nice}"
   friendly_relay_name_1: "${friendly_name}"
