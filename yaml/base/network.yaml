@@ -6,14 +6,28 @@ substitutions:
   power_save_mode: "high"
   ota_password: "wouldn't you like to know?"
 
+api:
+  id: api_id
+
 ota:
   password:  ${ota_password}
   id: ota_id
-  platform: esphome
 
 captive_portal:
   id: capitive_portal_id
 
+wifi:
+  id: wifi_id
+  ssid: ${ssid}
+  password: ${password}
+  domain: ${domain}
+  ap:
+    ssid: "${friendly_name}"
+    password: ${password}
+  power_save_mode: ${power_save_mode}
+
+web_server:
+  port: ${web_server_port}
 
 sensor:
   - platform: wifi_signal
